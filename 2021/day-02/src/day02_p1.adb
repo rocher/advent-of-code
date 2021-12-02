@@ -11,8 +11,7 @@ procedure Day02_P1 is
    Line      : String (1 .. 16);
    Last_Char : Natural;
 
-   Position : Position_Type;
-   Result   : Natural;
+   P : Position_Type;
 
 begin
    Open (Input, In_File, "input");
@@ -20,16 +19,15 @@ begin
    while not End_Of_File (Input) loop
       Line := (others => ' ');
       Get_Line (Input, Line, Last_Char);
+
       if Line (1 .. 2) = "up" then
-         Position.Depth := Position.Depth - Natural'Value (Line (4 .. 16));
+         P.Depth := P.Depth - Natural'Value (Line (4 .. 16));
       elsif Line (1 .. 4) = "down" then
-         Position.Depth := Position.Depth + Natural'Value (Line (6 .. 16));
+         P.Depth := P.Depth + Natural'Value (Line (6 .. 16));
       elsif Line (1 .. 7) = "forward" then
-         Position.Horizontal :=
-           Position.Horizontal + Natural'Value (Line (9 .. 16));
+         P.Horizontal := P.Horizontal + Natural'Value (Line (9 .. 16));
       end if;
    end loop;
 
-   Result := Position.Depth * Position.Horizontal;
-   Put_Line ("Answer:" & Result'Image);
+   Put_Line ("Answer:" & Natural'Image (P.Depth * P.Horizontal));
 end Day02_P1;
