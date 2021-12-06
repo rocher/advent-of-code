@@ -1,53 +1,50 @@
-with Ada.Strings; use Ada.Strings;
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Day01_P2 is
    type Window_Index is mod 3;
    type Measurement_Window is array (Window_Index) of Natural;
 
-   I          : Window_Index    := 0;
-   Input      : File_Type;
-   Line       : String (1 .. 5) := "     ";
-   Line_Count : Natural         := 0;
-   Last_Char  : Natural;
+   package Measurement_IO is new Integer_IO (Natural);
+   use Measurement_IO;
+
+   I     : Window_Index := 0;
+   Input : File_Type;
 
    Input_Window         : Measurement_Window := (others => 0);
    Measurement          : Natural;
    Previous_Measurement : Natural            := Natural'Last;
    Increments           : Natural            := 0;
 
-   procedure Update_Input_Windows is
-      Value : Natural := Natural'Value (Line);
-   begin
-      Input_Window (I) := Value;
-      if Line_Count = 2 then
-         Input_Window (I - 1) := Input_Window (I - 1) + Value;
-      end if;
-      if Line_Count > 2 then
-         Input_Window (I - 1) := Input_Window (I - 1) + Value;
-         Input_Window (I - 2) := Input_Window (I - 2) + Value;
-      end if;
-   end Update_Input_Windows;
-
 begin
    Open (Input, In_File, "input");
 
-   while not End_Of_File (Input) loop
-      Line_Count := Line_Count + 1;
-      Get_Line (Input, Line, Last_Char);
-      Update_Input_Windows;
+   --  1st measurement --> 1st window
+   Get (Input, Input_Window (0));
 
-      if Line_Count >= 3 then
-         Measurement := Input_Window (I + 1);
-         if Previous_Measurement < Measurement
-         then
-            Increments := Increments + 1;
-         end if;
-         Previous_Measurement := Measurement;
+   --  2nd measurement --> 1st & 2nd window
+   Get (Input, Input_Window (1));
+   Input_Window (0) := Input_Window (0) + Input_Window (1);
+
+   --  3rd measurement --> 1st, 2nd & 3rd window
+   Get (Input, Input_Window (2));
+   Input_Window (0) := Input_Window (0) + Input_Window (2);
+   Input_Window (1) := Input_Window (1) + Input_Window (2);
+   I := 2;
+
+   --  remaining measurements
+   loop
+      Measurement := Input_Window (I + 1);
+      if Previous_Measurement < Measurement then
+         Increments := Increments + 1;
       end if;
+      Previous_Measurement := Measurement;
 
-      I := I + 1;
+      exit when End_Of_File (Input);
+
+      I := I+1;
+      Get (Input, Input_Window (I));
    end loop;
+   Close (Input);
 
    Put_Line ("Answer:" & Increments'Image);
 end Day01_P2;
