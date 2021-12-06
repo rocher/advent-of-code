@@ -28,6 +28,7 @@ begin
          P.Horizontal := P.Horizontal + Natural'Value (Line (9 .. 16));
       end if;
    end loop;
+   Close (Input);
 
    Put_Line ("Answer:" & Natural'Image (P.Depth * P.Horizontal));
 end Day02_P1;

@@ -32,6 +32,7 @@ begin
          P.Depth      := P.Depth + (P.Aim * Value);
       end if;
    end loop;
+   Close (Input);
 
    Put_Line ("Answer:" & Natural'Image (P.Depth * P.Horizontal));
 end Day02_P2;
