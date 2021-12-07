@@ -4,10 +4,8 @@ with Ada.Containers.Vectors; use Ada.Containers;
 
 procedure Day03_P2 is
    Report_Number_Width : constant Natural := 12;
-   Report_Max_Legnth   : constant Natural := 2_000;
 
    subtype Input_Line_Type is String (1 .. Report_Number_Width + 2);
-   subtype Report_Index is Natural range 1 .. Report_Max_Legnth;
    subtype Report_Number_Index is Natural range 1 .. Report_Number_Width;
    subtype Report_Number_Type is String (Report_Number_Index);
 
@@ -22,8 +20,6 @@ procedure Day03_P2 is
    Ratings_Found       : Natural := 0;
    Bit_Pos             : Report_Number_Index;
    Count               : Natural;
-
-   Idx : Report_Index;
 
    function "=" (Left, Right : Report_Number_Type) return Boolean is
       Equals : Boolean             := True;
@@ -41,7 +37,7 @@ procedure Day03_P2 is
    end "=";
 
    package Report_Type is new Vectors
-     (Index_Type => Report_Index, Element_Type => Report_Number_Type);
+     (Index_Type => Natural, Element_Type => Report_Number_Type);
    use Report_Type;
 
    Report : Report_Type.Vector;
@@ -63,15 +59,15 @@ procedure Day03_P2 is
    begin
       Count  := 0;
       Length := 0;
-      for I in 1 .. Integer (Report.Length) loop
+      for I in Report.First_Index .. Report.Last_Index loop
          Report_Number := Report.Element (I);
          if Report_Number = Criteria then
             Length := Length + 1;
-            if Report_Number (Bit_Pos) = '1' then
-               Count := Count + 1;
-            end if;
+            Count := Count + Natural'Value ("0" & Report_Number (Bit_Pos));
          end if;
       end loop;
+      Put_Line ("count bits:: criteria='" & Criteria & "', count:" & Count'Image
+                   & ", length:" & Length'Image);
    end Count_Bits;
 
    function To_Report_Number (Line : Input_Line_Type) return Report_Number_Type
@@ -83,35 +79,18 @@ procedure Day03_P2 is
    end To_Report_Number;
 
    function To_Natural (Bits : Report_Number_Type) return Natural is
-      N : Natural := 0;
    begin
-      for I in Report_Number_Index loop
-         if Bits (I) = '1' then
-            N := N + 2**(Report_Number_Width - I);
-         end if;
-      end loop;
-      return N;
+      Put_Line ("to_natural:: bits='" & Bits & "', value=" & Natural'Value ("2#" & Bits & "#")'Image);
+      return Natural'Value ("2#" & Bits & "#");
    end To_Natural;
 
 begin
    Open (Input, In_File, "input");
-
-   --  get Report length
    while not End_Of_File (Input) loop
       Get_Line (Input, Line, Last_Char);
-      Length := Length + 1;
+      Report.Append (To_Report_Number (Line));
    end loop;
-   Reset (Input);
-
-   Report.Set_Length (Count_Type (Length));
-
-   Idx := Report_Index'First;
-   while not End_Of_File (Input) loop
-      Line := (others => ' ');
-      Get_Line (Input, Line, Last_Char);
-      Report.Replace_Element (Idx, To_Report_Number (Line));
-      Idx := Idx + 1;
-   end loop;
+   Close (Input);
 
    Bit_Pos  := Report_Number_Index'First;
    Criteria := (others => (others => ' '));
