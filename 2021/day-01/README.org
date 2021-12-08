@@ -122,7 +122,7 @@ measurement.
 
 *** Compilation Unit
 
-#+begin_src ada :noweb yes :unit day01_p1
+#+begin_src ada :noweb yes :unit day01_p1 :exports both
   <<initialization_day01_p1>>
   <<declarations_day01_p1>>
   <<process_day01_p1>>
