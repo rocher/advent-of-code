@@ -72,65 +72,63 @@ measurement.
 See file [[file:input]].
 
 ** Solution
-*** Initialization
+*** Declarations
 
-#+name: initialization_day01_p1
+#+name: d01p1__packages__
 #+begin_src ada
-  with Ada.Text_IO; use Ada.Text_IO;
-
-  procedure Day01_P1 is
+  package Measurement_IO is new Integer_IO (Natural);
+  use Measurement_IO;
 #+end_src
 
-*** Global Declarations
-
-#+name: declarations_day01_p1
+#+name: d01p1__variables__
 #+begin_src ada
-    package Measurement_IO is new Integer_IO (Natural);
-    use Measurement_IO;
-
-    Input                : File_Type;
-    Measurement          : Natural;
-    Previous_Measurement : Natural := Natural'Last;
-    Increments           : Natural := 0;
+  Input                : File_Type;
+  Measurement          : Natural;
+  Previous_Measurement : Natural := Natural'Last;
+  Increments           : Natural := 0;
 #+end_src
 
-*** Main Process
+*** Process
 
-#+name: process_day01_p1
+#+name: d01p1__process__
 #+begin_src ada
-  begin
-     Open (Input, In_File, "/home/ada/advent-of-code/2021/day-01/input");
+  Get (Input, Measurement);
+  loop
+    if Previous_Measurement < Measurement then
+       Increments := Increments + 1;
+    end if;
 
-     Get (Input, Measurement);
-     loop
-        if Previous_Measurement < Measurement then
-           Increments := Increments + 1;
-        end if;
+    exit when End_Of_File (Input);
 
-        exit when End_Of_File (Input);
-
-        Previous_Measurement := Measurement;
-        Get (Input, Measurement);
-     end loop;
-
-     Close (Input);
+    --  prepare next iteration
+    Previous_Measurement := Measurement;
+    Get (Input, Measurement);
+  end loop;
 #+end_src
 
-*** Output Result
+*** Result
 
-#+name: result_day01_p1
+#+name: d01p1__result__
 #+begin_src ada
-      Put_Line ("Answer:" & Increments'Image);
-    end Day01_P1;
+  Put_Line ("Answer:" & Increments'Image);
 #+end_src
 
 *** Compilation Unit
 
 #+begin_src ada :exports both :noweb yes :unit day01_p1
-  <<initialization_day01_p1>>
-  <<declarations_day01_p1>>
-  <<process_day01_p1>>
-  <<result_day01_p1>>
+  with Ada.Text_IO; use Ada.Text_IO;
+
+  procedure Day01_P1 is
+     <<d01p1__packages__>>
+     <<d01p1__variables__>>
+
+  begin
+     Open (Input, In_File, "/home/ada/advent-of-code/2021/day-01/input");
+        <<d01p1__process__>>
+     Close (Input);
+
+     <<d01p1__result__>>
+  end Day01_P1;
 #+end_src
 
 #+RESULTS:
@@ -265,21 +263,19 @@ See file [[input]].
   with Ada.Text_IO; use Ada.Text_IO;
 
   procedure Day01_P2 is
-    <<d01p2__types__>>
-    <<d01p2__packages__>>
-    <<d01p2__variables__>>
+     <<d01p2__types__>>
+     <<d01p2__packages__>>
+     <<d01p2__variables__>>
 
   begin
-    Open (Input, In_File, "/home/ada/advent-of-code/2021/day-01/input");
+     Open (Input, In_File, "/home/ada/advent-of-code/2021/day-01/input");
+        <<__read_first_windows__>>
+        <<__read_rest_of_input__>>
+     Close (Input);
 
-    <<__read_first_windows__>>
-    <<__read_rest_of_input__>>
-
-    Close (input);
-
-    <<d01p2__result__>>
+     <<d01p2__result__>>
   end Day01_P2;
 #+end_src
 
 #+RESULTS:
-: Answer: 1444
+: Answer: 1486
