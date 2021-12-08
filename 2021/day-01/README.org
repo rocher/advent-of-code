@@ -73,7 +73,18 @@ measurement.
 See file [[file:input]].
 
 ** Solution
+The algorithm to solve this problem is so easy that don't need to be explicitly
+written:
+
+  1. read a measurement from input file
+  2. compare the current measurement with the previous one
+     * if the previous is lesser than the current, then an increment occurred
+  3. the result is the total amount of increments detected
+
 *** Declarations
+The input is stored in a file consisting in a set of lines with a number in
+each. To the read the file we use the generic package =Ada.Text_IO.Integer_IO=
+instantiated with the type =Natural=:
 
 #+name: d01p1__packages__
 #+begin_src ada
