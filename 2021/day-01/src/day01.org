@@ -1,0 +1,71 @@
+* Day 01
+
+** Part 1
+
+*** Initialization
+
+#+name: initialization_day01_p1
+#+begin_src ada
+  with Ada.Text_IO; use Ada.Text_IO;
+
+  procedure Day01_P1 is
+#+end_src
+
+*** Global Declarations
+
+#+name: declarations_day01_p1
+#+begin_src ada
+    package Measurement_IO is new Integer_IO (Natural);
+    use Measurement_IO;
+
+    Input                : File_Type;
+    Measurement          : Natural;
+    Previous_Measurement : Natural := Natural'Last;
+    Increments           : Natural := 0;
+#+end_src
+
+*** Main Process
+
+#+name: process_day01_p1
+#+begin_src ada
+  begin
+     Open (Input, In_File, "/home/ada/advent-of-code/2021/day-01/input");
+
+     Get (Input, Measurement);
+     loop
+        if Previous_Measurement < Measurement then
+           Increments := Increments + 1;
+        end if;
+
+        exit when End_Of_File (Input);
+
+        Previous_Measurement := Measurement;
+        Get (Input, Measurement);
+     end loop;
+
+     Close (Input);
+#+end_src
+
+*** Output Result
+
+#+name: result_day01_p1
+#+begin_src ada
+      Put_Line ("Answer:" & Increments'Image);
+    end Day01_P1;
+#+end_src
+
+*** Compilation Unit
+
+#+begin_src ada :noweb yes :unit day01_p1 :cwd ~/advent-of-code/2021/day-01
+
+  <<initialization_day01_p1>>
+  <<declarations_day01_p1>>
+  <<process_day01_p1>>
+  <<result_day01_p1>>
+
+#+end_src
+
+#+RESULTS:
+: Answer: 1446
+
+** Par 2
