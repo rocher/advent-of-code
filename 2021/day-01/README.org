@@ -69,7 +69,7 @@ measurement.
 *How many measurements are larger than the previous measurement?*
 
 ** Input
-  [[file:input]]
+See file [[file:input]].
 
 ** Solution
 *** Initialization
@@ -126,7 +126,7 @@ measurement.
 
 *** Compilation Unit
 
-#+begin_src ada :noweb yes :unit day01_p1 :exports both
+#+begin_src ada :exports both :noweb yes :unit day01_p1
   <<initialization_day01_p1>>
   <<declarations_day01_p1>>
   <<process_day01_p1>>
@@ -138,3 +138,148 @@ measurement.
 
 
 * Part 2
+** Statement
+Considering every single measurement isn't as useful as you expected: there's
+just too much noise in the data.
+
+Instead, consider sums of a three-measurement sliding window. Again considering
+the above example:
+
+#+begin_example
+199  A
+200  A B
+208  A B C
+210    B C D
+200  E   C D
+207  E F   D
+240  E F G
+269    F G H
+260      G H
+263        H
+#+end_example
+
+
+Start by comparing the first and second three-measurement windows. The
+measurements in the first window are marked A (199, 200, 208); their sum is
+199 + 200 + 208 = 607. The second window is marked B (200, 208, 210); its sum
+is 618. The sum of measurements in the second window is larger than the sum of
+the first, so this first comparison *increased*.
+
+Your goal now is to count *the number of times the sum of measurements in this
+sliding window increases* from the previous sum. So, compare A with B, then
+compare B with C, then C with D, and so on. Stop when there aren't enough
+measurements left to create a new three-measurement sum.
+
+In the above example, the sum of each three-measurement window is as follows:
+
+#+begin_example
+A: 607 (N/A - no previous sum)
+B: 618 (increased)
+C: 618 (no change)
+D: 617 (decreased)
+E: 647 (increased)
+F: 716 (increased)
+G: 769 (increased)
+H: 792 (increased)
+#+end_example
+
+In this example, there are 5 sums that are larger than the previous sum.
+
+Consider sums of a three-measurement sliding window. *How many sums are larger
+than the previous sum?*
+
+** Input
+See file [[input]].
+
+** Solution
+*** Declarations
+
+#+name: d01p2__types__
+#+begin_src ada
+  type Window_Index is mod 3;
+  type Measurement_Window is array (Window_Index) of Natural;
+#+end_src
+
+#+name: d01p2__packages__
+#+begin_src ada
+  package Measurement_IO is new Integer_IO (Natural);
+  use Measurement_IO;
+#+end_src
+
+#+name: d01p2__variables__
+#+begin_src ada
+  Input                : File_Type;
+  Input_Window         : Measurement_Window := (others => 0);
+  Measurement          : Natural;
+  Previous_Measurement : Natural := Natural'Last;
+  Increments           : Natural := 0;
+  I                    : Window_Index;
+#+end_src
+
+*** Process
+
+#+name: __read_first_windows__
+#+begin_src ada
+  --  1st measurement --> 1st window
+  Get (Input, Input_Window (0));
+
+  --  2nd measurement --> 1st & 2nd windows
+  Get (Input, Input_Window (1));
+  Input_Window (0) := Input_Window (0) + Input_Window (1);
+
+  --  3rd measurement --> 1st, 2nd & 3rd windows
+  Get (Input, Input_Window (2));
+  Input_Window (0) := Input_Window (0) + Input_Window (2);
+  Input_Window (1) := Input_Window (1) + Input_Window (2);
+#+end_src
+
+#+name: __read_rest_of_input__
+#+begin_src ada
+  I := 2; --  current window
+  loop
+    Measurement := Input_Window (I + 1);
+    if Previous_Measurement < Measurement then
+       Increments := Increments + 1;
+    end if;
+
+    exit when End_Of_File (Input);
+
+    --  prepare next itaration
+    I := I + 1;
+    Get (Input, Input_Window (I));
+    Input_Window (I - 1) := Input_Window (I - 1) + Input_Window (I);
+    Input_Window (I - 2) := Input_Window (I - 2) + Input_Window (I);
+    Previous_Measurement := Measurement;
+  end loop;
+#+end_src
+
+*** Result
+
+#+name: d01p2__result__
+#+begin_src ada
+  Put_Line ("Answer:" & Increments'Image);
+#+end_src
+
+*** Compilation Unit
+#+begin_src ada :exports both :noweb yes :unit day01_p2
+  with Ada.Text_IO; use Ada.Text_IO;
+
+  procedure Day01_P2 is
+    <<d01p2__types__>>
+    <<d01p2__packages__>>
+    <<d01p2__variables__>>
+
+  begin
+    Open (Input, In_File, "/home/ada/advent-of-code/2021/day-01/input");
+
+    <<__read_first_windows__>>
+    <<__read_rest_of_input__>>
+
+    Close (input);
+
+    <<d01p2__result__>>
+  end Day01_P2;
+#+end_src
+
+#+RESULTS:
+: Answer: 1444
