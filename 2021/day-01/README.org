@@ -1,5 +1,5 @@
 #+TITLE:Day 1 : Sonar Sweep
-#+OPTIONS: toc:2
+#+AUTHOR: Francesc Rocher
 
 * Part 1
 ** Statement
@@ -217,7 +217,7 @@ See file [[input]].
 
 *** Process
 
-#+name: __read_first_windows__
+#+name: d01p2__read_first_windows__
 #+begin_src ada
   --  1st measurement --> 1st window
   Get (Input, Input_Window (0));
@@ -232,7 +232,7 @@ See file [[input]].
   Input_Window (1) := Input_Window (1) + Input_Window (2);
 #+end_src
 
-#+name: __read_rest_of_input__
+#+name: d01p2__process_rest_of_input__
 #+begin_src ada
   I := 2; --  current window
   loop
@@ -270,8 +270,8 @@ See file [[input]].
 
   begin
      Open (Input, In_File, "/home/ada/advent-of-code/2021/day-01/input");
-        <<__read_first_windows__>>
-        <<__read_rest_of_input__>>
+        <<d01p2__read_first_windows__>>
+        <<d01p2__process_rest_of_input__>>
      Close (Input);
 
      <<d01p2__result__>>
