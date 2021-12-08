@@ -95,11 +95,9 @@ instantiated with the type =Natural=:
 
 The variables the process will use are:
 
-  * =Input=: the input file
-  * =Measurement= and =Previous_Measurement=, of type ~Natural~, to store the
-    values read
-  * =Increments=, of type ~Natural~ to count the total number of increments
-    detected
+  * =Input=, the input file
+  * =Measurement= and =Previous_Measurement=, to store the values read
+  * =Increments=, to count the total number of increments detected
 
 #+name: d01p1__variables__
 #+begin_src ada
