@@ -1,4 +1,5 @@
 #+TITLE:Day 1 : Sonar Sweep
+#+OPTIONS: toc:2
 
 * Part 1
 ** Statement
