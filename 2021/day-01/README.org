@@ -81,6 +81,7 @@ written:
      * if the previous is lesser than the current, then an increment occurred
   3. the result is the total amount of increments detected
 
+** Implementation
 *** Declarations
 The input is stored in a file consisting in a set of lines with a number in
 each. To the read the file we use the generic package =Ada.Text_IO.Integer_IO=
@@ -91,6 +92,14 @@ instantiated with the type =Natural=:
   package Measurement_IO is new Integer_IO (Natural);
   use Measurement_IO;
 #+end_src
+
+The variables the process will use are:
+
+  * =Input=: the input file
+  * =Measurement= and =Previous_Measurement=, of type ~Natural~, to store the
+    values read
+  * =Increments=, of type ~Natural~ to count the total number of increments
+    detected
 
 #+name: d01p1__variables__
 #+begin_src ada
