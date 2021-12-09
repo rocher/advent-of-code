@@ -281,9 +281,7 @@ Two types are declared to manage the measurement windows,
   type Measurement_Window is array (Window_Index) of Natural;
 #+end_src
 
-plus the =Measurement_IO= package defined in =__Packages__=.
-
-New variables needed are:
+and the variables to manage them:
 
 #+name: __New_Variables__
 #+begin_src ada
