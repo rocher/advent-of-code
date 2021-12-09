@@ -173,9 +173,6 @@ source code blocks shown here (evaluation of the program appears below):
 #+RESULTS: day01_p1
 : Answer: 1446
 
-#+RESULTS:
-: Answer: 1446
-
 * PART 2
 ** Statement
 #+begin_html
@@ -367,9 +364,6 @@ source code blocks shown here (evaluation of the program appears below):
 
 #+RESULTS: day01_p2
 : Answer: 1486
-
-#+RESULTS:
-: Answer: 14
 
 * REFERENCES
 
