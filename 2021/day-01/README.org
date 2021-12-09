@@ -371,6 +371,7 @@ source code blocks. Evaluation of the program appears below.
 
 * REFERENCES
 
+  * source: [[https://adventofcode.com/2021/day/1][Advent of Code 2021, day 1]]
   * tangled source code files:
     - [[file:src/day01_p1.adb]]
     - [[file:src/day01_p2.adb]]
