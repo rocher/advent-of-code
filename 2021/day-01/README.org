@@ -2,6 +2,8 @@
 #+AUTHOR: Francesc Rocher
 #+OPTIONS: num:t skip:t
 
+#+TOC: headlines 2
+
 * Part 1
 ** Statement
 You're minding your own business on a ship at sea when the overboard alarm goes
