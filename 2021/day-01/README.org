@@ -51,10 +51,10 @@ To do this, *count the number of times a depth measurement increases* from the
 previous measurement. (There is no measurement before the first measurement.) In
 the example above, the changes are as follows:
 
-#+begin_quote
+#+begin_comment
 hello,
 quote is *this* thing
-#+end_quote
+#+end_comment
 
 #+begin_example
 199 (N/A - no previous measurement)
