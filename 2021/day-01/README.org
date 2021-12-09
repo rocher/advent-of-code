@@ -224,9 +224,13 @@ than the previous sum?*
 See file [[file:input]].
 
 ** Solution
-The solution is quite similar to part 1, with the different that new the
+The solution is quite similar to part 1, with the different that now the
 measurements are composed by the sum of three input measurements, or a
-/measurement window/.
+/measurement window/. First measurement window is composed by input measurements
+1, 2 and 3. Second measurement window by the input measurements 2, 3 and 4, and
+so on. The firs measurement windows is complete when the third measurement input
+is read, so no comparisons can be done until that point. From third input
+onward, there will be two measurement windows completed that can be compared.
 
 ** Implementation
 *** Declarations
