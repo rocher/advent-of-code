@@ -117,10 +117,12 @@ Variables used in the process are:
 #+end_src
 
 *** Process
+Simply read all input measurements and compare with previous one. If there have
+been an increment, then count it.
 
+*source block* =d01p1__process__=
 #+name: d01p1__process__
 #+begin_src ada
-  --  source block <<d01p1__process__>> is
   Get (Input, Measurement);
   loop
     if Previous_Measurement < Measurement then
@@ -136,10 +138,11 @@ Variables used in the process are:
 #+end_src
 
 *** Result
+The result just prints the number of increments counted.
 
+*source block* =d01p1__result__=
 #+name: d01p1__result__
 #+begin_src ada
-  --  src block <<d01p1__result__>> is
   Put_Line ("Answer:" & Increments'Image);
 #+end_src
 
@@ -162,6 +165,7 @@ Variables used in the process are:
 #+end_src
 
 #+RESULTS:
+: Answer: 1446
 
 Expanded code in [[file:src/day01_p1.adb]].
 
