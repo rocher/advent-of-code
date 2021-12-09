@@ -30,9 +30,9 @@ begin
         if Previous_Measurement < Measurement then
            Increments := Increments + 1;
         end if;
-      
+
         exit when End_Of_File (Input);
-      
+
         --  prepare next iteration
         Previous_Measurement := Measurement;
         Get (Input, Measurement);
