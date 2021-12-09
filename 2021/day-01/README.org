@@ -1,4 +1,4 @@
-#+OPTIONS: num:t toc:2
+#+OPTIONS: num:t skip:t
 #+TITLE:Day 1 : Sonar Sweep
 #+AUTHOR: Francesc Rocher
 
@@ -168,6 +168,8 @@ source code blocks. Evaluation of the program appears below.
 
 #+RESULTS:
 : Answer: 1446
+
+Source code in [[file:src/day01_p1.adb]].
 
 * PART 2
 ** Statement
@@ -340,6 +342,7 @@ Once the first window is complete, loop over the rest of the input measurements:
 #+end_src
 
 *** Result
+The result just prints the number of increments detected:
 
 #+name: d01p2__result__
 #+begin_src ada
@@ -348,7 +351,10 @@ Once the first window is complete, loop over the rest of the input measurements:
   Put_Line ("Answer:" & Increments'Image);
 #+end_src
 
-*** Compilation Unit
+*** Compilation unit and evaluation
+The compilation unit for this program is obtained with the composition of all
+source code blocks. Evaluation of the program appears below.
+
 #+begin_src ada :exports both :noweb yes :unit day01_p2
   with Ada.Text_IO; use Ada.Text_IO;
 
@@ -370,4 +376,4 @@ Once the first window is complete, loop over the rest of the input measurements:
 #+RESULTS:
 : Answer: 1486
 
-Expanded code in [[file:src/day01_p2.adb]].
+Source code in [[file:src/day01_p2.adb]].
