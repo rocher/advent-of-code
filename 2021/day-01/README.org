@@ -313,7 +313,7 @@ windows:
 
 
 =source code block d01p2__process_rest_of_input_values__=
-#+name: d01p2__process_rest_of_input__
+#+name: d01p2__process_rest_of_input_values__
 #+begin_src ada
   I := 2; --  current window
   loop
