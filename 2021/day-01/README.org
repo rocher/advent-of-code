@@ -97,6 +97,7 @@ instantiated with the type =Natural=:
 
 #+name: d01p1__packages__
 #+begin_src ada
+  --  source block <<d01p1__packages__>> is
   package Measurement_IO is new Integer_IO (Natural);
   use Measurement_IO;
 #+end_src
@@ -109,6 +110,7 @@ Variables used in the process are:
 
 #+name: d01p1__variables__
 #+begin_src ada
+  --  source block <<d01p1__variables__>> is
   Input                : File_Type;
   Measurement          : Natural;
   Previous_Measurement : Natural := Natural'Last;
@@ -119,6 +121,7 @@ Variables used in the process are:
 
 #+name: d01p1__process__
 #+begin_src ada
+  --  source block <<d01p1__process__>> is
   Get (Input, Measurement);
   loop
     if Previous_Measurement < Measurement then
@@ -137,6 +140,7 @@ Variables used in the process are:
 
 #+name: d01p1__result__
 #+begin_src ada
+  --  src block <<d01p1__result__>> is
   Put_Line ("Answer:" & Increments'Image);
 #+end_src
 
