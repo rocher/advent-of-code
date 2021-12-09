@@ -147,7 +147,7 @@ The result prints the number of detected increments.
 #+name: __Result__
 #+begin_src ada
   -- __Result__
-  Put_Line ("Answer 1:" & Increments'Image);
+  Put_Line ("Answer:" & Increments'Image);
 #+end_src
 
 *** Compilation unit and evaluation

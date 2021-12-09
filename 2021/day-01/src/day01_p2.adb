@@ -2,7 +2,7 @@
 --
 --  Source code generated automatically by 'org-babel-tangle' from
 --  file /home/ada/advent-of-code/2021/day-01/README.org
---  2021-12-09 20:37:37
+--  2021-12-09 20:55:39
 --
 --  DO NOT EDIT!!
 --
@@ -62,5 +62,5 @@ begin
    Close (Input);
 
    -- __Result__
-   Put_Line ("Answer 1:" & Increments'Image);
+   Put_Line ("Answer:" & Increments'Image);
 end Day01_P2;
