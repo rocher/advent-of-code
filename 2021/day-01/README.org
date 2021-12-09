@@ -6,7 +6,7 @@
 
 #+begin_html
 <details>
-<summary>
+<summary><i>click to expand</i>
 #+end_html
 ** Statement
 #+begin_html
