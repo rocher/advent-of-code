@@ -263,6 +263,7 @@ Two types are declared to manage the measurement windows,
 #+name: d01p2__types__
 #+begin_src ada
   -- d01p2__types__
+
   type Window_Index is mod 3;
   type Measurement_Window is array (Window_Index) of Natural;
 #+end_src
