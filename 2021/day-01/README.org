@@ -1,8 +1,10 @@
 #+TITLE:Day 1 : Sonar Sweep
 #+AUTHOR: Francesc Rocher
+:PROPERTIES:
+:header-args: :noweb yes
+:END:
 
 * PART 1
-
 ** Statement
 #+begin_html
 <details>
@@ -10,6 +12,7 @@
   <i>click to expand</i>
 </summary>
 #+end_html
+
 You're minding your own business on a ship at sea when the overboard alarm goes
 off! You rush to see if you can help. Apparently, one of the Elves tripped and
 accidentally sent the sleigh keys flying into the ocean!
@@ -58,11 +61,6 @@ To do this, *count the number of times a depth measurement increases* from the
 previous measurement. (There is no measurement before the first measurement.) In
 the example above, the changes are as follows:
 
-#+begin_table
-hello,
-table is *this* thing
-#+end_table
-
 #+begin_example
 199 (N/A - no previous measurement)
 200 (*increased*)
@@ -85,9 +83,6 @@ measurement.
 </details>
 #+end_html
 
-** Input
-See file [[file:input]].
-
 ** Solution
 The algorithm to solve this problem is so easy that don't need to be explicitly
 written:
@@ -103,9 +98,9 @@ The input is stored in a file consisting in a set of lines with a number in
 each. To the read the file we use the generic package =Ada.Text_IO.Integer_IO=
 instantiated with the type =Natural=:
 
-*source code block* =d01p1__packages__=
-#+name: d01p1__packages__
+#+name: __Packages__
 #+begin_src ada
+  -- __Packages__
   package Measurement_IO is new Integer_IO (Natural);
   use Measurement_IO;
 #+end_src
@@ -116,9 +111,9 @@ Variables used in the process are:
   * =Measurement= and =Previous_Measurement=, to store input values
   * =Increments=, to count the total number of increments detected
 
-*source code block* =d01p1__variables__=
-#+name: d01p1__variables__
+#+name: __Variables__
 #+begin_src ada
+  -- __Variables__
   Input                : File_Type;
   Measurement          : Natural;
   Previous_Measurement : Natural := Natural'Last;
@@ -129,9 +124,9 @@ Variables used in the process are:
 Simply read all input measurements and compare with previous one. If there have
 been an increment, then count it.
 
-*source code block* =d01p1__process__=
-#+name: d01p1__process__
+#+name: __Detect_Increments__
 #+begin_src ada
+  -- __Detect_Increments__
   Get (Input, Measurement);
   loop
     if Previous_Measurement < Measurement then
@@ -147,41 +142,48 @@ been an increment, then count it.
 #+end_src
 
 *** Result
-The result just prints the number of increments counted.
+The result prints the number of detected increments.
 
-*source code block* =d01p1__result__=
-#+name: d01p1__result__
+#+name: __Result__
 #+begin_src ada
-  Put_Line ("Answer:" & Increments'Image);
+  -- __Result__
+  Put_Line ("Answer 1:" & Increments'Image);
 #+end_src
 
 *** Compilation unit and evaluation
 The compilation unit for this program is obtained with the composition of all
 source code blocks. Evaluation of the program appears below.
 
-#+begin_src ada :exports both :noweb yes :unit day01_p1
+#+begin_src ada :exports both :literal INPUT_FILE="input" :noweb yes :tangle src/day01_p1.adb :unit day01_p1
   with Ada.Text_IO; use Ada.Text_IO;
 
   procedure Day01_P1 is
-     <<d01p1__packages__>>
-     <<d01p1__variables__>>
+
+     <<__Packages__>>
+
+     <<__Variables__>>
 
   begin
      Open (Input, In_File, "/home/ada/advent-of-code/2021/day-01/input");
-        <<d01p1__process__>>
+        <<__Detect_Increments__>>
      Close (Input);
 
-     <<d01p1__result__>>
+     <<__Result__>>
   end Day01_P1;
 #+end_src
 
 #+RESULTS:
 : Answer: 1446
 
-Source code in [[file:src/day01_p1.adb]].
-
 * PART 2
 ** Statement
+#+begin_html
+<details>
+<summary>
+  <i>click to expand</i>
+</summary>
+#+end_html
+
 Considering every single measurement isn't as useful as you expected: there's
 just too much noise in the data.
 
@@ -231,8 +233,9 @@ In this example, there are 5 sums that are larger than the previous sum.
 Consider sums of a three-measurement sliding window. *How many sums are larger
 than the previous sum?*
 
-** Input
-See file [[file:input]].
+#+begin_html
+</details>
+#+end_html
 
 ** Solution
 The solution is quite similar to part 1, with the different that now the
@@ -265,41 +268,26 @@ process, the implementation in Ada can make use of =mod= types. In particular,
 =mod 3= (values 0, 1 & 2) will be required for the window index.
 
 Arithmetic operations with this type are used to select windows. For example,
-when ~I=2~ then ~I+1=0~ refers to the /next/ window that will be updated. That
-is, the oldest and complete of the three.
+when =I = 2= then =I + 1 = 0= refers to the /next/ window that will be updated.
+That is, the oldest and complete of the three.
 
 *** Declarations
 Two types are declared to manage the measurement windows,
 
-#+name: d01p2__types__
+#+name: __Types__
 #+begin_src ada
-  -- d01p2__types__
-
+  -- __Types__
   type Window_Index is mod 3;
   type Measurement_Window is array (Window_Index) of Natural;
 #+end_src
 
-plus the ~Measurement_IO~ package:
+plus the =Measurement_IO= package defined =p1__Packages__=. New variables needed
+are:
 
-#+name: d01p2__packages__
+#+name: __New_Variables__
 #+begin_src ada
-  -- d01p2__packages__
-
-  package Measurement_IO is new Integer_IO (Natural);
-  use Measurement_IO;
-#+end_src
-
-Variables needed are:
-
-#+name: d01p2__variables__
-#+begin_src ada
-  -- d01p2__variables__
-
-  Input                : File_Type;
+  -- __New_Variables__
   Input_Window         : Measurement_Window := (others => 0);
-  Measurement          : Natural;
-  Previous_Measurement : Natural := Natural'Last;
-  Increments           : Natural := 0;
   I                    : Window_Index;
 #+end_src
 
@@ -309,30 +297,25 @@ At the beginning there are no three windows, still. Thus, the process starts
 reading the first three input measurements and add them to the respective
 windows:
 
-#+name: d01p2__read_first_values__
+#+name: __Read_First_Values__
 #+begin_src ada
-  -- d01p2__read_first_values__
+  -- __Read_First_Values__
+  Get (Input, Input_Window (0));  --  1st measurement --> 1st window
 
-  --  1st measurement --> 1st window
-  Get (Input, Input_Window (0));
-
-  --  2nd measurement --> 1st & 2nd windows
-  Get (Input, Input_Window (1));
+  Get (Input, Input_Window (1));  --  2nd measurement --> 1st & 2nd windows
   Input_Window (0) := Input_Window (0) + Input_Window (1);
 
-  --  3rd measurement --> 1st, 2nd & 3rd windows
-  Get (Input, Input_Window (2));
+  Get (Input, Input_Window (2));  --  3rd measurement --> 1st, 2nd & 3rd windows
   Input_Window (0) := Input_Window (0) + Input_Window (2);
   Input_Window (1) := Input_Window (1) + Input_Window (2);
 #+end_src
 
 Once the first window is complete, loop over the rest of the input measurements:
 
-#+name: d01p2__process_rest_of_input_values__
+#+name: __Process_Rest_Of_Input_Values__
 #+begin_src ada
-  -- d01p2__process_rest_of_input_values__
-
-  I := 2; --  current window
+  -- __Process_Rest_Of_Input_Values__
+  I := 2;  --  current window
   loop
     Measurement := Input_Window (I + 1);
     if Previous_Measurement < Measurement then
@@ -351,38 +334,44 @@ Once the first window is complete, loop over the rest of the input measurements:
 #+end_src
 
 *** Result
-The result just prints the number of increments detected:
-
-#+name: d01p2__result__
-#+begin_src ada
-  -- d01p2__result__
-
-  Put_Line ("Answer:" & Increments'Image);
-#+end_src
+The result prints the number of detected increments, as before.
 
 *** Compilation unit and evaluation
 The compilation unit for this program is obtained with the composition of all
 source code blocks. Evaluation of the program appears below.
 
-#+begin_src ada :exports both :noweb yes :unit day01_p2
+#+begin_src ada :exports both :noweb yes :tangle src/day01_p2.adb :unit day01_p2
   with Ada.Text_IO; use Ada.Text_IO;
 
   procedure Day01_P2 is
-     <<d01p2__types__>>
-     <<d01p2__packages__>>
-     <<d01p2__variables__>>
+
+     <<__Types__>>
+
+     <<__Packages__>>
+
+     <<__Variables__>>
+
+     <<__New_Variables__>>
 
   begin
      Open (Input, In_File, "/home/ada/advent-of-code/2021/day-01/input");
-        <<d01p2__read_first_values__>>
-        <<d01p2__process_rest_of_input_values__>>
+
+        <<__Read_First_Values__>>
+
+        <<__Process_Rest_Of_Input_Values__>>
      Close (Input);
 
-     <<d01p2__result__>>
+     <<__Result__>>
+
   end Day01_P2;
 #+end_src
 
 #+RESULTS:
 : Answer: 1486
 
-Source code in [[file:src/day01_p2.adb]].
+* REFERENCES
+
+  * tangled source code files:
+    - [[file:src/day01_p1.adb]]
+    - [[file:src/day01_p2.adb]]
+  * input file: [[file:input]]
