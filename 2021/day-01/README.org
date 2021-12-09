@@ -376,3 +376,4 @@ source code blocks. Evaluation of the program appears below.
     - [[file:src/day01_p1.adb]]
     - [[file:src/day01_p2.adb]]
   * input file: [[file:input]]
+  * Ada/SPARK support for Org-Babel: [[https://github.com/rocher/ob-ada-spark][ob-ada-spark]]
