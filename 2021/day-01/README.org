@@ -162,7 +162,7 @@ Variables used in the process are:
   end Day01_P1;
 #+end_src
 
-Tangled code in [[src/day01_p1.adb]].
+Expanded code in [[src/day01_p1.adb]].
 
 #+RESULTS:
 : Answer: 1446
@@ -309,6 +309,8 @@ See file [[input]].
      <<d01p2__result__>>
   end Day01_P2;
 #+end_src
+
+Expanded code in [[src/day01_p2.adb]].
 
 #+RESULTS:
 : Answer: 1486
