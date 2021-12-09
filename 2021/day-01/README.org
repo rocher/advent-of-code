@@ -151,7 +151,8 @@ The result prints the number of detected increments.
 The compilation unit for this program is obtained with the composition of the
 source code blocks shown here (evaluation of the program appears below):
 
-#+begin_src ada :exports both :literal INPUT_FILE="input" :noweb yes :tangle src/day01_p1.adb :unit day01_p1
+#+name: day01_p1
+#+begin_src ada :exports both :noweb yes :tangle src/day01_p1.adb :unit day01_p1 :var __PATH__=(file-name-directory (buffer-file-name (current-buffer)))
   with Ada.Text_IO; use Ada.Text_IO;
 
   procedure Day01_P1 is
@@ -161,13 +162,16 @@ source code blocks shown here (evaluation of the program appears below):
      <<__Variables__>>
 
   begin
-     Open (Input, In_File, "/home/ada/advent-of-code/2021/day-01/input");
+     Open (Input, In_File, "__PATH__" & "input");
         <<__Detect_Increments__>>
      Close (Input);
 
      <<__Result__>>
   end Day01_P1;
 #+end_src
+
+#+RESULTS: day01_p1
+: Answer: 1446
 
 #+RESULTS:
 : Answer: 1446
@@ -337,7 +341,7 @@ The compilation unit for this program is obtained with the composition of the
 source code blocks shown here (evaluation of the program appears below):
 
 #+name: day01_p2
-#+begin_src ada :exports both :noweb yes :tangle src/day01_p2.adb :unit day01_p2
+#+begin_src ada :exports both :noweb yes :tangle src/day01_p2.adb :unit day01_p2 :var __PATH__=(file-name-directory (buffer-file-name (current-buffer)))
   with Ada.Text_IO; use Ada.Text_IO;
 
   procedure Day01_P2 is
@@ -351,7 +355,7 @@ source code blocks shown here (evaluation of the program appears below):
      <<__New_Variables__>>
 
   begin
-     Open (Input, In_File, "/home/ada/advent-of-code/2021/day-01/input");
+     Open (Input, In_File, "__PATH__" & "input");
         <<__Read_First_Values__>>
 
         <<__Process_Rest_Of_Input_Values__>>
@@ -361,8 +365,11 @@ source code blocks shown here (evaluation of the program appears below):
   end Day01_P2;
 #+end_src
 
-#+RESULTS:
+#+RESULTS: day01_p2
 : Answer: 1486
+
+#+RESULTS:
+: Answer: 14
 
 * REFERENCES
 

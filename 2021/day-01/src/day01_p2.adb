@@ -2,7 +2,7 @@
 --
 --  Source code generated automatically by 'org-babel-tangle' from
 --  file /home/ada/advent-of-code/2021/day-01/README.org
---  2021-12-09 21:04:12
+--  2021-12-09 23:44:49
 --
 --  DO NOT EDIT!!
 --
@@ -31,7 +31,7 @@ procedure Day01_P2 is
    I                    : Window_Index;
 
 begin
-   Open (Input, In_File, "/home/ada/advent-of-code/2021/day-01/input");
+   Open (Input, In_File, "/home/ada/advent-of-code/2021/day-01/" & "input");
       -- __Read_First_Values__
       Get (Input, Input_Window (0));  --  1st measurement --> 1st window
       
