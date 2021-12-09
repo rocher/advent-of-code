@@ -3,7 +3,7 @@
 #+AUTHOR: Francesc Rocher
 
 
-* Part 1
+* PART 1
 ** Statement
 You're minding your own business on a ship at sea when the overboard alarm goes
 off! You rush to see if you can help. Apparently, one of the Elves tripped and
@@ -94,7 +94,7 @@ The input is stored in a file consisting in a set of lines with a number in
 each. To the read the file we use the generic package =Ada.Text_IO.Integer_IO=
 instantiated with the type =Natural=:
 
-*source block* =d01p1__packages__=
+*source code block* =d01p1__packages__=
 #+name: d01p1__packages__
 #+begin_src ada
   package Measurement_IO is new Integer_IO (Natural);
@@ -107,7 +107,7 @@ Variables used in the process are:
   * =Measurement= and =Previous_Measurement=, to store input values
   * =Increments=, to count the total number of increments detected
 
-*source block* =d01p1__variables__=
+*source code block* =d01p1__variables__=
 #+name: d01p1__variables__
 #+begin_src ada
   Input                : File_Type;
@@ -120,7 +120,7 @@ Variables used in the process are:
 Simply read all input measurements and compare with previous one. If there have
 been an increment, then count it.
 
-*source block* =d01p1__process__=
+*source code block* =d01p1__process__=
 #+name: d01p1__process__
 #+begin_src ada
   Get (Input, Measurement);
@@ -140,13 +140,15 @@ been an increment, then count it.
 *** Result
 The result just prints the number of increments counted.
 
-*source block* =d01p1__result__=
+*source code block* =d01p1__result__=
 #+name: d01p1__result__
 #+begin_src ada
   Put_Line ("Answer:" & Increments'Image);
 #+end_src
 
-*** Compilation Unit
+*** Compilation unit and evaluation
+The compilation unit for this program is obtained with the composition of all
+source code blocks. Evaluation of the program appears below.
 
 #+begin_src ada :exports both :noweb yes :unit day01_p1
   with Ada.Text_IO; use Ada.Text_IO;
