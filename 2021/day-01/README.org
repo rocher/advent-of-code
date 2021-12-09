@@ -336,9 +336,10 @@ Once the first window is complete, loop over the rest of the input measurements:
 The result prints the number of detected increments, as before.
 
 *** Compilation unit and evaluation
-The compilation unit for this program is obtained with the composition of all
-source code blocks. Evaluation of the program appears below.
+The compilation unit for this program is obtained with the composition of the
+source code blocks shown at <<day01_02>>. Evaluation of the program appears below.
 
+#+name: day01_p2
 #+begin_src ada :exports both :noweb yes :tangle src/day01_p2.adb :unit day01_p2
   with Ada.Text_IO; use Ada.Text_IO;
 
