@@ -162,6 +162,8 @@ Variables used in the process are:
   end Day01_P1;
 #+end_src
 
+Tangled code in [[src/d01_p1.adb]].
+
 #+RESULTS:
 : Answer: 1446
 
