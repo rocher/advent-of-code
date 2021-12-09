@@ -169,10 +169,7 @@ source code blocks. Evaluation of the program appears below.
 #+RESULTS:
 : Answer: 1446
 
-Expanded code in [[file:src/day01_p1.adb]].
-
-
-* Part 2
+* PART 2
 ** Statement
 Considering every single measurement isn't as useful as you expected: there's
 just too much noise in the data.
@@ -227,8 +224,14 @@ than the previous sum?*
 See file [[file:input]].
 
 ** Solution
+The solution is quite similar to part 1, with the different that new the
+measurements are composed by the sum of three input measurements, or a
+/measurement window/.
+
+** Implementation
 *** Declarations
 
+*source code block* =d01p2__types__=
 #+name: d01p2__types__
 #+begin_src ada
   type Window_Index is mod 3;
