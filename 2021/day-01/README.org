@@ -315,8 +315,7 @@ windows:
   Input_Window (1) := Input_Window (1) + Input_Window (2);
 #+end_src
 
-Once first window is complete, then loop over the rest of the input
-measurements:
+Once the first window is complete, loop over the rest of the input measurements:
 
 #+name: d01p2__process_rest_of_input_values__
 #+begin_src ada
