@@ -94,7 +94,7 @@ The input is stored in a file consisting in a set of lines with a number in
 each. To the read the file we use the generic package =Ada.Text_IO.Integer_IO=
 instantiated with the type =Natural=:
 
-**** source block =<<d01p1__packages__>>=
+*source block* =<<d01p1__packages__>>=
 :PROPERTIES:
 :UNNUMBERED: notoc
 :END:
