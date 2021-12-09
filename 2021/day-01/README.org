@@ -260,7 +260,7 @@ is, the oldest and complete of the three.
 *** Declarations
 Two types are declared to manage the measurement windows,
 
-source code block =d01p2__types__=\
+source code block =d01p2__types__=\\
 #+name: d01p2__types__
 #+begin_src ada
   type Window_Index is mod 3;
