@@ -1,6 +1,6 @@
 #+TITLE:Day 1 : Sonar Sweep
 #+AUTHOR: Francesc Rocher
-#+OPTION: num t
+#+OPTIONS: num:t skip:t
 
 * Part 1
 ** Statement
