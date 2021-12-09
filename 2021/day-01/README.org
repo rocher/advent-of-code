@@ -258,6 +258,7 @@ when ~I=2~ then ~I+1=0~ refers to the /next/ window that will be updated. That
 is, the oldest and complete of the three.
 
 *** Declarations
+Two types are declared to manage the measurement windows,
 
 *source code block* =d01p2__types__=
 #+name: d01p2__types__
@@ -266,12 +267,18 @@ is, the oldest and complete of the three.
   type Measurement_Window is array (Window_Index) of Natural;
 #+end_src
 
+plus the ~Measurement_IO~ package:
+
+*source code block* =d01p2__packages__=
 #+name: d01p2__packages__
 #+begin_src ada
   package Measurement_IO is new Integer_IO (Natural);
   use Measurement_IO;
 #+end_src
 
+Variables needed are:
+
+*source code block* =d01p2__variables__=
 #+name: d01p2__variables__
 #+begin_src ada
   Input                : File_Type;
