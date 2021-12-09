@@ -3,12 +3,11 @@
 
 * PART 1
 
-#+begin_html
-<details>
-<summary><i>click to expand</i>
-#+end_html
 ** Statement
 #+begin_html
+<details>
+<summary>
+  <i>click to expand</i>
 </summary>
 #+end_html
 You're minding your own business on a ship at sea when the overboard alarm goes
