@@ -1,4 +1,3 @@
-#+OPTIONS: num:t skip:t
 #+TITLE:Day 1 : Sonar Sweep
 #+AUTHOR: Francesc Rocher
 
