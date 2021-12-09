@@ -107,7 +107,7 @@ Variables used in the process are:
   * =Measurement= and =Previous_Measurement=, to store input values
   * =Increments=, to count the total number of increments detected
 
-**** source block =d01p1__variables__=
+  * source block =d01p1__variables__=
 #+name: d01p1__variables__
 #+begin_src ada
   Input                : File_Type;
