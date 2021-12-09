@@ -151,8 +151,8 @@ The result prints the number of detected increments.
 #+end_src
 
 *** Compilation unit and evaluation
-The compilation unit for this program is obtained with the composition of all
-source code blocks. Evaluation of the program appears below.
+The compilation unit for this program is obtained with the composition of the
+source code blocks shown here (evaluation of the program appears below):
 
 #+begin_src ada :exports both :literal INPUT_FILE="input" :noweb yes :tangle src/day01_p1.adb :unit day01_p1
   with Ada.Text_IO; use Ada.Text_IO;
@@ -337,7 +337,7 @@ The result prints the number of detected increments, as before.
 
 *** Compilation unit and evaluation
 The compilation unit for this program is obtained with the composition of the
-source code blocks shown at <<day01_02>>. Evaluation of the program appears below.
+source code blocks shown here (evaluation of the program appears below):
 
 #+name: day01_p2
 #+begin_src ada :exports both :noweb yes :tangle src/day01_p2.adb :unit day01_p2
