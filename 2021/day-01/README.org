@@ -1,8 +1,7 @@
+#+OPTIONS: num:t skip:t toc:2
 #+TITLE:Day 1 : Sonar Sweep
 #+AUTHOR: Francesc Rocher
-#+OPTIONS: num:t skip:t
 
-#+TOC: headlines 2
 
 * Part 1
 ** Statement
@@ -95,9 +94,9 @@ The input is stored in a file consisting in a set of lines with a number in
 each. To the read the file we use the generic package =Ada.Text_IO.Integer_IO=
 instantiated with the type =Natural=:
 
+**** source block =<<d01p1__packages__>>=
 #+name: d01p1__packages__
 #+begin_src ada
-  --  source block <<d01p1__packages__>> is
   package Measurement_IO is new Integer_IO (Natural);
   use Measurement_IO;
 #+end_src
@@ -108,9 +107,9 @@ Variables used in the process are:
   * =Measurement= and =Previous_Measurement=, to store input values
   * =Increments=, to count the total number of increments detected
 
+**** source block =d01p1__variables__=
 #+name: d01p1__variables__
 #+begin_src ada
-  --  source block <<d01p1__variables__>> is
   Input                : File_Type;
   Measurement          : Natural;
   Previous_Measurement : Natural := Natural'Last;
@@ -162,10 +161,10 @@ Variables used in the process are:
   end Day01_P1;
 #+end_src
 
-Expanded code in [[src/day01_p1.adb]].
-
 #+RESULTS:
 : Answer: 1446
+
+Expanded code in [[file:src/day01_p1.adb]].
 
 
 * Part 2
@@ -220,7 +219,7 @@ Consider sums of a three-measurement sliding window. *How many sums are larger
 than the previous sum?*
 
 ** Input
-See file [[input]].
+See file [[file:input]].
 
 ** Solution
 *** Declarations
@@ -310,7 +309,7 @@ See file [[input]].
   end Day01_P2;
 #+end_src
 
-Expanded code in [[src/day01_p2.adb]].
-
 #+RESULTS:
 : Answer: 1486
+
+Expanded code in [[file:src/day01_p2.adb]].
