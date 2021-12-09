@@ -229,10 +229,31 @@ measurements are composed by the sum of three input measurements, or a
 /measurement window/. First measurement window is composed by input measurements
 1, 2 and 3. Second measurement window by the input measurements 2, 3 and 4, and
 so on. The firs measurement windows is complete when the third measurement input
-is read, so no comparisons can be done until that point. From third input
-onward, there will be two measurement windows completed that can be compared.
+is read, so no comparisons with previous measurement window can be done until
+that point. From third input onward, there will be two measurement windows
+completed that can be compared.
+
+Each input measurement must be added in three consecutive measurement windows:
+
+#+begin_example
+199  A ----------
+200  A B ······ | window 1 ·····
+208  A B C ------ ++++++++++++ | window 2 +++++
+210    B C D ···················              | window 3
+200  E   C D ++++++++++++++++++++++++++++++++++
+
+     Input measurement 'A' must be added in windows 1, 2 and 3
+#+end_example
+
+That means that three measurement windows must be updated with each input. But
+it is not necessary to keep them all, just the last three.
 
 ** Implementation
+Because three measurement windows need to be cyclically updated during the
+process, the implementation in Ada can make use of =mod= types. In particular,
+=mod 3= (values 0, 1 & 2) will be required for the window index. Arithmetic
+operations with this type are
+
 *** Declarations
 
 *source code block* =d01p2__types__=
