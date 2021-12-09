@@ -291,7 +291,12 @@ Variables needed are:
 
 *** Process
 
-#+name: d01p2__read_first_windows__
+At the beginning there are no three windows, still. Thus, the process starts
+reading the first three input measurements and add them to the respective
+windows:
+
+*source code block* =d01p2__read_first_values__=
+#+name: d01p2__read_first_values__
 #+begin_src ada
   --  1st measurement --> 1st window
   Get (Input, Input_Window (0));
@@ -306,6 +311,8 @@ Variables needed are:
   Input_Window (1) := Input_Window (1) + Input_Window (2);
 #+end_src
 
+
+=source code block d01p2__process_rest_of_input_values__=
 #+name: d01p2__process_rest_of_input__
 #+begin_src ada
   I := 2; --  current window
@@ -344,8 +351,8 @@ Variables needed are:
 
   begin
      Open (Input, In_File, "/home/ada/advent-of-code/2021/day-01/input");
-        <<d01p2__read_first_windows__>>
-        <<d01p2__process_rest_of_input__>>
+        <<d01p2__read_first_values__>>
+        <<d01p2__process_rest_of_input_values__>>
      Close (Input);
 
      <<d01p2__result__>>
