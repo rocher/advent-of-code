@@ -1,8 +1,5 @@
 #+TITLE:Day 1 : Sonar Sweep
 #+AUTHOR: Francesc Rocher
-:PROPERTIES:
-:header-args: :noweb yes
-:END:
 
 * PART 1
 ** Statement
