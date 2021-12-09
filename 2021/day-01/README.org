@@ -252,7 +252,9 @@ it is not necessary to keep them all, just the last three.
 Because three measurement windows need to be cyclically updated during the
 process, the implementation in Ada can make use of =mod= types. In particular,
 =mod 3= (values 0, 1 & 2) will be required for the window index. Arithmetic
-operations with this type are
+operations with this type are used to select windows. For example, when ~I=2~
+then ~I+1=0~ refers to the /next/ window that will be updated. That is, the
+oldest and complete of the three.
 
 *** Declarations
 
