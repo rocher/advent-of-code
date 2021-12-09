@@ -43,6 +43,8 @@ begin
 
       I := I+1;
       Get (Input, Input_Window (I));
+      Input_Window (I - 1) := Input_Window (I - 1) + Input_Window (I);
+      Input_Window (I - 2) := Input_Window (I - 2) + Input_Window (I);
    end loop;
    Close (Input);
 
