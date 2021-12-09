@@ -236,13 +236,13 @@ completed that can be compared.
 Each input measurement must be added in three consecutive measurement windows:
 
 #+begin_example
-199  A ----------
-200  A B ······ | window 1 ·····
-208  A B C ------ ++++++++++++ | window 2 +++++
-210    B C D ···················              | window 3
-200  E   C D ++++++++++++++++++++++++++++++++++
+              ------- 199  A
+    window 1 {        200  A B ------
+              ----+-- 208  A B C     } window 2
+        window 3 {    210    B C D --
+                  +-- 200  E   C D
 
-     Input measurement 'A' must be added in windows 1, 2 and 3
+     Input measurement 'A' must be added to windows 1, 2 and 3
 #+end_example
 
 That means that three measurement windows must be updated with each input. But
