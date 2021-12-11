@@ -202,10 +202,9 @@ The compilation unit for this program is obtained with the composition of the
 source code blocks shown here (evaluation of the program appears below):
 
 #+name: day06_p2
-#+header: :noweb yes :tangle src/day06_p1.adb :export both
-#+header: :literal __Path__
+#+header: :noweb yes :tangle src/day06_p1.adb
 #+header: :var __Path__=(file-name-directory (buffer-file-name (current-buffer)))
-#+begin_src ada :unit day06_p1
+#+begin_src ada :exports both :unit day06_p1
   with Ada.Text_IO;                        use Ada.Text_IO;
   with Ada.Containers.Doubly_Linked_Lists; use Ada.Containers;
 
@@ -224,6 +223,8 @@ source code blocks shown here (evaluation of the program appears below):
 
 #+RESULTS: day06_p2
 : Answer: 360761
+
+*** Results
 
 * PART 2
 
