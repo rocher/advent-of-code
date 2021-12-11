@@ -202,7 +202,7 @@ The compilation unit for this program is obtained with the composition of the
 source code blocks shown here (evaluation of the program appears below):
 
 #+name: day06_p2
-#+header: :noweb yes :tangle src/day06_p1.adb
+#+header: :noweb yes :tangle src/day06_p1.adb :export both
 #+header: :literal __Path__
 #+header: :var __Path__=(file-name-directory (buffer-file-name (current-buffer)))
 #+begin_src ada :unit day06_p1
