@@ -1,5 +1,3 @@
-#+PROPERTY: header-args  :var __Path__=(file-name-directory (buffer-file-name (current-buffer)))
-#+PROPERTY: header-args :noweb yes
 #+TITLE:Day 1 : Sonar Sweep
 #+AUTHOR: Francesc Rocher
 
@@ -154,7 +152,10 @@ The compilation unit for this program is obtained with the composition of the
 source code blocks shown here (evaluation of the program appears below):
 
 #+name: day01_p1
-#+begin_src ada :exports both :noweb yes :tangle src/day01_p1.adb :unit day01_p1 :var __Path__=(file-name-directory (buffer-file-name (current-buffer)))
+#+header: :noweb yes :tangle src/day01_p1.adb
+#+header: :literal __Path__
+#+header: :var __Path__=(file-name-directory (buffer-file-name (current-buffer)))
+#+begin_src ada :unit day01_p1
   with Ada.Text_IO; use Ada.Text_IO;
 
   procedure Day01_P1 is
@@ -296,9 +297,9 @@ At the beginning there are no three windows, still. Thus, the process starts
 reading the first three input measurements and add them to the respective
 windows:
 
-#+name: __Read_First_Values__
+#+name: __Read_First_Input_Values__
 #+begin_src ada
-  -- __Read_First_Values__
+  -- __Read_First_Input_Values__
   Get (Input, Input_Window (0));  --  1st measurement --> 1st window
 
   Get (Input, Input_Window (1));  --  2nd measurement --> 1st & 2nd windows
@@ -340,7 +341,10 @@ The compilation unit for this program is obtained with the composition of the
 source code blocks shown here (evaluation of the program appears below):
 
 #+name: day01_p2
-#+begin_src ada :exports both :tangle src/day01_p2.adb :unit day01_p2
+#+header: :noweb yes :tangle src/day01_p2.adb
+#+header: :literal __Path__
+#+header: :var __Path__=(file-name-directory (buffer-file-name (current-buffer)))
+#+begin_src ada :unit day01_p2
   with Ada.Text_IO; use Ada.Text_IO;
 
   procedure Day01_P2 is
@@ -355,8 +359,7 @@ source code blocks shown here (evaluation of the program appears below):
 
   begin
      Open (Input, In_File, "__Path__" & "input");
-        <<__Read_First_Values__>>
-
+        <<__Read_First_Input_Values__>>
         <<__Process_Rest_Of_Input_Values__>>
      Close (Input);
 
@@ -365,6 +368,7 @@ source code blocks shown here (evaluation of the program appears below):
 #+end_src
 
 #+RESULTS: day01_p2
+: Answer: 1486
 
 * REFERENCES
 
