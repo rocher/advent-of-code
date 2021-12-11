@@ -10,7 +10,7 @@
 
 with Ada.Text_IO; use Ada.Text_IO;
 
-procedure Day06_P2 is
+procedure Day06_Z1 is
    
    --  __Types__
    subtype Timer_Type is Natural range 0 .. 8;
@@ -23,6 +23,10 @@ procedure Day06_P2 is
    --  __Variables_For_IO__
    Input : File_Type;
    Comma : Character;
+   
+   
+   --  __New_Variables_For_IO__
+   Output : File_Type;
    
    
    --  __Variables_For_Counting__
@@ -45,7 +49,15 @@ begin
       
    Close (Input);
    
-   --  __Simulate_256_Days__
+   --  __Simulate_256_Days_And_Write_Population__
+   Create (Output, Out_File, "/home/ada/advent-of-code/2021/day-06/" & "population");
+   
+   --  population of initial state
+   for T in Timer_Type loop
+      Population := Population + Timer_Count (T);
+   end loop;
+   Put_Line (Output, Population'Image);
+   
    for Day in 1 .. 256 loop
       --  decrement timers
       Tmp := Timer_Count (0);
@@ -58,14 +70,11 @@ begin
    
       --  add new lanternfish per each timer that reached 0
       Timer_Count (Timer_Type'Last) := Tmp;
+   
+      --  add new born lanternfish to total population
+      Population := Population + Tmp;
+      Put_Line (Output, Population'Image);
    end loop;
+   Close (Output);
    
-   
-   --  __Result_Population__
-   for T in Timer_Type loop
-      Population := Population + Timer_Count (T);
-   end loop;
-   
-   Put_Line ("Answer:" & Population'Image);
-   
-end Day06_P2;
+end Day06_Z1;

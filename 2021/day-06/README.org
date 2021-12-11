@@ -313,7 +313,7 @@ when value reaches =0= and adding also new fishes:
   N           : Natural;
   Tmp         : Long_Integer;
   Timer_Count : array (Timer_Type) of Long_Integer := (others => 0);
-  Total       : Long_Integer := 0;
+  Population  : Long_Integer := 0;
 
 #+end_src
 
@@ -355,15 +355,15 @@ when value reaches =0= and adding also new fishes:
 
 *** Result
 
-#+name: __Result_Total__
+#+name: __Result_Population__
 #+begin_src ada
 
-  --  __Result_Total__
+  --  __Result_Population__
   for T in Timer_Type loop
-     Total := Total + Timer_Count (T);
+     Population := Population + Timer_Count (T);
   end loop;
 
-  Put_Line ("Answer:" & Total'Image);
+  Put_Line ("Answer:" & Population'Image);
 
 #+end_src
 
@@ -385,7 +385,7 @@ when value reaches =0= and adding also new fishes:
         <<__Read_And_Count_Lanterfish__>>
      Close (Input);
      <<__Simulate_256_Days__>>
-     <<__Result_Total__>>
+     <<__Result_Population__>>
   end Day06_P2;
 #+end_src
 
@@ -395,7 +395,101 @@ when value reaches =0= and adding also new fishes:
 : Answer: 1632779838045
 
 
+* ADDONS
+** Graphical Representation
+To understand how lanternfish generations evolve over time, it is interesting to
+plot a graph. It can be generated with small changes in the process:
 
+*** Variables
+
+#+name: __New_Variables_For_IO__
+#+begin_src ada
+
+  --  __New_Variables_For_IO__
+  Output : File_Type;
+
+#+end_src
+
+#+name: __Variables_For_Simulation__
+#+begin_src ada
+
+  --  __Variables_For_Simulation__
+  Timer  : Timer_Type;
+  School : Lanterfish_School.List;
+  Fish   : Lanterfish_School.Cursor;
+  Resets : Natural := 0;
+
+#+end_src
+
+
+*** New process
+
+#+name: __Simulate_256_Days_And_Write_Population__
+#+begin_src ada
+
+  --  __Simulate_256_Days_And_Write_Population__
+  Create (Output, Out_File, "__Path__" & "population");
+
+  --  population of initial state
+  for T in Timer_Type loop
+     Population := Population + Timer_Count (T);
+  end loop;
+  Put_Line (Output, Population'Image);
+
+  for Day in 1 .. 256 loop
+     --  decrement timers
+     Tmp := Timer_Count (0);
+     for J in Timer_Type'First .. Timer_Type'Last - 1 loop
+        Timer_Count (J) := Timer_Count (J + 1);
+     end loop;
+
+     --  reset to 6 all timers that reached 0
+     Timer_Count (6) := Timer_Count (6) + Tmp;
+
+     --  add new lanternfish per each timer that reached 0
+     Timer_Count (Timer_Type'Last) := Tmp;
+
+     --  add new born lanternfish to total population
+     Population := Population + Tmp;
+     Put_Line (Output, Population'Image);
+  end loop;
+  Close (Output);
+
+#+end_src
+
+
+*** Compilation unit
+
+#+name: day06_z1
+#+header: :noweb yes :tangle src/day06_z1.adb
+#+header: :var __Path__=(file-name-directory (buffer-file-name (current-buffer)))
+#+begin_src ada :exports both :unit day06_z1
+  with Ada.Text_IO; use Ada.Text_IO;
+
+  procedure Day06_Z1 is
+     <<__Types__>>
+     <<__Package_Timer_IO__>>
+     <<__Variables_For_IO__>>
+     <<__New_Variables_For_IO__>>
+     <<__Variables_For_Counting__>>
+  begin
+     Open (Input, In_File, "__Path__" & "input");
+        <<__Read_And_Count_Lanterfish__>>
+     Close (Input);
+     <<__Simulate_256_Days_And_Write_Population__>>
+  end Day06_Z1;
+#+end_src
+
+#+RESULTS: day06_z1
+
+*** Graph
+
+#+begin_src gnuplot :exports both :file population.png
+  plot "population"
+#+end_src
+
+#+RESULTS:
+[[file:population.png]]
 
 * REFERENCES
 
