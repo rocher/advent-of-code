@@ -351,7 +351,7 @@ Once the first window is complete, loop over the rest of the input measurements:
 *** Result
 The result prints the number of detected increments, as before.
 
-*** Compilation unit and evaluation
+*** Compilation unit
 The compilation unit for this program is obtained with the composition of the
 source code blocks shown here:
 
