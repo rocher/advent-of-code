@@ -66,8 +66,6 @@ procedure Day03_P2 is
             Count := Count + Natural'Value ("0" & Report_Number (Bit_Pos));
          end if;
       end loop;
-      Put_Line ("count bits:: criteria='" & Criteria & "', count:" & Count'Image
-                   & ", length:" & Length'Image);
    end Count_Bits;
 
    function To_Report_Number (Line : Input_Line_Type) return Report_Number_Type
@@ -80,7 +78,6 @@ procedure Day03_P2 is
 
    function To_Natural (Bits : Report_Number_Type) return Natural is
    begin
-      Put_Line ("to_natural:: bits='" & Bits & "', value=" & Natural'Value ("2#" & Bits & "#")'Image);
       return Natural'Value ("2#" & Bits & "#");
    end To_Natural;
 
@@ -103,7 +100,7 @@ begin
             O2_Generator_Rating := To_Natural (Get_Element (Criteria (1)));
             Ratings_Found       := Ratings_Found + 1;
          else
-            if Count >= Length / 2 then
+            if Count >= (Length + 1) / 2 then
                Criteria (1) (Bit_Pos) := '1';
             else
                Criteria (1) (Bit_Pos) := '0';
@@ -122,7 +119,7 @@ begin
             CO2_Srubber_Rating := To_Natural (Get_Element (Criteria (2)));
             Ratings_Found      := Ratings_Found + 1;
          else
-            if Count >= Length / 2 then
+            if Count >= (Length + 1) / 2 then
                Criteria (2) (Bit_Pos) := '0';
             else
                Criteria (2) (Bit_Pos) := '1';
