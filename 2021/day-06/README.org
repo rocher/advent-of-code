@@ -213,7 +213,7 @@ Then, simulate the generations of 80 days:
 
 #+end_src
 
-*** Compilation unit and evaluation
+*** Compilation unit
 The compilation unit for this program is obtained with the composition of the
 source code blocks shown here:
 
@@ -367,7 +367,7 @@ when value reaches =0= and adding also new fishes:
 
 #+end_src
 
-*** Compilation unit and evaluation
+*** Compilation unit
 
 #+name: day06_p2
 #+header: :noweb yes :tangle src/day06_p2.adb
