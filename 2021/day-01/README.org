@@ -97,9 +97,11 @@ instantiated with the type =Natural=:
 
 #+name: __Packages__
 #+begin_src ada
+
   -- __Packages__
   package Measurement_IO is new Integer_IO (Natural);
   use Measurement_IO;
+
 #+end_src
 
 Variables used in the process are:
@@ -110,11 +112,13 @@ Variables used in the process are:
 
 #+name: __Variables__
 #+begin_src ada
+
   -- __Variables__
   Input                : File_Type;
   Measurement          : Natural;
   Previous_Measurement : Natural := Natural'Last;
   Increments           : Natural := 0;
+
 #+end_src
 
 *** Process
@@ -123,6 +127,7 @@ been an increment, then count it.
 
 #+name: __Detect_Increments__
 #+begin_src ada
+
   -- __Detect_Increments__
   Get (Input, Measurement);
   loop
@@ -136,6 +141,7 @@ been an increment, then count it.
     Previous_Measurement := Measurement;
     Get (Input, Measurement);
   end loop;
+
 #+end_src
 
 *** Result
@@ -143,8 +149,10 @@ The result prints the number of detected increments.
 
 #+name: __Result__
 #+begin_src ada
+
   -- __Result__
   Put_Line ("Answer:" & Increments'Image);
+
 #+end_src
 
 *** Compilation unit and evaluation
@@ -159,18 +167,12 @@ source code blocks shown here (evaluation of the program appears below):
   with Ada.Text_IO; use Ada.Text_IO;
 
   procedure Day01_P1 is
-
      <<__Packages__>>
-
      <<__Variables__>>
-
   begin
      Open (Input, In_File, "__Path__" & "input");
-
         <<__Detect_Increments__>>
-
      Close (Input);
-
      <<__Result__>>
   end Day01_P1;
 #+end_src
@@ -279,18 +281,22 @@ Two types are declared to manage the measurement windows,
 
 #+name: __Types__
 #+begin_src ada
+
   -- __Types__
   type Window_Index is mod 3;
   type Measurement_Window is array (Window_Index) of Natural;
+
 #+end_src
 
 and the variables to manage them:
 
 #+name: __New_Variables__
 #+begin_src ada
+
   -- __New_Variables__
   Input_Window         : Measurement_Window := (others => 0);
   I                    : Window_Index;
+
 #+end_src
 
 *** Process
@@ -301,6 +307,7 @@ windows:
 
 #+name: __Read_First_Input_Values__
 #+begin_src ada
+
   -- __Read_First_Input_Values__
   Get (Input, Input_Window (0));  --  1st measurement --> 1st window
 
@@ -310,12 +317,14 @@ windows:
   Get (Input, Input_Window (2));  --  3rd measurement --> 1st, 2nd & 3rd windows
   Input_Window (0) := Input_Window (0) + Input_Window (2);
   Input_Window (1) := Input_Window (1) + Input_Window (2);
+
 #+end_src
 
 Once the first window is complete, loop over the rest of the input measurements:
 
 #+name: __Process_Rest_Of_Input_Values__
 #+begin_src ada
+
   -- __Process_Rest_Of_Input_Values__
   I := 2;  --  current window
   loop
@@ -333,6 +342,7 @@ Once the first window is complete, loop over the rest of the input measurements:
     Input_Window (I - 2) := Input_Window (I - 2) + Input_Window (I);
     Previous_Measurement := Measurement;
   end loop;
+
 #+end_src
 
 *** Result
@@ -350,24 +360,15 @@ source code blocks shown here (evaluation of the program appears below):
   with Ada.Text_IO; use Ada.Text_IO;
 
   procedure Day01_P2 is
-
      <<__Types__>>
-
      <<__Packages__>>
-
      <<__Variables__>>
-
      <<__New_Variables__>>
-
   begin
      Open (Input, In_File, "__Path__" & "input");
-
         <<__Read_First_Input_Values__>>
-
         <<__Process_Rest_Of_Input_Values__>>
-
      Close (Input);
-
      <<__Result__>>
   end Day01_P2;
 #+end_src
