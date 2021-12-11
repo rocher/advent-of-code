@@ -166,7 +166,9 @@ source code blocks shown here (evaluation of the program appears below):
 
   begin
      Open (Input, In_File, "__Path__" & "input");
+
         <<__Detect_Increments__>>
+
      Close (Input);
 
      <<__Result__>>
@@ -359,8 +361,11 @@ source code blocks shown here (evaluation of the program appears below):
 
   begin
      Open (Input, In_File, "__Path__" & "input");
+
         <<__Read_First_Input_Values__>>
+
         <<__Process_Rest_Of_Input_Values__>>
+
      Close (Input);
 
      <<__Result__>>

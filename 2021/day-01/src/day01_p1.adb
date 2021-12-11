@@ -2,7 +2,7 @@
 --
 --  Source code generated automatically by 'org-babel-tangle' from
 --  file /home/ada/advent-of-code/2021/day-01/README.org
---  2021-12-11 16:42:39
+--  2021-12-11 16:45:31
 --
 --  DO NOT EDIT!!
 --
@@ -24,6 +24,7 @@ procedure Day01_P1 is
 
 begin
    Open (Input, In_File, "/home/ada/advent-of-code/2021/day-01/" & "input");
+
       -- __Detect_Increments__
       Get (Input, Measurement);
       loop
@@ -37,6 +38,7 @@ begin
         Previous_Measurement := Measurement;
         Get (Input, Measurement);
       end loop;
+
    Close (Input);
 
    -- __Result__
