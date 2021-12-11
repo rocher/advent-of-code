@@ -155,9 +155,9 @@ The result prints the number of detected increments.
 
 #+end_src
 
-*** Compilation unit and evaluation
+*** Compilation unit
 The compilation unit for this program is obtained with the composition of the
-source code blocks shown here (evaluation of the program appears below):
+source code blocks shown here:
 
 #+name: day01_p1
 #+header: :noweb yes :tangle src/day01_p1.adb
@@ -175,6 +175,8 @@ source code blocks shown here (evaluation of the program appears below):
      <<__Result__>>
   end Day01_P1;
 #+end_src
+
+*** Evaluation
 
 #+RESULTS: day01_p1
 : Answer: 1446
@@ -351,7 +353,7 @@ The result prints the number of detected increments, as before.
 
 *** Compilation unit and evaluation
 The compilation unit for this program is obtained with the composition of the
-source code blocks shown here (evaluation of the program appears below):
+source code blocks shown here:
 
 #+name: day01_p2
 #+header: :noweb yes :tangle src/day01_p2.adb
@@ -372,6 +374,8 @@ source code blocks shown here (evaluation of the program appears below):
      <<__Result__>>
   end Day01_P2;
 #+end_src
+
+*** Evaluation
 
 #+RESULTS: day01_p2
 : Answer: 1486
