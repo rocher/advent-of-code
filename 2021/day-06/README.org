@@ -119,7 +119,14 @@ generations:
 
 #+end_src
 
-Variables
+Variables required:
+
+  * =Input=, the file with the initial generation of lanternfish
+  * =Comma=, a character to skip commas in the input file
+  * =Timer=, of type =Timer_Type=, to read and append operations
+  * =Shool=, doubly linked list of lanternfish
+  * =Fish=, a cursor to iterate over the lanternfish school
+  * =Resets=, counter to count how many timer resets are detected
 
 #+name: __Variables__
 #+begin_src ada
@@ -136,6 +143,7 @@ Variables
 #+end_src
 
 *** Process
+First of all, it is necessary to read all lanternfish timers:
 
 #+name: __Read_Timers__
 #+begin_src ada
@@ -151,14 +159,17 @@ Variables
 
 #+end_src
 
+Then, simulate the generations of 80 days:
+
 #+name: __Simulate_80_Days__
 #+begin_src ada
 
   --  __Simulate_80_Days
   for Day in 1 .. 80 loop
+
+     --  decrement timers or current fishes
      Fish := School.First;
-     loop
-        --  decrement timers or current fishes
+     while Lanterfish_School.Has_Element (Fish) loop
         Timer := Lanterfish_School.Element (Fish);
         if Timer = 0 then
            Resets := Resets + 1;
@@ -166,9 +177,7 @@ Variables
         else
            School.Replace_Element (Fish, Timer - 1);
         end if;
-
         Lanterfish_School.Next (Fish);
-        exit when not Lanterfish_School.Has_Element (Fish);
      end loop;
 
      --  add new born fishes

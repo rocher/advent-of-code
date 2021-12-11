@@ -2,7 +2,7 @@
 --
 --  Source code generated automatically by 'org-babel-tangle' from
 --  file /home/ada/advent-of-code/2021/day-06/README.org
---  2021-12-11 21:59:32
+--  2021-12-11 22:14:02
 --
 --  DO NOT EDIT!!
 --
@@ -22,34 +22,35 @@ procedure Day06_P1 is
     package Timer_IO is new Ada.Text_IO.Integer_IO (Timer_Type);
    
    
-   --  __Veriables__
+   --  __Variables__
    Input : File_Type;
    Comma : Character;
    
-    Timer  : Timer_Type;
-    School : Lanterfish_School.List;
-    Fish   : Lanterfish_School.Cursor;
-    Resets : Natural := 0;
+   Timer  : Timer_Type;
+   School : Lanterfish_School.List;
+   Fish   : Lanterfish_School.Cursor;
+   Resets : Natural := 0;
    
 begin
    Open (Input, In_File, "/home/ada/advent-of-code/2021/day-06/" & "input");
-     
-     -- __Read_Timers__
-     Timer_IO.Get (Input, Timer);
-     loop
-        School.Append (Timer);
-        exit when End_Of_File (Input);
-        Get (Input, Comma);
-        Timer_IO.Get (Input, Timer);
-     end loop;
-     
+      
+      -- __Read_Timers__
+      Timer_IO.Get (Input, Timer);
+      loop
+         School.Append (Timer);
+         exit when End_Of_File (Input);
+         Get (Input, Comma);
+         Timer_IO.Get (Input, Timer);
+      end loop;
+      
    Close (Input);
    
    --  __Simulate_80_Days
    for Day in 1 .. 80 loop
+   
+      --  decrement timers or current fishes
       Fish := School.First;
-      loop
-         --  decrement timers or current fishes
+      while Lanterfish_School.Has_Element (Fish) loop
          Timer := Lanterfish_School.Element (Fish);
          if Timer = 0 then
             Resets := Resets + 1;
@@ -57,9 +58,7 @@ begin
          else
             School.Replace_Element (Fish, Timer - 1);
          end if;
-   
          Lanterfish_School.Next (Fish);
-         exit when not Lanterfish_School.Has_Element (Fish);
       end loop;
    
       --  add new born fishes
