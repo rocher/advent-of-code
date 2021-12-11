@@ -410,18 +410,6 @@ plot a graph. It can be generated with small changes in the process:
 
 #+end_src
 
-#+name: __Variables_For_Simulation__
-#+begin_src ada
-
-  --  __Variables_For_Simulation__
-  Timer  : Timer_Type;
-  School : Lanterfish_School.List;
-  Fish   : Lanterfish_School.Cursor;
-  Resets : Natural := 0;
-
-#+end_src
-
-
 *** New process
 
 #+name: __Simulate_256_Days_And_Write_Population__
@@ -484,6 +472,7 @@ plot a graph. It can be generated with small changes in the process:
 
 *** Graph
 
+**** gnuplot
 #+begin_src gnuplot :exports both :file population.png
   plot "population"
 #+end_src
@@ -497,5 +486,6 @@ plot a graph. It can be generated with small changes in the process:
   * tangled source code files:
     - [[file:src/day06_p1.adb]]
     - [[file:src/day06_p2.adb]]
+    - [[file:src/day06_z1.adb]]
   * input file: [[file:input]]
   * Ada/SPARK support for Org-Babel: [[https://github.com/rocher/ob-ada-spark][ob-ada-spark]]
