@@ -82,7 +82,7 @@ measurement.
 
 ** Solution
 The algorithm to solve this problem is so easy that don't need to be explicitly
-written:
+exposed:
 
   1. read a measurement from input file
   2. compare the current measurement with the previous one
@@ -98,7 +98,7 @@ instantiated with the type =Natural=:
 #+name: __Packages__
 #+begin_src ada
 
-  -- __Packages__
+  --  __Packages__
   package Measurement_IO is new Integer_IO (Natural);
   use Measurement_IO;
 
@@ -113,7 +113,7 @@ Variables used in the process are:
 #+name: __Variables__
 #+begin_src ada
 
-  -- __Variables__
+  --  __Variables__
   Input                : File_Type;
   Measurement          : Natural;
   Previous_Measurement : Natural := Natural'Last;
@@ -128,7 +128,7 @@ been an increment, then count it.
 #+name: __Detect_Increments__
 #+begin_src ada
 
-  -- __Detect_Increments__
+  --  __Detect_Increments__
   Get (Input, Measurement);
   loop
     if Previous_Measurement < Measurement then
@@ -150,7 +150,7 @@ The result prints the number of detected increments.
 #+name: __Result__
 #+begin_src ada
 
-  -- __Result__
+  --  __Result__
   Put_Line ("Answer:" & Increments'Image);
 
 #+end_src
@@ -282,7 +282,7 @@ Two types are declared to manage the measurement windows,
 #+name: __Types__
 #+begin_src ada
 
-  -- __Types__
+  --  __Types__
   type Window_Index is mod 3;
   type Measurement_Window is array (Window_Index) of Natural;
 
@@ -293,7 +293,7 @@ and the variables to manage them:
 #+name: __New_Variables__
 #+begin_src ada
 
-  -- __New_Variables__
+  --  __New_Variables__
   Input_Window         : Measurement_Window := (others => 0);
   I                    : Window_Index;
 
@@ -308,7 +308,7 @@ windows:
 #+name: __Read_First_Input_Values__
 #+begin_src ada
 
-  -- __Read_First_Input_Values__
+  --  __Read_First_Input_Values__
   Get (Input, Input_Window (0));  --  1st measurement --> 1st window
 
   Get (Input, Input_Window (1));  --  2nd measurement --> 1st & 2nd windows
@@ -325,7 +325,7 @@ Once the first window is complete, loop over the rest of the input measurements:
 #+name: __Process_Rest_Of_Input_Values__
 #+begin_src ada
 
-  -- __Process_Rest_Of_Input_Values__
+  --  __Process_Rest_Of_Input_Values__
   I := 2;  --  current window
   loop
     Measurement := Input_Window (I + 1);
@@ -345,6 +345,8 @@ Once the first window is complete, loop over the rest of the input measurements:
 
 #+end_src
 
+#+RESULTS: __Process_Rest_Of_Input_Values__
+
 *** Result
 The result prints the number of detected increments, as before.
 
@@ -352,7 +354,6 @@ The result prints the number of detected increments, as before.
 The compilation unit for this program is obtained with the composition of the
 source code blocks shown here (evaluation of the program appears below):
 
-#+name: day01_p2
 #+header: :noweb yes :tangle src/day01_p2.adb
 #+header: :literal __Path__
 #+header: :var __Path__=(file-name-directory (buffer-file-name (current-buffer)))
@@ -373,7 +374,7 @@ source code blocks shown here (evaluation of the program appears below):
   end Day01_P2;
 #+end_src
 
-#+RESULTS: day01_p2
+#+RESULTS:
 : Answer: 1486
 
 * REFERENCES
