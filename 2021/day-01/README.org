@@ -354,9 +354,9 @@ The result prints the number of detected increments, as before.
 The compilation unit for this program is obtained with the composition of the
 source code blocks shown here (evaluation of the program appears below):
 
-#+header: :exports both :noweb yes :tangle src/day01_p2.adb
+#+header: :noweb yes :tangle src/day01_p2.adb
 #+header: :var __Path__=(file-name-directory (buffer-file-name (current-buffer)))
-#+begin_src ada :unit day01_p2
+#+begin_src ada :exports both :unit day01_p2
   with Ada.Text_IO; use Ada.Text_IO;
 
   procedure Day01_P2 is
