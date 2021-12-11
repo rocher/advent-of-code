@@ -124,14 +124,14 @@ Variables
 #+name: __Variables__
 #+begin_src ada
 
-  --  __Veriables__
+  --  __Variables__
   Input : File_Type;
   Comma : Character;
 
-   Timer  : Timer_Type;
-   School : Lanterfish_School.List;
-   Fish   : Lanterfish_School.Cursor;
-   Resets : Natural := 0;
+  Timer  : Timer_Type;
+  School : Lanterfish_School.List;
+  Fish   : Lanterfish_School.Cursor;
+  Resets : Natural := 0;
 
 #+end_src
 
@@ -206,7 +206,7 @@ source code blocks shown here (evaluation of the program appears below):
      <<__Variables__>>
   begin
      Open (Input, In_File, "__Path__" & "input");
-       <<__Read_Timers__>>
+        <<__Read_Timers__>>
      Close (Input);
      <<__Simulate_80_Days__>>
      <<__Result__>>
