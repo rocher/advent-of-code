@@ -2,7 +2,7 @@
 --
 --  Source code generated automatically by 'org-babel-tangle' from
 --  file /home/ada/advent-of-code/2021/day-06/README.org
---  2021-12-11 22:14:02
+--  2021-12-12 00:12:57
 --
 --  DO NOT EDIT!!
 --
@@ -17,15 +17,20 @@ procedure Day06_P1 is
    subtype Timer_Type is Natural range 0 .. 8;
    
    
-   --  __Packages__
-    package Lanterfish_School is new Doubly_Linked_Lists (Timer_Type, "=");
-    package Timer_IO is new Ada.Text_IO.Integer_IO (Timer_Type);
+   --  __Package_Timer_IO__
+   package Timer_IO is new Ada.Text_IO.Integer_IO (Timer_Type);
    
    
-   --  __Variables__
+   --  __Package_Lanterfish__
+   package Lanterfish_School is new Doubly_Linked_Lists (Timer_Type, "=");
+   
+   
+   --  __Variables_For_IO__
    Input : File_Type;
    Comma : Character;
    
+   
+   --  __Variables_For_Simulation__
    Timer  : Timer_Type;
    School : Lanterfish_School.List;
    Fish   : Lanterfish_School.Cursor;

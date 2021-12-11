@@ -1,43 +1,71 @@
-with Ada.Strings; use Ada.Strings;
+-----------------------------------------------------------------------------
+--
+--  Source code generated automatically by 'org-babel-tangle' from
+--  file /home/ada/advent-of-code/2021/day-06/README.org
+--  2021-12-12 00:12:57
+--
+--  DO NOT EDIT!!
+--
+-----------------------------------------------------------------------------
+
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Day06_P2 is
+   
+   --  __Types__
    subtype Timer_Type is Natural range 0 .. 8;
-   type Timer_Count_Type is array (Timer_Type) of Long_Integer;
+   
+   
+   --  __Package_Timer_IO__
    package Timer_IO is new Ada.Text_IO.Integer_IO (Timer_Type);
-
+   
+   
+   --  __Variables_For_IO__
    Input : File_Type;
    Comma : Character;
-
+   
+   
+   --  __Variables_For_Counting__
    N           : Natural;
-   T           : Long_Integer;
-   Timer_Count : Timer_Count_Type := (others => 0);
-   Total       : Long_Integer     := 0;
-
+   Tmp         : Long_Integer;
+   Timer_Count : array (Timer_Type) of Long_Integer := (others => 0);
+   Total       : Long_Integer := 0;
+   
 begin
-   Open (Input, In_File, "input");
-
-   --  read lanternfish school
-   Timer_IO.Get (Input, N);
-   loop
-      Timer_Count (N) := Timer_Count (N) + 1;
-      Total           := Total + 1;
-      exit when End_Of_File (Input);
-      Get (Input, Comma);
+   Open (Input, In_File, "/home/ada/advent-of-code/2021/day-06/" & "input");
+      
+      --  __Read_And_Count_Lanterfish__
       Timer_IO.Get (Input, N);
-   end loop;
+      loop
+         Timer_Count (N) := Timer_Count (N) + 1;
+         exit when End_Of_File (Input);
+         Get (Input, Comma);
+         Timer_IO.Get (Input, N);
+      end loop;
+      
    Close (Input);
-
-   --  simulate 256 days
-   for I in 1 .. 256 loop
-      T := Timer_Count (0);
+   
+   --  __Simulate_256_Days__
+   for Day in 1 .. 256 loop
+      --  decrement timers
+      Tmp := Timer_Count (0);
       for J in Timer_Type'First .. Timer_Type'Last - 1 loop
          Timer_Count (J) := Timer_Count (J + 1);
       end loop;
-      Timer_Count (6)               := Timer_Count (6) + T;
-      Timer_Count (Timer_Type'Last) := T;
-      Total                         := Total + T;
+   
+      --  reset to 6 all timers that reached 0
+      Timer_Count (6) := Timer_Count (6) + Tmp;
+   
+      --  add new lanternfish per each timer that reached 0
+      Timer_Count (Timer_Type'Last) := Tmp;
    end loop;
-
+   
+   
+   --  __Result_Total__
+   for T in Timer_Type loop
+      Total := Total + Timer_Count (T);
+   end loop;
+   
    Put_Line ("Answer:" & Total'Image);
+   
 end Day06_P2;

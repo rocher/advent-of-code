@@ -110,31 +110,47 @@ The timer type associated to each lanternfish is:
 This type is the element of the doubly linked list used to store the lanternfish
 generations:
 
-#+name: __Packages__
+#+name: __Package_Lanterfish__
 #+begin_src ada
 
-  --  __Packages__
-   package Lanterfish_School is new Doubly_Linked_Lists (Timer_Type, "=");
-   package Timer_IO is new Ada.Text_IO.Integer_IO (Timer_Type);
+  --  __Package_Lanterfish__
+  package Lanterfish_School is new Doubly_Linked_Lists (Timer_Type, "=");
+
+#+end_src
+
+As usual, to read the input file:
+
+#+name: __Package_Timer_IO__
+#+begin_src ada
+
+  --  __Package_Timer_IO__
+  package Timer_IO is new Ada.Text_IO.Integer_IO (Timer_Type);
 
 #+end_src
 
 Variables required:
 
-  * =Input=, the file with the initial generation of lanternfish
-  * =Comma=, a character to skip commas in the input file
+  * for reading lanternfish:
+    * =Input=, the file with the initial generation of lanternfish
+    * =Comma=, a character to skip commas in the input file
   * =Timer=, of type =Timer_Type=, to read and append operations
   * =Shool=, doubly linked list of lanternfish
   * =Fish=, a cursor to iterate over the lanternfish school
   * =Resets=, counter to count how many timer resets are detected
 
-#+name: __Variables__
+#+name: __Variables_For_IO__
 #+begin_src ada
 
-  --  __Variables__
+  --  __Variables_For_IO__
   Input : File_Type;
   Comma : Character;
 
+#+end_src
+
+#+name: __Variables_For_Simulation__
+#+begin_src ada
+
+  --  __Variables_For_Simulation__
   Timer  : Timer_Type;
   School : Lanterfish_School.List;
   Fish   : Lanterfish_School.Cursor;
@@ -199,9 +215,9 @@ Then, simulate the generations of 80 days:
 
 *** Compilation unit and evaluation
 The compilation unit for this program is obtained with the composition of the
-source code blocks shown here (evaluation of the program appears below):
+source code blocks shown here:
 
-#+name: day06_p2
+#+name: day06_p1
 #+header: :noweb yes :tangle src/day06_p1.adb
 #+header: :var __Path__=(file-name-directory (buffer-file-name (current-buffer)))
 #+begin_src ada :exports both :unit day06_p1
@@ -210,8 +226,10 @@ source code blocks shown here (evaluation of the program appears below):
 
   procedure Day06_P1 is
      <<__Types__>>
-     <<__Packages__>>
-     <<__Variables__>>
+     <<__Package_Timer_IO__>>
+     <<__Package_Lanterfish__>>
+     <<__Variables_For_IO__>>
+     <<__Variables_For_Simulation__>>
   begin
      Open (Input, In_File, "__Path__" & "input");
         <<__Read_Timers__>>
@@ -221,10 +239,10 @@ source code blocks shown here (evaluation of the program appears below):
   end Day06_P1;
 #+end_src
 
-#+RESULTS: day06_p2
-: Answer: 360761
+*** Evaluation
 
-*** Results
+#+RESULTS: day06_p1
+: Answer: 360761
 
 * PART 2
 ** Statement
@@ -281,6 +299,102 @@ when value reaches =0= and adding also new fishes:
 | day 4         | 1 | 0 | 0 | 0 | 1 | 1 | 3 | 1 | 2 |
 
 ** Implementation
+*** Declarations
+
+  * =Timer_Count=, array of timer values to count lanternfish
+  * =Total=, total number of lanternfish
+  * =N=, index of an array
+  * =Tmp=, temporal counter to compute each generation per day
+
+#+name: __Variables_For_Counting__
+#+begin_src ada
+
+  --  __Variables_For_Counting__
+  N           : Natural;
+  Tmp         : Long_Integer;
+  Timer_Count : array (Timer_Type) of Long_Integer := (others => 0);
+  Total       : Long_Integer := 0;
+
+#+end_src
+
+*** Process
+
+#+name: __Read_And_Count_Lanterfish__
+#+begin_src ada
+
+  --  __Read_And_Count_Lanterfish__
+  Timer_IO.Get (Input, N);
+  loop
+     Timer_Count (N) := Timer_Count (N) + 1;
+     exit when End_Of_File (Input);
+     Get (Input, Comma);
+     Timer_IO.Get (Input, N);
+  end loop;
+
+#+end_src
+
+#+name: __Simulate_256_Days__
+#+begin_src ada
+
+  --  __Simulate_256_Days__
+  for Day in 1 .. 256 loop
+     --  decrement timers
+     Tmp := Timer_Count (0);
+     for J in Timer_Type'First .. Timer_Type'Last - 1 loop
+        Timer_Count (J) := Timer_Count (J + 1);
+     end loop;
+
+     --  reset to 6 all timers that reached 0
+     Timer_Count (6) := Timer_Count (6) + Tmp;
+
+     --  add new lanternfish per each timer that reached 0
+     Timer_Count (Timer_Type'Last) := Tmp;
+  end loop;
+
+#+end_src
+
+*** Result
+
+#+name: __Result_Total__
+#+begin_src ada
+
+  --  __Result_Total__
+  for T in Timer_Type loop
+     Total := Total + Timer_Count (T);
+  end loop;
+
+  Put_Line ("Answer:" & Total'Image);
+
+#+end_src
+
+*** Compilation unit and evaluation
+
+#+name: day06_p2
+#+header: :noweb yes :tangle src/day06_p2.adb
+#+header: :var __Path__=(file-name-directory (buffer-file-name (current-buffer)))
+#+begin_src ada :exports both :unit day06_p2
+  with Ada.Text_IO; use Ada.Text_IO;
+
+  procedure Day06_P2 is
+     <<__Types__>>
+     <<__Package_Timer_IO__>>
+     <<__Variables_For_IO__>>
+     <<__Variables_For_Counting__>>
+  begin
+     Open (Input, In_File, "__Path__" & "input");
+        <<__Read_And_Count_Lanterfish__>>
+     Close (Input);
+     <<__Simulate_256_Days__>>
+     <<__Result_Total__>>
+  end Day06_P2;
+#+end_src
+
+*** Evaluation
+
+#+RESULTS: day06_p2
+: Answer: 1632779838045
+
+
 
 
 * REFERENCES
