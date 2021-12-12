@@ -2,7 +2,7 @@
 --
 --  Source code generated automatically by 'org-babel-tangle' from
 --  file /home/ada/advent-of-code/2021/day-06/README.org
---  2021-12-12 01:08:49
+--  2021-12-12 01:31:13
 --
 --  DO NOT EDIT!!
 --
@@ -21,8 +21,8 @@ procedure Day06_P1 is
    package Timer_IO is new Ada.Text_IO.Integer_IO (Timer_Type);
    
    
-   --  __Package_Lanterfish__
-   package Lanterfish_School is new Doubly_Linked_Lists (Timer_Type, "=");
+   --  __Package_Lanternfish__
+   package Lanternfish_School is new Doubly_Linked_Lists (Timer_Type, "=");
    
    
    --  __Variables_For_IO__
@@ -32,8 +32,8 @@ procedure Day06_P1 is
    
    --  __Variables_For_Simulation__
    Timer  : Timer_Type;
-   School : Lanterfish_School.List;
-   Fish   : Lanterfish_School.Cursor;
+   School : Lanternfish_School.List;
+   Fish   : Lanternfish_School.Cursor;
    Resets : Natural := 0;
    
 begin
@@ -55,15 +55,15 @@ begin
    
       --  decrement timers or current fishes
       Fish := School.First;
-      while Lanterfish_School.Has_Element (Fish) loop
-         Timer := Lanterfish_School.Element (Fish);
+      while Lanternfish_School.Has_Element (Fish) loop
+         Timer := Lanternfish_School.Element (Fish);
          if Timer = 0 then
             Resets := Resets + 1;
             School.Replace_Element (Fish, 6);
          else
             School.Replace_Element (Fish, Timer - 1);
          end if;
-         Lanterfish_School.Next (Fish);
+         Lanternfish_School.Next (Fish);
       end loop;
    
       --  add new born fishes

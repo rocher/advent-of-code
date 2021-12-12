@@ -110,11 +110,11 @@ The timer type associated to each lanternfish is:
 This type is the element of the doubly linked list used to store the lanternfish
 generations:
 
-#+name: __Package_Lanterfish__
+#+name: __Package_Lanternfish__
 #+begin_src ada
 
-  --  __Package_Lanterfish__
-  package Lanterfish_School is new Doubly_Linked_Lists (Timer_Type, "=");
+  --  __Package_Lanternfish__
+  package Lanternfish_School is new Doubly_Linked_Lists (Timer_Type, "=");
 
 #+end_src
 
@@ -152,8 +152,8 @@ Variables required:
 
   --  __Variables_For_Simulation__
   Timer  : Timer_Type;
-  School : Lanterfish_School.List;
-  Fish   : Lanterfish_School.Cursor;
+  School : Lanternfish_School.List;
+  Fish   : Lanternfish_School.Cursor;
   Resets : Natural := 0;
 
 #+end_src
@@ -185,15 +185,15 @@ Then, simulate the generations of 80 days:
 
      --  decrement timers or current fishes
      Fish := School.First;
-     while Lanterfish_School.Has_Element (Fish) loop
-        Timer := Lanterfish_School.Element (Fish);
+     while Lanternfish_School.Has_Element (Fish) loop
+        Timer := Lanternfish_School.Element (Fish);
         if Timer = 0 then
            Resets := Resets + 1;
            School.Replace_Element (Fish, 6);
         else
            School.Replace_Element (Fish, Timer - 1);
         end if;
-        Lanterfish_School.Next (Fish);
+        Lanternfish_School.Next (Fish);
      end loop;
 
      --  add new born fishes
@@ -227,7 +227,7 @@ source code blocks shown here:
   procedure Day06_P1 is
      <<__Types__>>
      <<__Package_Timer_IO__>>
-     <<__Package_Lanterfish__>>
+     <<__Package_Lanternfish__>>
      <<__Variables_For_IO__>>
      <<__Variables_For_Simulation__>>
   begin
@@ -271,7 +271,7 @@ This requires a different way to compute the population after 256 days.
 
 The first we should take into account is that /all lanternfish with the same
 timer value behave in the same way/. For example, all the fishes with an initial
-timer value of =0= will have =1= in the first generation, =2= in the second and
+timer value of =5= will have =4= in the first generation, =3= in the second and
 so on. The idea is this: instead of simulate all of them /individually/, keep
 track of how many of them have the same timer value. In the example, there are
 these values in the initial state:
@@ -319,10 +319,10 @@ when value reaches =0= and adding also new fishes:
 
 *** Process
 
-#+name: __Read_And_Count_Lanterfish__
+#+name: __Read_And_Count_Lanternfish__
 #+begin_src ada
 
-  --  __Read_And_Count_Lanterfish__
+  --  __Read_And_Count_Lanternfish__
   Timer_IO.Get (Input, N);
   loop
      Timer_Count (N) := Timer_Count (N) + 1;
@@ -382,7 +382,7 @@ when value reaches =0= and adding also new fishes:
      <<__Variables_For_Counting__>>
   begin
      Open (Input, In_File, "__Path__" & "input");
-        <<__Read_And_Count_Lanterfish__>>
+        <<__Read_And_Count_Lanternfish__>>
      Close (Input);
      <<__Simulate_256_Days__>>
      <<__Result_Population__>>
@@ -398,9 +398,10 @@ when value reaches =0= and adding also new fishes:
 * ADDONS
 ** Graphical Representation
 To understand how lanternfish generations evolve over time, it is interesting to
-plot a graph. It can be generated with small changes in the process:
+plot a graph. It can be generated with small changes in the process.
 
 *** Variables
+An output file to write population size:
 
 #+name: __New_Variables_For_IO__
 #+begin_src ada
@@ -410,7 +411,9 @@ plot a graph. It can be generated with small changes in the process:
 
 #+end_src
 
-*** New process
+*** Process
+The process must compute the population of each day and write it to the output
+file:
 
 #+name: __Simulate_256_Days_And_Write_Population__
 #+begin_src ada
@@ -445,6 +448,8 @@ plot a graph. It can be generated with small changes in the process:
 
 
 *** Compilation unit
+The compilation unit for this program is obtained with the composition of the
+source code blocks shown here:
 
 #+name: day06_z1
 #+header: :noweb yes :tangle src/day06_z1.adb
@@ -460,7 +465,7 @@ plot a graph. It can be generated with small changes in the process:
      <<__Variables_For_Counting__>>
   begin
      Open (Input, In_File, "__Path__" & "input");
-        <<__Read_And_Count_Lanterfish__>>
+        <<__Read_And_Count_Lanternfish__>>
      Close (Input);
 
      Create (Output, Out_File,  "__Path__" & "population");
@@ -475,7 +480,7 @@ plot a graph. It can be generated with small changes in the process:
 
 **** population after 80 days
 #+begin_src gnuplot :exports both :file population-80.png
-  plot "population" every ::0::79:0 title "Lanterfish" with lines
+  plot "population" every ::0::79:0 title "Lanternfish" with lines
 #+end_src
 
 #+RESULTS:
@@ -483,7 +488,7 @@ plot a graph. It can be generated with small changes in the process:
 
 **** population after 256 days
 #+begin_src gnuplot :exports both :file population-256.png
-  plot "population" title "Lanterfish" with lines
+  plot "population" title "Lanternfish" with lines
 #+end_src
 
 #+RESULTS:

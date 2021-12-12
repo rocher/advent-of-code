@@ -2,7 +2,7 @@
 --
 --  Source code generated automatically by 'org-babel-tangle' from
 --  file /home/ada/advent-of-code/2021/day-06/README.org
---  2021-12-12 01:08:49
+--  2021-12-12 01:31:13
 --
 --  DO NOT EDIT!!
 --
@@ -38,7 +38,7 @@ procedure Day06_Z1 is
 begin
    Open (Input, In_File, "/home/ada/advent-of-code/2021/day-06/" & "input");
       
-      --  __Read_And_Count_Lanterfish__
+      --  __Read_And_Count_Lanternfish__
       Timer_IO.Get (Input, N);
       loop
          Timer_Count (N) := Timer_Count (N) + 1;
