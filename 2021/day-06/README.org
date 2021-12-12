@@ -416,7 +416,6 @@ plot a graph. It can be generated with small changes in the process:
 #+begin_src ada
 
   --  __Simulate_256_Days_And_Write_Population__
-  Create (Output, Out_File, "__Path__" & "population");
 
   --  population of initial state
   for T in Timer_Type loop
@@ -441,7 +440,6 @@ plot a graph. It can be generated with small changes in the process:
      Population := Population + Tmp;
      Put_Line (Output, Population'Image);
   end loop;
-  Close (Output);
 
 #+end_src
 
@@ -464,21 +462,32 @@ plot a graph. It can be generated with small changes in the process:
      Open (Input, In_File, "__Path__" & "input");
         <<__Read_And_Count_Lanterfish__>>
      Close (Input);
-     <<__Simulate_256_Days_And_Write_Population__>>
+
+     Create (Output, Out_File,  "__Path__" & "population-80");
+        <<__Simulate_256_Days_And_Write_Population__>>
+     Close (Output);
   end Day06_Z1;
 #+end_src
 
 #+RESULTS: day06_z1
 
-*** Graph
+*** Graphs
 
-**** gnuplot
-#+begin_src gnuplot :exports both :file population.png
-  plot "population"
+**** population after 80 days
+#+begin_src gnuplot :exports both :file population-80.png
+  plot "population" every ::0::79:0 title "Lanterfish" with lines
 #+end_src
 
 #+RESULTS:
-[[file:population.png]]
+[[file:population-80.png]]
+
+**** population after 256 days
+#+begin_src gnuplot :exports both :file population-256.png
+  plot "population" title "Lanterfish" with lines
+#+end_src
+
+#+RESULTS:
+[[file:population-256.png]]
 
 * REFERENCES
 
