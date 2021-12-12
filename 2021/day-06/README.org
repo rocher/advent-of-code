@@ -1,0 +1,505 @@
+#+TITLE:Day 6 : Lanternfish
+#+AUTHOR: Francesc Rocher
+
+* PART 1
+** Statement
+#+begin_html
+<details>
+<summary>
+  <i>click to expand</i>
+</summary>
+#+end_html
+
+The sea floor is getting steeper. Maybe the sleigh keys got carried this way?
+
+A massive school of glowing /lanternfish/ swims past. They must spawn quickly to
+reach such large numbers - maybe *exponentially* quickly? You should model their
+growth rate to be sure.
+
+Although you know nothing about this specific species of lanternfish, you make
+some guesses about their attributes. Surely, each lanternfish creates a new
+lanternfish once every 7 days.
+
+However, this process isn't necessarily synchronized between every lanternfish -
+one lanternfish might have 2 days left until it creates another lanternfish,
+while another might have 4. So, you can model each fish as a single number that
+represents *the number of days until it creates a new lanternfish*.
+
+Furthermore, you reason, a *new* lanternfish would surely need slightly longer
+before it's capable of producing more lanternfish: two more days for its first
+cycle.
+
+So, suppose you have a lanternfish with an internal timer value of 3:
+
+  - After one day, its internal timer would become ~2~.
+  - After another day, its internal timer would become ~1~.
+  - After another day, its internal timer would become ~0~.
+  - After another day, its internal timer would reset to ~6~, and it would
+    create a new lanternfish with an internal timer of ~8~.
+  - After another day, the first lanternfish would have an internal timer of
+    ~5~, and the second lanternfish would have an internal timer of ~7~.
+
+A lanternfish that creates a new fish resets its timer to ~6~, *not 7* (because
+0 is included as a valid timer value). The new lanternfish starts with an
+internal timer of ~8~ and does not start counting down until the next day.
+
+Realizing what you're trying to do, the submarine automatically produces a list
+of the ages of several hundred nearby lanternfish (your puzzle input). For
+example, suppose you were given the following list:
+
+#+begin_example
+3,4,3,1,2
+#+end_example
+
+This list means that the first fish has an internal timer of ~3~, the second
+fish has an internal timer of ~4~, and so on until the fifth fish, which has an
+internal timer of ~2~. Simulating these fish over several days would proceed as
+follows:
+
+#+begin_example
+Initial state: 3,4,3,1,2
+After  1 day:  2,3,2,0,1
+After  2 days: 1,2,1,6,0,8
+After  3 days: 0,1,0,5,6,7,8
+After  4 days: 6,0,6,4,5,6,7,8,8
+After  5 days: 5,6,5,3,4,5,6,7,7,8
+After  6 days: 4,5,4,2,3,4,5,6,6,7
+After  7 days: 3,4,3,1,2,3,4,5,5,6
+After  8 days: 2,3,2,0,1,2,3,4,4,5
+After  9 days: 1,2,1,6,0,1,2,3,3,4,8
+After 10 days: 0,1,0,5,6,0,1,2,2,3,7,8
+After 11 days: 6,0,6,4,5,6,0,1,1,2,6,7,8,8,8
+After 12 days: 5,6,5,3,4,5,6,0,0,1,5,6,7,7,7,8,8
+After 13 days: 4,5,4,2,3,4,5,6,6,0,4,5,6,6,6,7,7,8,8
+After 14 days: 3,4,3,1,2,3,4,5,5,6,3,4,5,5,5,6,6,7,7,8
+After 15 days: 2,3,2,0,1,2,3,4,4,5,2,3,4,4,4,5,5,6,6,7
+After 16 days: 1,2,1,6,0,1,2,3,3,4,1,2,3,3,3,4,4,5,5,6,8
+After 17 days: 0,1,0,5,6,0,1,2,2,3,0,1,2,2,2,3,3,4,4,5,7,8
+After 18 days: 6,0,6,4,5,6,0,1,1,2,6,0,1,1,1,2,2,3,3,4,6,7,8,8,8,8
+#+end_example
+
+Each day, a ~0~ becomes a ~6~ and adds a new ~8~ to the end of the list, while
+each other number decreases by 1 if it was present at the start of the day.
+
+In this example, after 18 days, there are a total of ~26~ fish. After 80 days,
+there would be a total of *5934*.
+
+Find a way to simulate lanternfish. *How many lanternfish would there be after
+80 days?*
+
+#+begin_html
+</details>
+#+end_html
+
+** Solution
+This part is solved using /brute force/. That is, simulating the 80 days of
+lanternfish generations using the input population.
+
+** Implementation
+*** Declarations
+The timer type associated to each lanternfish is:
+
+#+name: __Types__
+#+begin_src ada
+
+  --  __Types__
+  subtype Timer_Type is Natural range 0 .. 8;
+
+#+end_src
+
+This type is the element of the doubly linked list used to store the lanternfish
+generations:
+
+#+name: __Package_Lanternfish__
+#+begin_src ada
+
+  --  __Package_Lanternfish__
+  package Lanternfish_School is new Doubly_Linked_Lists (Timer_Type, "=");
+
+#+end_src
+
+As usual, to read the input file:
+
+#+name: __Package_Timer_IO__
+#+begin_src ada
+
+  --  __Package_Timer_IO__
+  package Timer_IO is new Ada.Text_IO.Integer_IO (Timer_Type);
+
+#+end_src
+
+Variables required:
+
+  * for reading lanternfish:
+    * =Input=, the file with the initial generation of lanternfish
+    * =Comma=, a character to skip commas in the input file
+  * =Timer=, of type =Timer_Type=, to read and append operations
+  * =Shool=, doubly linked list of lanternfish
+  * =Fish=, a cursor to iterate over the lanternfish school
+  * =Resets=, counter to count how many timer resets are detected
+
+#+name: __Variables_For_IO__
+#+begin_src ada
+
+  --  __Variables_For_IO__
+  Input : File_Type;
+  Comma : Character;
+
+#+end_src
+
+#+name: __Variables_For_Simulation__
+#+begin_src ada
+
+  --  __Variables_For_Simulation__
+  Timer  : Timer_Type;
+  School : Lanternfish_School.List;
+  Fish   : Lanternfish_School.Cursor;
+  Resets : Natural := 0;
+
+#+end_src
+
+*** Process
+First of all, it is necessary to read all lanternfish timers:
+
+#+name: __Read_Timers__
+#+begin_src ada
+
+  -- __Read_Timers__
+  Timer_IO.Get (Input, Timer);
+  loop
+     School.Append (Timer);
+     exit when End_Of_File (Input);
+     Get (Input, Comma);
+     Timer_IO.Get (Input, Timer);
+  end loop;
+
+#+end_src
+
+Then, simulate the generations of 80 days:
+
+#+name: __Simulate_80_Days__
+#+begin_src ada
+
+  --  __Simulate_80_Days
+  for Day in 1 .. 80 loop
+
+     --  decrement timers or current fishes
+     Fish := School.First;
+     while Lanternfish_School.Has_Element (Fish) loop
+        Timer := Lanternfish_School.Element (Fish);
+        if Timer = 0 then
+           Resets := Resets + 1;
+           School.Replace_Element (Fish, 6);
+        else
+           School.Replace_Element (Fish, Timer - 1);
+        end if;
+        Lanternfish_School.Next (Fish);
+     end loop;
+
+     --  add new born fishes
+     School.Append (8, Count_Type (Resets));
+     Resets := 0;
+  end loop;
+
+#+end_src
+
+*** Result
+
+#+name: __Result__
+#+begin_src ada
+
+  --  __Result__
+  Put_Line ("Answer:" & School.Length'Image);
+
+#+end_src
+
+*** Compilation unit
+The compilation unit for this program is obtained with the composition of the
+source code blocks shown here:
+
+#+name: day06_p1
+#+header: :noweb yes :tangle src/day06_p1.adb
+#+header: :var __Path__=(file-name-directory (buffer-file-name (current-buffer)))
+#+begin_src ada :exports both :unit day06_p1
+  with Ada.Text_IO;                        use Ada.Text_IO;
+  with Ada.Containers.Doubly_Linked_Lists; use Ada.Containers;
+
+  procedure Day06_P1 is
+     <<__Types__>>
+     <<__Package_Timer_IO__>>
+     <<__Package_Lanternfish__>>
+     <<__Variables_For_IO__>>
+     <<__Variables_For_Simulation__>>
+  begin
+     Open (Input, In_File, "__Path__" & "input");
+        <<__Read_Timers__>>
+     Close (Input);
+     <<__Simulate_80_Days__>>
+     <<__Result__>>
+  end Day06_P1;
+#+end_src
+
+*** Evaluation
+
+#+RESULTS: day06_p1
+: Answer: 360761
+
+* PART 2
+** Statement
+#+begin_html
+<details>
+<summary>
+  <i>click to expand</i>
+</summary>
+#+end_html
+
+Suppose the lanternfish live forever and have unlimited food and space. Would
+they take over the entire ocean?
+
+After 256 days in the example above, there would be a total of *26984457539*
+lanternfish!
+
+*How many lanternfish would there be after 256 days?*
+
+#+begin_html
+</details>
+#+end_html
+
+** Solution
+Now /brute force/ cannot be used because the exponential growth of lanternfish.
+This requires a different way to compute the population after 256 days.
+
+The first we should take into account is that /all lanternfish with the same
+timer value behave in the same way/. For example, all the fishes with an initial
+timer value of =5= will have =4= in the first generation, =3= in the second and
+so on. The idea is this: instead of simulate all of them /individually/, keep
+track of how many of them have the same timer value. In the example, there are
+these values in the initial state:
+
+#+begin_example
+Initial state: 3,4,3,1,2
+#+end_example
+
+This can be expressed in the table:
+
+| timer value   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---------------+---+---+---+---+---+---+---+---+---|
+| initial state | 0 | 1 | 1 | 2 | 1 | 0 | 0 | 0 | 0 |
+
+Now it is easy to count how many lanternfish of that value will be in the
+following days by shifting the values of previous days, resetting timers to =6=
+when value reaches =0= and adding also new fishes:
+
+| timer value   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---------------+---+---+---+---+---+---+---+---+---|
+| initial state | 0 | 1 | 1 | 2 | 1 | 0 | 0 | 0 | 0 |
+| day 1         | 1 | 1 | 2 | 1 | 0 | 0 | 0 | 0 | 0 |
+| day 2         | 1 | 2 | 1 | 0 | 0 | 0 | 1 | 0 | 1 |
+| day 3         | 2 | 1 | 0 | 0 | 0 | 1 | 1 | 1 | 1 |
+| day 4         | 1 | 0 | 0 | 0 | 1 | 1 | 3 | 1 | 2 |
+
+** Implementation
+*** Declarations
+
+  * =Timer_Count=, array of timer values to count lanternfish
+  * =Total=, total number of lanternfish
+  * =N=, index of an array
+  * =Tmp=, temporal counter to compute each generation per day
+
+#+name: __Variables_For_Counting__
+#+begin_src ada
+
+  --  __Variables_For_Counting__
+  N           : Natural;
+  Tmp         : Long_Integer;
+  Timer_Count : array (Timer_Type) of Long_Integer := (others => 0);
+  Population  : Long_Integer := 0;
+
+#+end_src
+
+*** Process
+
+#+name: __Read_And_Count_Lanternfish__
+#+begin_src ada
+
+  --  __Read_And_Count_Lanternfish__
+  Timer_IO.Get (Input, N);
+  loop
+     Timer_Count (N) := Timer_Count (N) + 1;
+     exit when End_Of_File (Input);
+     Get (Input, Comma);
+     Timer_IO.Get (Input, N);
+  end loop;
+
+#+end_src
+
+#+name: __Simulate_256_Days__
+#+begin_src ada
+
+  --  __Simulate_256_Days__
+  for Day in 1 .. 256 loop
+     --  decrement timers
+     Tmp := Timer_Count (0);
+     for J in Timer_Type'First .. Timer_Type'Last - 1 loop
+        Timer_Count (J) := Timer_Count (J + 1);
+     end loop;
+
+     --  reset to 6 all timers that reached 0
+     Timer_Count (6) := Timer_Count (6) + Tmp;
+
+     --  add new lanternfish per each timer that reached 0
+     Timer_Count (Timer_Type'Last) := Tmp;
+  end loop;
+
+#+end_src
+
+*** Result
+
+#+name: __Result_Population__
+#+begin_src ada
+
+  --  __Result_Population__
+  for T in Timer_Type loop
+     Population := Population + Timer_Count (T);
+  end loop;
+
+  Put_Line ("Answer:" & Population'Image);
+
+#+end_src
+
+*** Compilation unit
+
+#+name: day06_p2
+#+header: :noweb yes :tangle src/day06_p2.adb
+#+header: :var __Path__=(file-name-directory (buffer-file-name (current-buffer)))
+#+begin_src ada :exports both :unit day06_p2
+  with Ada.Text_IO; use Ada.Text_IO;
+
+  procedure Day06_P2 is
+     <<__Types__>>
+     <<__Package_Timer_IO__>>
+     <<__Variables_For_IO__>>
+     <<__Variables_For_Counting__>>
+  begin
+     Open (Input, In_File, "__Path__" & "input");
+        <<__Read_And_Count_Lanternfish__>>
+     Close (Input);
+     <<__Simulate_256_Days__>>
+     <<__Result_Population__>>
+  end Day06_P2;
+#+end_src
+
+*** Evaluation
+
+#+RESULTS: day06_p2
+: Answer: 1632779838045
+
+
+* ADDONS
+** Graphical Representation
+To understand how lanternfish generations evolve over time, it is interesting to
+plot a graph. It can be generated with small changes in the process.
+
+*** Variables
+An output file to write population size:
+
+#+name: __New_Variables_For_IO__
+#+begin_src ada
+
+  --  __New_Variables_For_IO__
+  Output : File_Type;
+
+#+end_src
+
+*** Process
+The process must compute the population of each day and write it to the output
+file:
+
+#+name: __Simulate_256_Days_And_Write_Population__
+#+begin_src ada
+
+  --  __Simulate_256_Days_And_Write_Population__
+
+  --  population of initial state
+  for T in Timer_Type loop
+     Population := Population + Timer_Count (T);
+  end loop;
+  Put_Line (Output, Population'Image);
+
+  for Day in 1 .. 256 loop
+     --  decrement timers
+     Tmp := Timer_Count (0);
+     for J in Timer_Type'First .. Timer_Type'Last - 1 loop
+        Timer_Count (J) := Timer_Count (J + 1);
+     end loop;
+
+     --  reset to 6 all timers that reached 0
+     Timer_Count (6) := Timer_Count (6) + Tmp;
+
+     --  add new lanternfish per each timer that reached 0
+     Timer_Count (Timer_Type'Last) := Tmp;
+
+     --  add new born lanternfish to total population
+     Population := Population + Tmp;
+     Put_Line (Output, Population'Image);
+  end loop;
+
+#+end_src
+
+
+*** Compilation unit
+The compilation unit for this program is obtained with the composition of the
+source code blocks shown here:
+
+#+name: day06_z1
+#+header: :noweb yes :tangle src/day06_z1.adb
+#+header: :var __Path__=(file-name-directory (buffer-file-name (current-buffer)))
+#+begin_src ada :exports both :unit day06_z1
+  with Ada.Text_IO; use Ada.Text_IO;
+
+  procedure Day06_Z1 is
+     <<__Types__>>
+     <<__Package_Timer_IO__>>
+     <<__Variables_For_IO__>>
+     <<__New_Variables_For_IO__>>
+     <<__Variables_For_Counting__>>
+  begin
+     Open (Input, In_File, "__Path__" & "input");
+        <<__Read_And_Count_Lanternfish__>>
+     Close (Input);
+
+     Create (Output, Out_File,  "__Path__" & "population");
+        <<__Simulate_256_Days_And_Write_Population__>>
+     Close (Output);
+  end Day06_Z1;
+#+end_src
+
+#+RESULTS: day06_z1
+
+*** Graphs
+
+**** population after 80 days
+#+begin_src gnuplot :exports both :file population-80.png
+  plot "population" every ::0::79:0 title "Lanternfish" with lines
+#+end_src
+
+#+RESULTS:
+[[file:population-80.png]]
+
+**** population after 256 days
+#+begin_src gnuplot :exports both :file population-256.png
+  plot "population" title "Lanternfish" with lines
+#+end_src
+
+#+RESULTS:
+[[file:population-256.png]]
+
+* REFERENCES
+
+  * source: [[https://adventofcode.com/2021/day/6][Advent of Code 2021, day 6]]
+  * tangled source code files:
+    - [[file:src/day06_p1.adb]]
+    - [[file:src/day06_p2.adb]]
+    - [[file:src/day06_z1.adb]]
+  * input file: [[file:input]]
+  * Ada/SPARK support for Org-Babel: [[https://github.com/rocher/ob-ada-spark][ob-ada-spark]]
