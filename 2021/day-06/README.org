@@ -463,7 +463,7 @@ plot a graph. It can be generated with small changes in the process:
         <<__Read_And_Count_Lanterfish__>>
      Close (Input);
 
-     Create (Output, Out_File,  "__Path__" & "population-80");
+     Create (Output, Out_File,  "__Path__" & "population");
         <<__Simulate_256_Days_And_Write_Population__>>
      Close (Output);
   end Day06_Z1;
