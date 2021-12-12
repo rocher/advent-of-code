@@ -1,0 +1,390 @@
+#+TITLE:Day 1 : Sonar Sweep
+#+AUTHOR: Francesc Rocher
+
+* PART 1
+** Statement
+#+begin_html
+<details>
+<summary>
+  <i>click to expand</i>
+</summary>
+#+end_html
+
+You're minding your own business on a ship at sea when the overboard alarm goes
+off! You rush to see if you can help. Apparently, one of the Elves tripped and
+accidentally sent the sleigh keys flying into the ocean!
+
+Before you know it, you're inside a submarine the Elves keep ready for
+situations like this. It's covered in Christmas lights (because of course it
+is), and it even has an experimental antenna that should be able to track the
+keys if you can boost its signal strength high enough; there's a little meter
+that indicates the antenna's signal strength by displaying 0-50 *stars*.
+
+Your instincts tell you that in order to save Christmas, you'll need to get *all
+fifty* stars by December 25th.
+
+Collect stars by solving puzzles. Two puzzles will be made available on each day
+in the Advent calendar; the second puzzle is unlocked when you complete the
+first. Each puzzle grants one star. Good luck!
+
+As the submarine drops below the surface of the ocean, it automatically performs
+a sonar sweep of the nearby sea floor. On a small screen, the sonar sweep report
+(your puzzle input) appears: each line is a measurement of the sea floor depth
+as the sweep looks further and further away from the submarine.
+
+For example, suppose you had the following report:
+
+#+begin_example
+199
+200
+208
+210
+200
+207
+240
+269
+260
+263
+#+end_example
+
+This report indicates that, scanning outward from the submarine, the sonar sweep
+found depths of 199, 200, 208, 210, and so on.
+
+The first order of business is to figure out how quickly the depth increases,
+just so you know what you're dealing with - you never know if the keys will get
+carried into deeper water by an ocean current or a fish or something.
+
+To do this, *count the number of times a depth measurement increases* from the
+previous measurement. (There is no measurement before the first measurement.) In
+the example above, the changes are as follows:
+
+#+begin_example
+199 (N/A - no previous measurement)
+200 (increased)
+208 (increased)
+210 (increased)
+200 (decreased)
+207 (increased)
+240 (increased)
+269 (increased)
+260 (decreased)
+263 (increased)
+#+end_example
+
+In this example, there are 7 measurements that are larger than the previous
+measurement.
+
+*How many measurements are larger than the previous measurement?*
+
+#+begin_html
+</details>
+#+end_html
+
+** Solution
+The algorithm to solve this problem is so easy that don't need to be explicitly
+exposed:
+
+  1. read a measurement from input file
+  2. compare the current measurement with the previous one
+     * if the previous is lesser than the current, then an increment occurred
+  3. the result is the total amount of increments detected
+
+** Implementation
+*** Declarations
+The input is stored in a file consisting in a set of lines with a number in
+each. To the read the file we use the generic package =Ada.Text_IO.Integer_IO=
+instantiated with the type =Natural=:
+
+#+name: __Packages__
+#+begin_src ada
+
+  --  __Packages__
+  package Measurement_IO is new Integer_IO (Natural);
+  use Measurement_IO;
+
+#+end_src
+
+Variables used in the process are:
+
+  * =Input=, the input file
+  * =Measurement= and =Previous_Measurement=, to store input values
+  * =Increments=, to count the total number of increments detected
+
+#+name: __Variables__
+#+begin_src ada
+
+  --  __Variables__
+  Input                : File_Type;
+  Measurement          : Natural;
+  Previous_Measurement : Natural := Natural'Last;
+  Increments           : Natural := 0;
+
+#+end_src
+
+*** Process
+Simply read all input measurements and compare with previous one. If there have
+been an increment, then count it.
+
+#+name: __Detect_Increments__
+#+begin_src ada
+
+  --  __Detect_Increments__
+  Get (Input, Measurement);
+  loop
+    if Previous_Measurement < Measurement then
+       Increments := Increments + 1;
+    end if;
+
+    exit when End_Of_File (Input);
+
+    --  prepare next iteration
+    Previous_Measurement := Measurement;
+    Get (Input, Measurement);
+  end loop;
+
+#+end_src
+
+*** Result
+The result prints the number of detected increments.
+
+#+name: __Result__
+#+begin_src ada
+
+  --  __Result__
+  Put_Line ("Answer:" & Increments'Image);
+
+#+end_src
+
+*** Compilation unit
+The compilation unit for this program is obtained with the composition of the
+source code blocks shown here:
+
+#+name: day01_p1
+#+header: :noweb yes :tangle src/day01_p1.adb
+#+header: :var __Path__=(file-name-directory (buffer-file-name (current-buffer)))
+#+begin_src ada :exports both :unit day01_p1
+  with Ada.Text_IO; use Ada.Text_IO;
+
+  procedure Day01_P1 is
+     <<__Packages__>>
+     <<__Variables__>>
+  begin
+     Open (Input, In_File, "__Path__" & "input");
+        <<__Detect_Increments__>>
+     Close (Input);
+     <<__Result__>>
+  end Day01_P1;
+#+end_src
+
+*** Evaluation
+
+#+RESULTS: day01_p1
+: Answer: 1446
+
+* PART 2
+** Statement
+#+begin_html
+<details>
+<summary>
+  <i>click to expand</i>
+</summary>
+#+end_html
+
+Considering every single measurement isn't as useful as you expected: there's
+just too much noise in the data.
+
+Instead, consider sums of a three-measurement sliding window. Again considering
+the above example:
+
+#+begin_example
+199  A
+200  A B
+208  A B C
+210    B C D
+200  E   C D
+207  E F   D
+240  E F G
+269    F G H
+260      G H
+263        H
+#+end_example
+
+
+Start by comparing the first and second three-measurement windows. The
+measurements in the first window are marked A (199, 200, 208); their sum is
+199 + 200 + 208 = 607. The second window is marked B (200, 208, 210); its sum
+is 618. The sum of measurements in the second window is larger than the sum of
+the first, so this first comparison *increased*.
+
+Your goal now is to count *the number of times the sum of measurements in this
+sliding window increases* from the previous sum. So, compare A with B, then
+compare B with C, then C with D, and so on. Stop when there aren't enough
+measurements left to create a new three-measurement sum.
+
+In the above example, the sum of each three-measurement window is as follows:
+
+#+begin_example
+A: 607 (N/A - no previous sum)
+B: 618 (increased)
+C: 618 (no change)
+D: 617 (decreased)
+E: 647 (increased)
+F: 716 (increased)
+G: 769 (increased)
+H: 792 (increased)
+#+end_example
+
+In this example, there are 5 sums that are larger than the previous sum.
+
+Consider sums of a three-measurement sliding window. *How many sums are larger
+than the previous sum?*
+
+#+begin_html
+</details>
+#+end_html
+
+** Solution
+The solution is quite similar to part 1, with the different that now the
+measurements are composed by the sum of three input measurements, or a
+/measurement window/. First measurement window is composed by input measurements
+1, 2 and 3. Second measurement window by the input measurements 2, 3 and 4, and
+so on. The firs measurement windows is complete when the third measurement input
+is read, so no comparisons with previous measurement window can be done until
+that point. From third input onward, there will be two measurement windows
+completed that can be compared.
+
+Each input measurement must be added in three consecutive measurement windows:
+
+#+begin_example
+              ,------ 199  A
+    window 1 <        200  A B ------.
+              `---,-- 208  A B C      > window 2
+        window 3 <    210    B C D --'
+                  `-- 200  E   C D
+
+     Input measurement 'A' must be added to windows 1, 2 and 3
+#+end_example
+
+That means that three measurement windows must be updated with each input. But
+it is not necessary to keep them all, just the last three.
+
+** Implementation
+Because three measurement windows need to be cyclically updated during the
+process, the implementation in Ada can make use of =mod= types. In particular,
+=mod 3= (values 0, 1 & 2) will be required for the window index.
+
+Arithmetic operations with this type are used to select windows. For example,
+when =I = 2= then =I + 1 = 0= refers to the /next/ window that will be updated.
+That is, the oldest and complete of the three.
+
+*** Declarations
+Two types are declared to manage the measurement windows,
+
+#+name: __Types__
+#+begin_src ada
+
+  --  __Types__
+  type Window_Index is mod 3;
+  type Measurement_Window is array (Window_Index) of Natural;
+
+#+end_src
+
+and the variables to manage them:
+
+#+name: __New_Variables__
+#+begin_src ada
+
+  --  __New_Variables__
+  Input_Window         : Measurement_Window := (others => 0);
+  I                    : Window_Index;
+
+#+end_src
+
+*** Process
+
+At the beginning there are no three windows, still. Thus, the process starts
+reading the first three input measurements and add them to the respective
+windows:
+
+#+name: __Read_First_Input_Values__
+#+begin_src ada
+
+  --  __Read_First_Input_Values__
+  Get (Input, Input_Window (0));  --  1st measurement --> 1st window
+
+  Get (Input, Input_Window (1));  --  2nd measurement --> 1st & 2nd windows
+  Input_Window (0) := Input_Window (0) + Input_Window (1);
+
+  Get (Input, Input_Window (2));  --  3rd measurement --> 1st, 2nd & 3rd windows
+  Input_Window (0) := Input_Window (0) + Input_Window (2);
+  Input_Window (1) := Input_Window (1) + Input_Window (2);
+
+#+end_src
+
+Once the first window is complete, loop over the rest of the input measurements:
+
+#+name: __Process_Rest_Of_Input_Values__
+#+begin_src ada
+
+  --  __Process_Rest_Of_Input_Values__
+  I := 2;  --  current window
+  loop
+    Measurement := Input_Window (I + 1);
+    if Previous_Measurement < Measurement then
+       Increments := Increments + 1;
+    end if;
+
+    exit when End_Of_File (Input);
+
+    --  prepare next itaration
+    I := I + 1;
+    Get (Input, Input_Window (I));
+    Input_Window (I - 1) := Input_Window (I - 1) + Input_Window (I);
+    Input_Window (I - 2) := Input_Window (I - 2) + Input_Window (I);
+    Previous_Measurement := Measurement;
+  end loop;
+
+#+end_src
+
+#+RESULTS: __Process_Rest_Of_Input_Values__
+
+*** Result
+The result prints the number of detected increments, as before.
+
+*** Compilation unit
+The compilation unit for this program is obtained with the composition of the
+source code blocks shown here:
+
+#+name: day01_p2
+#+header: :noweb yes :tangle src/day01_p2.adb
+#+header: :var __Path__=(file-name-directory (buffer-file-name (current-buffer)))
+#+begin_src ada :exports both :unit day01_p2
+  with Ada.Text_IO; use Ada.Text_IO;
+
+  procedure Day01_P2 is
+     <<__Types__>>
+     <<__Packages__>>
+     <<__Variables__>>
+     <<__New_Variables__>>
+  begin
+     Open (Input, In_File, "__Path__" & "input");
+        <<__Read_First_Input_Values__>>
+        <<__Process_Rest_Of_Input_Values__>>
+     Close (Input);
+     <<__Result__>>
+  end Day01_P2;
+#+end_src
+
+*** Evaluation
+
+#+RESULTS: day01_p2
+: Answer: 1486
+
+* REFERENCES
+
+  * source: [[https://adventofcode.com/2021/day/1][Advent of Code 2021, day 1]]
+  * tangled source code files:
+    - [[file:src/day01_p1.adb]]
+    - [[file:src/day01_p2.adb]]
+  * input file: [[file:input]]
+  * Ada/SPARK support for Org-Babel: [[https://github.com/rocher/ob-ada-spark][ob-ada-spark]]
