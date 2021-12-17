@@ -340,9 +340,7 @@ when value reaches =0= and adding also new fishes:
   for Day in 1 .. 256 loop
      --  decrement timers
      Tmp := Timer_Count (0);
-     for J in Timer_Type'First .. Timer_Type'Last - 1 loop
-        Timer_Count (J) := Timer_Count (J + 1);
-     end loop;
+     Timer_Count (0 .. 7) := Timer_Count (1 .. 8);
 
      --  reset to 6 all timers that reached 0
      Timer_Count (6) := Timer_Count (6) + Tmp;
@@ -393,7 +391,6 @@ when value reaches =0= and adding also new fishes:
 
 #+RESULTS: day06_p2
 : Answer: 1632779838045
-
 
 * ADDONS
 ** Graphical Representation

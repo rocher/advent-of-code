@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------
 --
 --  Source code generated automatically by 'org-babel-tangle' from
---  file /home/ada/advent-of-code/2021/day-06/README.org
---  2021-12-12 01:31:13
+--  file /home/ada/advent-of-code/main/2021/day-06/README.org
+--  2021-12-17 20:49:20
 --
 --  DO NOT EDIT!!
 --
@@ -49,9 +49,7 @@ begin
    for Day in 1 .. 256 loop
       --  decrement timers
       Tmp := Timer_Count (0);
-      for J in Timer_Type'First .. Timer_Type'Last - 1 loop
-         Timer_Count (J) := Timer_Count (J + 1);
-      end loop;
+      Timer_Count (0 .. 7) := Timer_Count (1 .. 8);
    
       --  reset to 6 all timers that reached 0
       Timer_Count (6) := Timer_Count (6) + Tmp;
