@@ -1,0 +1,78 @@
+with Ada.Text_IO;    use Ada.Text_IO;
+with Ada.Containers; use Ada.Containers;
+
+procedure Day15_P1 is
+
+   subtype Risk_Level is Natural range 1 .. 9;
+   subtype Wall_Range is Natural range 1 .. 10;
+   type Risk_Level_Map_Type is array (Wall_Range, Wall_Range) of Risk_Level;
+
+   function Local_Risk
+     (Risk_Map : Risk_Level_Map_Type; Row, Col : Wall_Range) return Natural
+   is
+      Risk : Natural := Risk_Map (Row, Col);
+   begin
+      if Row < Wall_Range'Last then
+         Risk := Risk + Risk_Map (Row + 1, Col);
+         if Col /= Wall_Range'Last then
+            Risk := Risk + Risk_Map (Row + 1, Col + 1);
+         end if;
+      end if;
+      if Col < Wall_Range'Last then
+         Risk := Risk + Risk_Map (Row, Col + 1);
+      end if;
+      return Risk;
+   end Local_Risk;
+
+   procedure Choose_Next_Position
+     (Risk_Map : Risk_Level_Map_Type; Row, Col : in out Wall_Range)
+   is
+      Risk_Down, Risk_Left : Natural := Natural'Last;
+   begin
+      if Row /= Wall_Range'Last then
+         Risk_Down := Local_Risk (Risk_Map, Row + 1, Col);
+      end if;
+      if Col /= Wall_Range'Last then
+         Risk_Left := Local_Risk (Risk_Map, Row, Col + 1);
+      end if;
+      if Risk_Down < Risk_Left then
+         Row := Row + 1;
+      else
+         Col := Col + 1;
+      end if;
+   end Choose_Next_Position;
+
+
+
+   Input    : File_Type;
+   Text     : String (1 .. 110);
+   Last_Pos : Natural;
+   Row, Col : Wall_Range := Wall_Range'First;
+
+   Risk_Map   : Risk_Level_Map_Type := (others => (others => 1));
+   Total_Risk : Natural             := 0;
+
+begin
+   Open (Input, In_File, "input");
+   while not End_Of_File (Input) loop
+      Get_Line (Input, Text, Last_Pos);
+      for Col in Wall_Range loop
+         Risk_Map (Row, Col) := Risk_Level'Value ("0" & Text (Col));
+      end loop;
+      if Row < Wall_Range'Last then
+         Row := Row + 1;
+      end if;
+   end loop;
+   Close (Input);
+
+   Row := Wall_Range'First;
+   Col := Wall_Range'First;
+   while Row /= Wall_Range'Last or Col /= Wall_Range'Last loop
+      Choose_Next_Position (Risk_Map, Row, Col);
+      Total_Risk := Total_Risk + Risk_Map (Row, Col);
+      Put_Line
+        (Risk_Map (Row, Col)'Image & ":" & Row'Image & ", " & Col'Image);
+   end loop;
+
+   Put_Line ("Answer:" & Total_Risk'Image);
+end Day15_P1;

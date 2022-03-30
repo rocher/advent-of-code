@@ -7,26 +7,23 @@ procedure Day02_P1 is
       Horizontal : Natural := 0;
    end record;
 
-   Input     : File_Type;
-   Line      : String (1 .. 16);
-   Last_Char : Natural;
-
-   P : Position_Type;
+   Input : File_Type;
+   P     : Position_Type;
 
 begin
    Open (Input, In_File, "input");
-
    while not End_Of_File (Input) loop
-      Line := (others => ' ');
-      Get_Line (Input, Line, Last_Char);
-
-      if Line (1 .. 2) = "up" then
-         P.Depth := P.Depth - Natural'Value (Line (4 .. 16));
-      elsif Line (1 .. 4) = "down" then
-         P.Depth := P.Depth + Natural'Value (Line (6 .. 16));
-      elsif Line (1 .. 7) = "forward" then
-         P.Horizontal := P.Horizontal + Natural'Value (Line (9 .. 16));
-      end if;
+      declare
+         Line : String := Get_Line (Input);
+      begin
+         if Line (1 .. 2) = "up" then
+            P.Depth := P.Depth - Natural'Value (Line (4 .. 16));
+         elsif Line (1 .. 4) = "down" then
+            P.Depth := P.Depth + Natural'Value (Line (6 .. 16));
+         elsif Line (1 .. 7) = "forward" then
+            P.Horizontal := P.Horizontal + Natural'Value (Line (9 .. 16));
+         end if;
+      end;
    end loop;
    Close (Input);
 

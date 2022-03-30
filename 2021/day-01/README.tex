@@ -1,0 +1,509 @@
+% Created 2022-01-19 Wed 21:11
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\author{Francesc Rocher}
+\date{\today}
+\title{Day 1 : Sonar Sweep}
+\hypersetup{
+ pdfauthor={Francesc Rocher},
+ pdftitle={Day 1 : Sonar Sweep},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 29.0.50 (Org mode 9.5.2)},
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+\section{PART 1}
+\label{sec:org2eadb98}
+\subsection{Statement}
+\label{sec:org9918733}
+\begin{html}
+<details>
+<summary>
+  <i>click to expand</i>
+</summary>
+\end{html}
+
+You're minding your own business on a ship at sea when the overboard alarm goes
+off! You rush to see if you can help. Apparently, one of the Elves tripped and
+accidentally sent the sleigh keys flying into the ocean!
+
+Before you know it, you're inside a submarine the Elves keep ready for
+situations like this. It's covered in Christmas lights (because of course it
+is), and it even has an experimental antenna that should be able to track the
+keys if you can boost its signal strength high enough; there's a little meter
+that indicates the antenna's signal strength by displaying 0-50 \textbf{stars}.
+
+Your instincts tell you that in order to save Christmas, you'll need to get \textbf{all
+fifty} stars by December 25th.
+
+Collect stars by solving puzzles. Two puzzles will be made available on each day
+in the Advent calendar; the second puzzle is unlocked when you complete the
+first. Each puzzle grants one star. Good luck!
+
+As the submarine drops below the surface of the ocean, it automatically performs
+a sonar sweep of the nearby sea floor. On a small screen, the sonar sweep report
+(your puzzle input) appears: each line is a measurement of the sea floor depth
+as the sweep looks further and further away from the submarine.
+
+For example, suppose you had the following report:
+
+\begin{verbatim}
+199
+200
+208
+210
+200
+207
+240
+269
+260
+263
+\end{verbatim}
+
+This report indicates that, scanning outward from the submarine, the sonar sweep
+found depths of 199, 200, 208, 210, and so on.
+
+The first order of business is to figure out how quickly the depth increases,
+just so you know what you're dealing with - you never know if the keys will get
+carried into deeper water by an ocean current or a fish or something.
+
+To do this, \textbf{count the number of times a depth measurement increases} from the
+previous measurement. (There is no measurement before the first measurement.) In
+the example above, the changes are as follows:
+
+\begin{verbatim}
+199 (N/A - no previous measurement)
+200 (increased)
+208 (increased)
+210 (increased)
+200 (decreased)
+207 (increased)
+240 (increased)
+269 (increased)
+260 (decreased)
+263 (increased)
+\end{verbatim}
+
+In this example, there are 7 measurements that are larger than the previous
+measurement.
+
+\textbf{How many measurements are larger than the previous measurement?}
+
+\begin{html}
+</details>
+\end{html}
+
+\subsection{Solution}
+\label{sec:orga4f5c03}
+The algorithm to solve this problem is so easy that don't need to be explicitly
+exposed:
+
+\begin{enumerate}
+\item read a measurement from input file
+\item compare the current measurement with the previous one
+\begin{itemize}
+\item if the previous is lesser than the current, then an increment occurred
+\end{itemize}
+\item the result is the total amount of increments detected
+\end{enumerate}
+
+\subsection{Implementation}
+\label{sec:org0017eed}
+\subsubsection{Declarations}
+\label{sec:org653fc7a}
+The input is stored in a file consisting in a set of lines with a number in
+each. To the read the file we use the generic package \texttt{Ada.Text\_IO.Integer\_IO}
+instantiated with the type \texttt{Natural}:
+
+\begin{verbatim}
+
+--  __Packages__
+package Measurement_IO is new Integer_IO (Natural);
+use Measurement_IO;
+
+\end{verbatim}
+
+Variables used in the process are:
+
+\begin{itemize}
+\item \texttt{Input}, the input file
+\item \texttt{Measurement} and \texttt{Previous\_Measurement}, to store input values
+\item \texttt{Increments}, to count the total number of increments detected
+\end{itemize}
+
+\begin{verbatim}
+
+--  __Variables__
+Input                : File_Type;
+Measurement          : Natural;
+Previous_Measurement : Natural := Natural'Last;
+Increments           : Natural := 0;
+
+\end{verbatim}
+
+\subsubsection{Process}
+\label{sec:orgc575d94}
+Simply read all input measurements and compare with previous one. If there have
+been an increment, then count it.
+
+\begin{verbatim}
+
+--  __Detect_Increments__
+Get (Input, Measurement);
+loop
+  if Previous_Measurement < Measurement then
+     Increments := Increments + 1;
+  end if;
+
+  exit when End_Of_File (Input);
+
+  --  prepare next iteration
+  Previous_Measurement := Measurement;
+  Get (Input, Measurement);
+end loop;
+
+\end{verbatim}
+
+\subsubsection{Result}
+\label{sec:orgdf09220}
+The result prints the number of detected increments.
+
+\begin{verbatim}
+
+--  __Result__
+Put_Line ("Answer:" & Increments'Image);
+
+\end{verbatim}
+
+\subsubsection{Compilation unit}
+\label{sec:org4726cd3}
+The compilation unit for this program is obtained with the composition of the
+source code blocks shown here:
+
+\begin{verbatim}
+with Ada.Text_IO; use Ada.Text_IO;
+
+procedure Day01_P1 is
+
+   --  __Packages__
+   package Measurement_IO is new Integer_IO (Natural);
+   use Measurement_IO;
+
+
+   --  __Variables__
+   Input                : File_Type;
+   Measurement          : Natural;
+   Previous_Measurement : Natural := Natural'Last;
+   Increments           : Natural := 0;
+
+begin
+   Open (Input, In_File, "__Path__" & "input");
+
+      --  __Detect_Increments__
+      Get (Input, Measurement);
+      loop
+        if Previous_Measurement < Measurement then
+           Increments := Increments + 1;
+        end if;
+
+        exit when End_Of_File (Input);
+
+        --  prepare next iteration
+        Previous_Measurement := Measurement;
+        Get (Input, Measurement);
+      end loop;
+
+   Close (Input);
+
+   --  __Result__
+   Put_Line ("Answer:" & Increments'Image);
+
+end Day01_P1;
+\end{verbatim}
+
+\subsubsection{Evaluation}
+\label{sec:org8394bbd}
+
+\begin{verbatim}
+Answer: 1446
+\end{verbatim}
+
+\section{PART 2}
+\label{sec:org94a7589}
+\subsection{Statement}
+\label{sec:orgc799151}
+\begin{html}
+<details>
+<summary>
+  <i>click to expand</i>
+</summary>
+\end{html}
+
+Considering every single measurement isn't as useful as you expected: there's
+just too much noise in the data.
+
+Instead, consider sums of a three-measurement sliding window. Again considering
+the above example:
+
+\begin{verbatim}
+199  A
+200  A B
+208  A B C
+210    B C D
+200  E   C D
+207  E F   D
+240  E F G
+269    F G H
+260      G H
+263        H
+\end{verbatim}
+
+
+Start by comparing the first and second three-measurement windows. The
+measurements in the first window are marked A (199, 200, 208); their sum is
+199 + 200 + 208 = 607. The second window is marked B (200, 208, 210); its sum
+is 618. The sum of measurements in the second window is larger than the sum of
+the first, so this first comparison \textbf{increased}.
+
+Your goal now is to count \textbf{the number of times the sum of measurements in this
+sliding window increases} from the previous sum. So, compare A with B, then
+compare B with C, then C with D, and so on. Stop when there aren't enough
+measurements left to create a new three-measurement sum.
+
+In the above example, the sum of each three-measurement window is as follows:
+
+\begin{verbatim}
+A: 607 (N/A - no previous sum)
+B: 618 (increased)
+C: 618 (no change)
+D: 617 (decreased)
+E: 647 (increased)
+F: 716 (increased)
+G: 769 (increased)
+H: 792 (increased)
+\end{verbatim}
+
+In this example, there are 5 sums that are larger than the previous sum.
+
+Consider sums of a three-measurement sliding window. \textbf{How many sums are larger
+than the previous sum?}
+
+\begin{html}
+</details>
+\end{html}
+
+\subsection{Solution}
+\label{sec:org6066d15}
+The solution is quite similar to part 1, with the different that now the
+measurements are composed by the sum of three input measurements, or a
+\emph{measurement window}. First measurement window is composed by input measurements
+1, 2 and 3. Second measurement window by the input measurements 2, 3 and 4, and
+so on. The firs measurement windows is complete when the third measurement input
+is read, so no comparisons with previous measurement window can be done until
+that point. From third input onward, there will be two measurement windows
+completed that can be compared.
+
+Each input measurement must be added in three consecutive measurement windows:
+
+\begin{verbatim}
+          ,------ 199  A
+window 1 <        200  A B ------.
+          `---,-- 208  A B C      > window 2
+    window 3 <    210    B C D --'
+              `-- 200  E   C D
+
+ Input measurement 'A' must be added to windows 1, 2 and 3
+\end{verbatim}
+
+That means that three measurement windows must be updated with each input. But
+it is not necessary to keep them all, just the last three.
+
+\subsection{Implementation}
+\label{sec:org9f3ec32}
+Because three measurement windows need to be cyclically updated during the
+process, the implementation in Ada can make use of \texttt{mod} types. In particular,
+\texttt{mod 3} (values 0, 1 \& 2) will be required for the window index.
+
+Arithmetic operations with this type are used to select windows. For example,
+when \texttt{I = 2} then \texttt{I + 1 = 0} refers to the \emph{next} window that will be updated.
+That is, the oldest and complete of the three.
+
+\subsubsection{Declarations}
+\label{sec:org15bafaf}
+Two types are declared to manage the measurement windows,
+
+\begin{verbatim}
+
+--  __Types__
+type Window_Index is mod 3;
+type Measurement_Window is array (Window_Index) of Natural;
+
+\end{verbatim}
+
+and the variables to manage them:
+
+\begin{verbatim}
+
+--  __New_Variables__
+Input_Window         : Measurement_Window := (others => 0);
+I                    : Window_Index;
+
+\end{verbatim}
+
+\subsubsection{Process}
+\label{sec:org0dfaa22}
+
+At the beginning there are no three windows, still. Thus, the process starts
+reading the first three input measurements and add them to the respective
+windows:
+
+\begin{verbatim}
+
+--  __Read_First_Input_Values__
+Get (Input, Input_Window (0));  --  1st measurement --> 1st window
+
+Get (Input, Input_Window (1));  --  2nd measurement --> 1st & 2nd windows
+Input_Window (0) := Input_Window (0) + Input_Window (1);
+
+Get (Input, Input_Window (2));  --  3rd measurement --> 1st, 2nd & 3rd windows
+Input_Window (0) := Input_Window (0) + Input_Window (2);
+Input_Window (1) := Input_Window (1) + Input_Window (2);
+
+\end{verbatim}
+
+Once the first window is complete, loop over the rest of the input measurements:
+
+\begin{verbatim}
+
+--  __Process_Rest_Of_Input_Values__
+I := 2;  --  current window
+loop
+  Measurement := Input_Window (I + 1);
+  if Previous_Measurement < Measurement then
+     Increments := Increments + 1;
+  end if;
+
+  exit when End_Of_File (Input);
+
+  --  prepare next itaration
+  I := I + 1;
+  Get (Input, Input_Window (I));
+  Input_Window (I - 1) := Input_Window (I - 1) + Input_Window (I);
+  Input_Window (I - 2) := Input_Window (I - 2) + Input_Window (I);
+  Previous_Measurement := Measurement;
+end loop;
+
+\end{verbatim}
+
+\subsubsection{Result}
+\label{sec:orgb2101bd}
+The result prints the number of detected increments, as before.
+
+\subsubsection{Compilation unit}
+\label{sec:org8c23fbe}
+The compilation unit for this program is obtained with the composition of the
+source code blocks shown here:
+
+\begin{verbatim}
+with Ada.Text_IO; use Ada.Text_IO;
+
+procedure Day01_P2 is
+
+   --  __Types__
+   type Window_Index is mod 3;
+   type Measurement_Window is array (Window_Index) of Natural;
+
+
+   --  __Packages__
+   package Measurement_IO is new Integer_IO (Natural);
+   use Measurement_IO;
+
+
+   --  __Variables__
+   Input                : File_Type;
+   Measurement          : Natural;
+   Previous_Measurement : Natural := Natural'Last;
+   Increments           : Natural := 0;
+
+
+   --  __New_Variables__
+   Input_Window         : Measurement_Window := (others => 0);
+   I                    : Window_Index;
+
+begin
+   Open (Input, In_File, "__Path__" & "input");
+
+      --  __Read_First_Input_Values__
+      Get (Input, Input_Window (0));  --  1st measurement --> 1st window
+
+      Get (Input, Input_Window (1));  --  2nd measurement --> 1st & 2nd windows
+      Input_Window (0) := Input_Window (0) + Input_Window (1);
+
+      Get (Input, Input_Window (2));  --  3rd measurement --> 1st, 2nd & 3rd windows
+      Input_Window (0) := Input_Window (0) + Input_Window (2);
+      Input_Window (1) := Input_Window (1) + Input_Window (2);
+
+
+      --  __Process_Rest_Of_Input_Values__
+      I := 2;  --  current window
+      loop
+        Measurement := Input_Window (I + 1);
+        if Previous_Measurement < Measurement then
+           Increments := Increments + 1;
+        end if;
+
+        exit when End_Of_File (Input);
+
+        --  prepare next itaration
+        I := I + 1;
+        Get (Input, Input_Window (I));
+        Input_Window (I - 1) := Input_Window (I - 1) + Input_Window (I);
+        Input_Window (I - 2) := Input_Window (I - 2) + Input_Window (I);
+        Previous_Measurement := Measurement;
+      end loop;
+
+   Close (Input);
+
+   --  __Result__
+   Put_Line ("Answer:" & Increments'Image);
+
+end Day01_P2;
+\end{verbatim}
+
+\subsubsection{Evaluation}
+\label{sec:org4c13111}
+
+\begin{verbatim}
+Answer: 1486
+\end{verbatim}
+
+\section{REFERENCES}
+\label{sec:org1833ee6}
+
+\begin{itemize}
+\item source: \href{https://adventofcode.com/2021/day/1}{Advent of Code 2021, day 1}
+\item tangled source code files:
+\begin{itemize}
+\item \url{src/day01\_p1.adb}
+\item \url{src/day01\_p2.adb}
+\end{itemize}
+\item input file: \url{input}
+\item Ada/SPARK support for Org-Babel: \href{https://github.com/rocher/ob-ada-spark}{ob-ada-spark}
+\end{itemize}
+\end{document}

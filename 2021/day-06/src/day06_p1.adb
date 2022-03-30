@@ -1,44 +1,45 @@
 -----------------------------------------------------------------------------
 --
 --  Source code generated automatically by 'org-babel-tangle' from
---  file /home/ada/advent-of-code/2021/day-06/README.org
---  2021-12-12 01:31:13
+--  file /home/ada/advent-of-code/main/2021/day-06/README.org
+--  2022-01-19 21:34:01
 --
 --  DO NOT EDIT!!
 --
 -----------------------------------------------------------------------------
 
+
 with Ada.Text_IO;                        use Ada.Text_IO;
 with Ada.Containers.Doubly_Linked_Lists; use Ada.Containers;
 
 procedure Day06_P1 is
-   
+
    --  __Types__
    subtype Timer_Type is Natural range 0 .. 8;
-   
-   
+
+
    --  __Package_Timer_IO__
    package Timer_IO is new Ada.Text_IO.Integer_IO (Timer_Type);
-   
-   
+
+
    --  __Package_Lanternfish__
    package Lanternfish_School is new Doubly_Linked_Lists (Timer_Type, "=");
-   
-   
+
+
    --  __Variables_For_IO__
    Input : File_Type;
    Comma : Character;
-   
-   
+
+
    --  __Variables_For_Simulation__
    Timer  : Timer_Type;
    School : Lanternfish_School.List;
    Fish   : Lanternfish_School.Cursor;
    Resets : Natural := 0;
-   
+
 begin
-   Open (Input, In_File, "/home/ada/advent-of-code/2021/day-06/" & "input");
-      
+   Open (Input, In_File, "/home/ada/advent-of-code/main/2021/day-06/" & "input");
+
       -- __Read_Timers__
       Timer_IO.Get (Input, Timer);
       loop
@@ -47,12 +48,12 @@ begin
          Get (Input, Comma);
          Timer_IO.Get (Input, Timer);
       end loop;
-      
+
    Close (Input);
-   
+
    --  __Simulate_80_Days
    for Day in 1 .. 80 loop
-   
+
       --  decrement timers or current fishes
       Fish := School.First;
       while Lanternfish_School.Has_Element (Fish) loop
@@ -65,14 +66,14 @@ begin
          end if;
          Lanternfish_School.Next (Fish);
       end loop;
-   
+
       --  add new born fishes
       School.Append (8, Count_Type (Resets));
       Resets := 0;
    end loop;
-   
-   
+
+
    --  __Result__
    Put_Line ("Answer:" & School.Length'Image);
-   
+
 end Day06_P1;

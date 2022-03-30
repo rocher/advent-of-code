@@ -6,9 +6,7 @@ procedure Day03_P1 is
 
    subtype Report_Number_Index is Natural range 1 .. Report_Number_Width;
 
-   Input     : File_Type;
-   Line      : String (1 .. 16) := (others => ' ');
-   Last_Char : Natural;
+   Input : File_Type;
 
    Gamma_Rate    : Natural := 0;
    Epsilon_Rate  : Natural := 0;
@@ -20,13 +18,16 @@ begin
    Open (Input, In_File, "input");
 
    while not End_Of_File (Input) loop
-      Get_Line (Input, Line, Last_Char);
-      Report_Length := Report_Length + 1;
+      declare
+         Line : String := Get_Line (Input);
+      begin
+         Report_Length := Report_Length + 1;
 
-      --  count bits at each position
-      for I in Bits'Range loop
-         Bits (I) := Bits (I) + Natural'Value ('0' & Line (I));
-      end loop;
+         --  count bits at each position
+         for I in Bits'Range loop
+            Bits (I) := Bits (I) + Natural'Value ('0' & Line (I));
+         end loop;
+      end;
    end loop;
 
    Close (Input);

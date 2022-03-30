@@ -8,29 +8,26 @@ procedure Day02_P2 is
       Aim        : Natural := 0;
    end record;
 
-   Input     : File_Type;
-   Line      : String (1 .. 16);
-   Last_Char : Natural;
-
+   Input : File_Type;
    P     : Position_Type;
    Value : Natural;
 
 begin
    Open (Input, In_File, "input");
-
    while not End_Of_File (Input) loop
-      Line := (others => ' ');
-      Get_Line (Input, Line, Last_Char);
-
-      if Line (1 .. 2) = "up" then
-         P.Aim := P.Aim - Natural'Value (Line (4 .. 16));
-      elsif Line (1 .. 4) = "down" then
-         P.Aim := P.Aim + Natural'Value (Line (6 .. 16));
-      elsif Line (1 .. 7) = "forward" then
-         Value        := Natural'Value (Line (9 .. 16));
-         P.Horizontal := P.Horizontal + Value;
-         P.Depth      := P.Depth + (P.Aim * Value);
-      end if;
+      declare
+         Line : String := Get_Line (Input);
+      begin
+         if Line (1 .. 2) = "up" then
+            P.Aim := P.Aim - Natural'Value (Line (3 .. 4));
+         elsif Line (1 .. 4) = "down" then
+            P.Aim := P.Aim + Natural'Value (Line (5 .. 6));
+         elsif Line (1 .. 7) = "forward" then
+            Value        := Natural'Value (Line (8 .. 9));
+            P.Horizontal := P.Horizontal + Value;
+            P.Depth      := P.Depth + (P.Aim * Value);
+         end if;
+      end;
    end loop;
    Close (Input);
 
