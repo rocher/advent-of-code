@@ -1,0 +1,135 @@
+#+OPTIONS: num:t skip:t
+#+TITLE:Day 2 : Dive!
+#+AUTHOR: Francesc Rocher
+
+* PART 1
+** Statement
+Now, you need to figure out how to pilot this thing.
+
+It seems like the submarine can take a series of commands like forward 1, down 2, or up 3:
+
+  - ~forward X~ increases the horizontal position by X units.
+  - ~down X~ *increases* the depth by X units.
+  - ~up X~ *decreases* the depth by X units.
+
+Note that since you're on a submarine, down and up affect your *depth*, and so
+they have the opposite result of what you might expect.
+
+The submarine seems to already have a planned course (your puzzle input). You
+should probably figure out where it's going. For example:
+
+#+begin_example
+forward 5
+down 5
+forward 8
+up 3
+down 8
+forward 2
+#+end_example
+
+Your horizontal position and depth both start at 0. The steps above would then
+modify them as follows:
+
+  - ~forward 5~ adds 5 to your horizontal position, a total of ~5~.
+  - ~down 5~ adds 5 to your depth, resulting in a value of ~5~.
+  - ~forward 8~ adds 8 to your horizontal position, a total of ~13~.
+  - ~up 3~ decreases your depth by 3, resulting in a value of ~2~.
+  - ~down 8~ adds 8 to your depth, resulting in a value of ~10~.
+  - ~forward 2~ adds 2 to your horizontal position, a total of ~15~.
+
+After following these instructions, you would have a horizontal position of ~15~
+and a depth of ~10~. (Multiplying these together produces ~150~.)
+
+Calculate the horizontal position and depth you would have after following the
+planned course. *What do you get if you multiply your final horizontal position
+by your final depth?*
+
+** Input
+
+See file [[file:input]].
+
+** Solution
+
+** Implementation
+
+*** Declarations
+
+#+name: d02p1__declarations__
+#+begin_src ada
+  -- d02p1__declarations__
+
+  type Position_Type is record
+     Depth      : Natural := 0;
+     Horizontal : Natural := 0;
+  end record;
+#+end_src
+
+*** Variables
+
+#+name: d02p1__variables__
+#+begin_src ada
+  -- d02p1__variables__
+
+  Input    : File_Type;
+  Text     : String (1 .. 16);
+  Last_Pos : Natural;
+
+  P : Position_Type;
+#+end_src
+
+*** Process
+
+#+name: d02p1__process__
+#+begin_src ada
+  -- d02p1__process__
+
+  while not End_Of_File (Input) loop
+     Text := (others => ' ');
+     Get_Line (Input, Text, Last_Pos);
+
+     if Text (1 .. 2) = "up" then
+        P.Depth := P.Depth - Natural'Value (Text (4 .. 16));
+     elsif Text (1 .. 4) = "down" then
+        P.Depth := P.Depth + Natural'Value (Text (6 .. 16));
+     elsif Text (1 .. 7) = "forward" then
+        P.Horizontal := P.Horizontal + Natural'Value (Text (9 .. 16));
+     end if;
+  end loop;
+#+end_src
+
+*** Result
+
+#+name: d02p1__result__
+#+begin_src ada
+  -- d02p1__result__
+
+  Put_Line ("Answer:" & Natural'Image (P.Depth * P.Horizontal));
+#+end_src
+
+*** Compilation Unit
+
+#+begin_src ada :exports both :noweb yes :unit day02_p1
+  with Ada.Text_IO; use Ada.Text_IO;
+  procedure Day02_P1 is
+     <<d02p1__declarations__>>
+     <<d02p1__variables__>>
+  begin
+     Open (Input, In_File, "/home/ada/advent-of-code/2021/day-02/input");
+        <<d02p1__process__>>
+     Close (Input);
+
+     <<d02p1__result__>>
+  end Day02_P1;
+#+end_src
+
+#+RESULTS:
+: Answer: 1451208
+
+* PART 2
+** Statement
+
+** Input
+
+** Solution
+
+** Implementation

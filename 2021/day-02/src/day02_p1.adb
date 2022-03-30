@@ -1,4 +1,3 @@
-with Ada.Strings; use Ada.Strings;
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Day02_P1 is
@@ -7,9 +6,9 @@ procedure Day02_P1 is
       Horizontal : Natural := 0;
    end record;
 
-   Input     : File_Type;
-   Line      : String (1 .. 16);
-   Last_Char : Natural;
+   Input    : File_Type;
+   Text     : String (1 .. 16);
+   Last_Pos : Natural;
 
    P : Position_Type;
 
@@ -17,15 +16,15 @@ begin
    Open (Input, In_File, "input");
 
    while not End_Of_File (Input) loop
-      Line := (others => ' ');
-      Get_Line (Input, Line, Last_Char);
+      Text := (others => ' ');
+      Get_Line (Input, Text, Last_Pos);
 
-      if Line (1 .. 2) = "up" then
-         P.Depth := P.Depth - Natural'Value (Line (4 .. 16));
-      elsif Line (1 .. 4) = "down" then
-         P.Depth := P.Depth + Natural'Value (Line (6 .. 16));
-      elsif Line (1 .. 7) = "forward" then
-         P.Horizontal := P.Horizontal + Natural'Value (Line (9 .. 16));
+      if Text (1 .. 2) = "up" then
+         P.Depth := P.Depth - Natural'Value (Text (4 .. 16));
+      elsif Text (1 .. 4) = "down" then
+         P.Depth := P.Depth + Natural'Value (Text (6 .. 16));
+      elsif Text (1 .. 7) = "forward" then
+         P.Horizontal := P.Horizontal + Natural'Value (Text (9 .. 16));
       end if;
    end loop;
    Close (Input);
