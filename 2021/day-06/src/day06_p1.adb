@@ -1,79 +1,74 @@
 -----------------------------------------------------------------------------
 --
 --  Source code generated automatically by 'org-babel-tangle' from
---  file /home/ada/advent-of-code/main/2021/day-06/README.org
---  2022-01-19 21:34:01
+--  file /home/ada/advent-of-code/2021/day-06/src/day06_p1.adb
+--  2022-07-15 19:40:30
 --
 --  DO NOT EDIT!!
 --
 -----------------------------------------------------------------------------
 
-
 with Ada.Text_IO;                        use Ada.Text_IO;
 with Ada.Containers.Doubly_Linked_Lists; use Ada.Containers;
 
 procedure Day06_P1 is
-
-   --  __Types__
+   --  __Definition_Of_Timer_Type__
    subtype Timer_Type is Natural range 0 .. 8;
+   --  __Package_For_Reading_Input_File__
+   package Timer_IO is new Integer_IO (Timer_Type);
+   --  __Package_For_Lanternfish_School__
+   package Lanternfish_School is new Doubly_Linked_Lists (Timer_Type);
+   --  __Variables_For_Reading_Input_File__
 
-
-   --  __Package_Timer_IO__
-   package Timer_IO is new Ada.Text_IO.Integer_IO (Timer_Type);
-
-
-   --  __Package_Lanternfish__
-   package Lanternfish_School is new Doubly_Linked_Lists (Timer_Type, "=");
-
-
-   --  __Variables_For_IO__
-   Input : File_Type;
-   Comma : Character;
-
-
+   Input_File : File_Type;
+   Comma_Char : Character;
    --  __Variables_For_Simulation__
-   Timer  : Timer_Type;
-   School : Lanternfish_School.List;
-   Fish   : Lanternfish_School.Cursor;
-   Resets : Natural := 0;
 
+   Timer_Value    : Timer_Type;
+   School         : Lanternfish_School.List;
+   Fish_Position  : Lanternfish_School.Cursor;
+   Resets_Counter : Natural := 0;
 begin
-   Open (Input, In_File, "/home/ada/advent-of-code/main/2021/day-06/" & "input");
+   Open (Input_File, In_File, "/home/ada/advent-of-code/2021/day-06/" & "input");
+      --  __Read_Timers_From_Input_File__
 
-      -- __Read_Timers__
-      Timer_IO.Get (Input, Timer);
+      Timer_IO.Get (Input_File, Timer_Value);
       loop
-         School.Append (Timer);
-         exit when End_Of_File (Input);
-         Get (Input, Comma);
-         Timer_IO.Get (Input, Timer);
+         School.Append (Timer_Value);
+         exit when End_Of_File (Input_File);
+         Get (Input_File, Comma_Char);
+         Timer_IO.Get (Input_File, Timer_Value);
       end loop;
-
-   Close (Input);
-
-   --  __Simulate_80_Days
+   Close (Input_File);
+   --  __Brute_Force_Simulation_Of_80_Days__
+   Per_Day:
    for Day in 1 .. 80 loop
 
-      --  decrement timers or current fishes
-      Fish := School.First;
-      while Lanternfish_School.Has_Element (Fish) loop
-         Timer := Lanternfish_School.Element (Fish);
-         if Timer = 0 then
-            Resets := Resets + 1;
-            School.Replace_Element (Fish, 6);
-         else
-            School.Replace_Element (Fish, Timer - 1);
-         end if;
-         Lanternfish_School.Next (Fish);
-      end loop;
+     --  decrement the timer value of each lanternfish
+     Fish_Position := School.First;
 
-      --  add new born fishes
-      School.Append (8, Count_Type (Resets));
-      Resets := 0;
-   end loop;
+     Per_Fish:
+     while Lanternfish_School.Has_Element (Fish_Position) loop
 
+       Timer_Value := Lanternfish_School.Element (Fish_Position);
+       if Timer_Value = 0 then
+          Resets_Counter := Resets_Counter + 1;
+          School.Replace_Element (Fish_Position, 6);
+       else
+          School.Replace_Element (Fish_Position, Timer_Value - 1);
+       end if;
 
-   --  __Result__
+       Lanternfish_School.Next (Fish_Position);
+     end loop Per_Fish;
+
+     --  add all newly hatched lanternfish at once: must be added after the
+     --  previous loop has finished to avoid growing the list while iterating
+     --  over the elements; all newly hatched lanternfish have a maximum timer
+     --  value
+     School.Append (Timer_Type'Last, Count_Type (Resets_Counter));
+     Resets_Counter := 0;
+
+   end loop Per_Day;
+   --  __Population_Size_After_80_Days__
    Put_Line ("Answer:" & School.Length'Image);
-
 end Day06_P1;

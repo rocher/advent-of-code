@@ -1,57 +1,33 @@
 -----------------------------------------------------------------------------
 --
 --  Source code generated automatically by 'org-babel-tangle' from
---  file /home/ada/advent-of-code/main/2021/day-06/README.org
---  2022-01-19 21:34:01
+--  file /home/ada/advent-of-code/2021/day-06/src/day06_z1.adb
+--  2022-07-15 19:40:30
 --
 --  DO NOT EDIT!!
 --
 -----------------------------------------------------------------------------
 
-
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Day06_Z1 is
-
-   --  __Types__
+   --  __Definition_Of_Timer_Type__
    subtype Timer_Type is Natural range 0 .. 8;
+   --  __Package_For_Reading_Input_File__
+   package Timer_IO is new Integer_IO (Timer_Type);
+   --  __Variables_For_Reading_Input_File__
 
-
-   --  __Package_Timer_IO__
-   package Timer_IO is new Ada.Text_IO.Integer_IO (Timer_Type);
-
-
-   --  __Variables_For_IO__
-   Input : File_Type;
-   Comma : Character;
-
-
-   --  __New_Variables_For_IO__
-   Output : File_Type;
-
-
-   --  __Variables_For_Counting__
-   N           : Natural;
-   Tmp         : Long_Integer;
-   Timer_Count : array (Timer_Type) of Long_Integer := (others => 0);
-   Population  : Long_Integer := 0;
+   Input_File : File_Type;
+   Comma_Char : Character;
+   --  __Variable_For_Writing_Output_File__
+   Output_File : File_Type;
 
 begin
-   Open (Input, In_File, "/home/ada/advent-of-code/main/2021/day-06/" & "input");
-
-      --  __Read_And_Count_Lanternfish__
-      Timer_IO.Get (Input, N);
-      loop
-         Timer_Count (N) := Timer_Count (N) + 1;
-         exit when End_Of_File (Input);
-         Get (Input, Comma);
-         Timer_IO.Get (Input, N);
-      end loop;
+   Open (Input, In_File, "/home/ada/advent-of-code/2021/day-06/" & "input");
 
    Close (Input);
 
-   Create (Output, Out_File,  "/home/ada/advent-of-code/main/2021/day-06/" & "population");
-
+   Create (Output, Out_File,  "/home/ada/advent-of-code/2021/day-06/" & "population");
       --  __Simulate_256_Days_And_Write_Population__
 
       --  population of initial state
@@ -60,6 +36,7 @@ begin
       end loop;
       Put_Line (Output, Population'Image);
 
+      loop Per_Day:
       for Day in 1 .. 256 loop
          --  decrement timers
          Tmp := Timer_Count (0);
@@ -75,8 +52,7 @@ begin
 
          --  add new born lanternfish to total population
          Population := Population + Tmp;
-         Put_Line (Output, Population'Image);
-      end loop;
-
+         Put_Line (Output_File, Population'Image);
+      end loop Per_Day;
    Close (Output);
 end Day06_Z1;

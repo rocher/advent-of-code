@@ -1,68 +1,63 @@
 -----------------------------------------------------------------------------
 --
 --  Source code generated automatically by 'org-babel-tangle' from
---  file /home/ada/advent-of-code/main/2021/day-06/README.org
---  2022-01-19 21:34:01
+--  file /home/ada/advent-of-code/2021/day-06/src/day06_p2.adb
+--  2022-07-15 19:40:30
 --
 --  DO NOT EDIT!!
 --
 -----------------------------------------------------------------------------
 
-
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Day06_P2 is
 
-   --  __Types__
+   --  __Definition_Of_Timer_Type__
    subtype Timer_Type is Natural range 0 .. 8;
+   --  __Package_For_Reading_Input_File__
+   package Timer_IO is new Integer_IO (Timer_Type);
+   --  __Variables_For_Reading_Input_File__
 
+   Input_File : File_Type;
+   Comma_Char : Character;
+   --  __Variables_For_Counting_Timer_Values__
 
-   --  __Package_Timer_IO__
-   package Timer_IO is new Ada.Text_IO.Integer_IO (Timer_Type);
-
-
-   --  __Variables_For_IO__
-   Input : File_Type;
-   Comma : Character;
-
-
-   --  __Variables_For_Counting__
-   N           : Natural;
-   Tmp         : Long_Integer;
+   Timer_Value : Timer_Type;
+   Timer_Zero  : Long_Integer;
    Timer_Count : array (Timer_Type) of Long_Integer := (others => 0);
    Population  : Long_Integer := 0;
 
 begin
-   Open (Input, In_File, "/home/ada/advent-of-code/main/2021/day-06/" & "input");
 
-      --  __Read_And_Count_Lanternfish__
-      Timer_IO.Get (Input, N);
+   Open (Input_File, In_File, "/home/ada/advent-of-code/2021/day-06/" & "input");
+      --  __Read_Input_File_And_Count_Lanternfish__
+
+      Timer_IO.Get (Input_File, Timer_Value);
       loop
-         Timer_Count (N) := Timer_Count (N) + 1;
-         exit when End_Of_File (Input);
-         Get (Input, Comma);
-         Timer_IO.Get (Input, N);
+         Timer_Count (Timer_Value) := Timer_Count (Timer_Value) + 1;
+         exit when End_Of_File (Input_File);
+         Get (Input_File, Comma_Char);
+         Timer_IO.Get (Input_File, Timer_Value);
       end loop;
+   Close (Input_File);
 
-   Close (Input);
+   --  __Simulation_Of_256_Days__
 
-   --  __Simulate_256_Days__
    for Day in 1 .. 256 loop
       --  decrement timers
-      Tmp := Timer_Count (0);
+      Timer_Zero := Timer_Count (0);
       Timer_Count (0 .. 7) := Timer_Count (1 .. 8);
 
-      --  reset to 6 all timers that reached 0
-      Timer_Count (6) := Timer_Count (6) + Tmp;
+      --  reset to 6 all timers that reached value 0
+      Timer_Count (6) := Timer_Count (6) + Timer_Zero;
 
-      --  add new lanternfish per each timer that reached 0
-      Timer_Count (Timer_Type'Last) := Tmp;
+      --  add newly hatched lanternfish with timer value of 8
+      Timer_Count (8) := Timer_Zero;
    end loop;
+   --  __Population_Size_After_256_Days__
 
-
-   --  __Result_Population__
-   for T in Timer_Type loop
-      Population := Population + Timer_Count (T);
+   for Value in Timer_Type loop
+      Population := Population + Timer_Count (Value);
    end loop;
 
    Put_Line ("Answer:" & Population'Image);
