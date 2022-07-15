@@ -129,6 +129,7 @@ The type of the timer each lanternfish has is a natural number in the range
 #+name: __Definition_Of_Timer_Type__
 #+begin_src ada
   --  __Definition_Of_Timer_Type__
+
   subtype Timer_Type is Natural range 0 .. 8;
 #+end_src
 
@@ -139,6 +140,7 @@ appropriate list type and all required operations on lists
 #+name: __Package_For_Lanternfish_School__
 #+begin_src ada
   --  __Package_For_Lanternfish_School__
+
   package Lanternfish_School is new Doubly_Linked_Lists (Timer_Type);
 #+end_src
 
@@ -147,6 +149,7 @@ To read the input file we need
 #+name: __Package_For_Reading_Input_File__
 #+begin_src ada
   --  __Package_For_Reading_Input_File__
+
   package Timer_IO is new Integer_IO (Timer_Type);
 #+end_src
 
@@ -202,6 +205,7 @@ Then, simulate the generations of 80 days:
 #+name: __Brute_Force_Simulation_Of_80_Days__
 #+begin_src ada
   --  __Brute_Force_Simulation_Of_80_Days__
+
   Per_Day:
   for Day in 1 .. 80 loop
 
@@ -238,6 +242,7 @@ The result is given as the length of the list
 #+name: __Population_Size_After_80_Days__
 #+begin_src ada
   --  __Population_Size_After_80_Days__
+
   Put_Line ("Answer:" & School.Length'Image);
 #+end_src
 
@@ -253,17 +258,22 @@ The result is given as the length of the list
   with Ada.Containers.Doubly_Linked_Lists; use Ada.Containers;
 
   procedure Day06_P1 is
+
      <<__Definition_Of_Timer_Type__>>
      <<__Package_For_Reading_Input_File__>>
      <<__Package_For_Lanternfish_School__>>
      <<__Variables_For_Reading_Input_File__>>
      <<__Variables_For_Simulation__>>
+
   begin
+
      Open (Input_File, In_File, "__Current_Path__" & "input");
         <<__Read_Timers_From_Input_File__>>
      Close (Input_File);
+
      <<__Brute_Force_Simulation_Of_80_Days__>>
      <<__Population_Size_After_80_Days__>>
+
   end Day06_P1;
 #+end_src
 
@@ -432,6 +442,7 @@ An output file to write population size:
 #+name: __Variable_For_Writing_Output_File__
 #+begin_src ada
   --  __Variable_For_Writing_Output_File__
+
   Output_File : File_Type;
 #+end_src
 
@@ -482,12 +493,15 @@ source code blocks shown here:
   with Ada.Text_IO; use Ada.Text_IO;
 
   procedure Day06_Z1 is
+
      <<__Definition_Of_Timer_Type__>>
      <<__Package_For_Reading_Input_File__>>
      <<__Variables_For_Reading_Input_File__>>
      <<__Variable_For_Writing_Output_File__>>
      <<__Variables_For_Counting__>>
+
   begin
+
      Open (Input, In_File, "__Current_Path__" & "input");
         <<__Read_And_Count_Lanternfish__>>
      Close (Input);
@@ -495,6 +509,7 @@ source code blocks shown here:
      Create (Output, Out_File,  "__Current_Path__" & "population");
         <<__Simulate_256_Days_And_Write_Population__>>
      Close (Output);
+
   end Day06_Z1;
 #+end_src
 
@@ -511,6 +526,8 @@ Population after 80 days
 #+RESULTS:
 [[file:population-80.eps]]
 
+#+caption: Population Growth After 80 Days
+
 Population after 256 days
 #+begin_src gnuplot :exports both :file population-256.eps :term eps
   plot "population" title "Lanternfish" with lines lw 5
@@ -520,6 +537,10 @@ Population after 256 days
 #+RESULTS:
 [[file:population-256.eps]]
 
+#+html: [[file:population-256.png]]
+
+
+#+latex: \newpage
 * References
 
   * source: [[https://adventofcode.com/2021/day/6][Advent of Code 2021, day 6]]
