@@ -555,4 +555,4 @@ Population after 256 days
 # org-export-use-babel: nil
 # org-latex-listings: t
 # End:
-# (org-latex-export-to-pdf)
+# (progn (load-file "./setup.el") (org-latex-export-to-pdf))
