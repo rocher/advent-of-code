@@ -231,10 +231,9 @@ Then, simulate the generations of 80 days:
 *** Result
 The result is given as the length of the list
 
-#+name: __Population_Size_After_80_Days__
+#+name: __Write_Population_Size_After_80_Days__
 #+begin_src ada
-  --  __Population_Size_After_80_Days__
-
+  --  __Write_Population_Size_After_80_Days__
   Put_Line ("Answer:" & School.Length'Image);
 #+end_src
 
@@ -264,7 +263,7 @@ The result is given as the length of the list
      Close (Input_File);
 
      <<__Brute_Force_Simulation_Of_80_Days__>>
-     <<__Population_Size_After_80_Days__>>
+     <<__Write_Population_Size_After_80_Days__>>
 
   end Day06_P1;
 #+end_src
@@ -378,10 +377,9 @@ and then simulate 256 days
 *** Result
 The result is given as the sum of all lanternfish timers after 256 days
 
-#+name: __Population_Size_After_256_Days__
+#+name: __Write_Population_Size_After_256_Days__
 #+begin_src ada
-  --  __Population_Size_After_256_Days__
-
+  --  __Write_Population_Size_After_256_Days__
   for Value in Timer_Type loop
      Population := Population + Timer_Count (Value);
   end loop;
@@ -412,7 +410,7 @@ The result is given as the sum of all lanternfish timers after 256 days
      Close (Input_File);
 
      <<__Simulation_Of_256_Days__>>
-     <<__Population_Size_After_256_Days__>>
+     <<__Write_Population_Size_After_256_Days__>>
 
   end Day06_P2;
 #+end_src
