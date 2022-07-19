@@ -459,7 +459,7 @@ file:
      --  add new lanternfish per each timer that reached 0
      Timer_Count (8) := Timer_Zero;
 
-     --  add new born lanternfish to total population
+     --  add newly hatched lanternfish to total population
      Population := Population + Timer_Zero;
      Put_Line (Output_File, Population'Image);
   end loop;
