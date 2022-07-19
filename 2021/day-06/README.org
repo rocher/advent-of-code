@@ -129,7 +129,6 @@ The type of the timer each lanternfish has is a natural number in the range
 #+name: __Definition_Of_Timer_Type__
 #+begin_src ada
   --  __Definition_Of_Timer_Type__
-
   subtype Timer_Type is Natural range 0 .. 8;
 #+end_src
 
@@ -140,7 +139,6 @@ appropriate list type and all required operations on lists
 #+name: __Package_For_Lanternfish_School__
 #+begin_src ada
   --  __Package_For_Lanternfish_School__
-
   package Lanternfish_School is new Doubly_Linked_Lists (Timer_Type);
 #+end_src
 
@@ -149,7 +147,6 @@ To read the input file we need
 #+name: __Package_For_Reading_Input_File__
 #+begin_src ada
   --  __Package_For_Reading_Input_File__
-
   package Timer_IO is new Integer_IO (Timer_Type);
 #+end_src
 
@@ -169,7 +166,6 @@ Variables required:
 #+name: __Variables_For_Reading_Input_File__
 #+begin_src ada
   --  __Variables_For_Reading_Input_File__
-
   Input_File : File_Type;
   Comma_Char : Character;
 #+end_src
@@ -177,7 +173,6 @@ Variables required:
 #+name: __Variables_For_Simulation__
 #+begin_src ada
   --  __Variables_For_Simulation__
-
   Timer_Value    : Timer_Type;
   School         : Lanternfish_School.List;
   Fish_Position  : Lanternfish_School.Cursor;
@@ -190,7 +185,6 @@ First of all, it is necessary to read all lanternfish timers:
 #+name: __Read_Timers_From_Input_File__
 #+begin_src ada
   --  __Read_Timers_From_Input_File__
-
   loop
      Timer_IO.Get (Input_File, Timer_Value);
      School.Append (Timer_Value);
@@ -204,7 +198,6 @@ Then, simulate the generations of 80 days:
 #+name: __Brute_Force_Simulation_Of_80_Days__
 #+begin_src ada
   --  __Brute_Force_Simulation_Of_80_Days__
-
   Per_Day:
   for Day in 1 .. 80 loop
 
@@ -341,7 +334,6 @@ In bold, the sequence of a lanternfish with timer ~1~ at the initial state.
 #+name: __Variables_For_Counting_Timer_Values__
 #+begin_src ada
   --  __Variables_For_Counting_Timer_Values__
-
   Timer_Value : Timer_Type;
   Timer_Zero  : Long_Integer;
   Timer_Count : array (Timer_Type) of Long_Integer := (others => 0);
@@ -354,7 +346,6 @@ First of all, read timers of initial state
 #+name: __Read_Input_File_And_Count_Lanternfish__
 #+begin_src ada
   --  __Read_Input_File_And_Count_Lanternfish__
-
   loop
      Timer_IO.Get (Input_File, Timer_Value);
      Timer_Count (Timer_Value) := Timer_Count (Timer_Value) + 1;
@@ -368,7 +359,6 @@ and then simulate 256 days
 #+name: __Simulation_Of_256_Days__
 #+begin_src ada
   --  __Simulation_Of_256_Days__
-
   for Day in 1 .. 256 loop
      --  decrement timers
      Timer_Zero := Timer_Count (0);
@@ -443,7 +433,6 @@ An output file to write population size:
 #+name: __Variable_For_Writing_Output_File__
 #+begin_src ada
   --  __Variable_For_Writing_Output_File__
-
   Output_File : File_Type;
 #+end_src
 
