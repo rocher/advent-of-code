@@ -1,3 +1,13 @@
+-----------------------------------------------------------------------------
+--
+--  Source code generated automatically by 'org-babel-tangle' from
+--  file /home/ada/advent-of-code/2021/day-06/src/day06_p2.adb
+--  2022-07-20 20:07:43
+--
+--  DO NOT EDIT!!
+--
+-----------------------------------------------------------------------------
+
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Day06_P2 is
@@ -17,7 +27,7 @@ procedure Day06_P2 is
 
 begin
 
-   Open (Input_File, In_File, "__Current_Path__" & "input");
+   Open (Input_File, In_File, "/home/ada/advent-of-code/2021/day-06/" & "input");
       --  __Read_Input_File_And_Count_Lanternfish__
       loop
          Timer_IO.Get (Input_File, Timer_Value);

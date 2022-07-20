@@ -1,3 +1,13 @@
+-----------------------------------------------------------------------------
+--
+--  Source code generated automatically by 'org-babel-tangle' from
+--  file /home/ada/advent-of-code/2021/day-06/src/day06_p1.adb
+--  2022-07-20 20:07:43
+--
+--  DO NOT EDIT!!
+--
+-----------------------------------------------------------------------------
+
 with Ada.Text_IO;                        use Ada.Text_IO;
 with Ada.Containers.Doubly_Linked_Lists; use Ada.Containers;
 
@@ -20,7 +30,7 @@ procedure Day06_P1 is
 
 begin
 
-   Open (Input_File, In_File, "__Current_Path__" & "input");
+   Open (Input_File, In_File, "/home/ada/advent-of-code/2021/day-06/" & "input");
       --  __Read_Timers_From_Input_File__
       loop
          Timer_IO.Get (Input_File, Timer_Value);
