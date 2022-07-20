@@ -1,0 +1,33 @@
+#+latex_class: article
+#+latex_class_options: [10pt,a4paper,twoside]
+#+latex_header: \usepackage[top=3cm, bottom=3cm, inner=3cm, outer=4cm, footskip = 1.5cm]{geometry}
+#+latex_header: \usepackage{fancyhdr}
+#+latex_header: \usepackage{fancyvrb}
+#+latex_header: \usepackage{tgschola}
+#+latex_header: \usepackage{tgheros}
+#+latex_header: \usepackage[scaled=.8]{beramono}
+#+latex_header: \usepackage[T1]{fontenc}
+#+latex_header: \usepackage[x11names]{xcolor}
+#+latex_header: \usepackage{hyperref}
+#+latex_header: \usepackage[procnamekeys={procedure,function},hyperref={Input_File}]{listings}
+#+latex_header: \usepackage{parskip}
+#+latex_header: \usepackage{chngcntr}
+#+latex_header: \usepackage[font={footnotesize,sf},labelfont=bf]{caption}
+#+latex_header: \pagestyle{fancy}
+#+latex_header: \pagestyle{etoolbox}
+#+latex_header: \hypersetup{colorlinks, linkcolor=black, urlcolor=blue, pdfborder={0 0 0}}
+
+#+latex: \captionsetup[lstlisting]{justification=raggedright,singlelinecheck=false}
+#+latex: \counterwithin{figure}{section}
+#+latex: \counterwithin{lstlisting}{section}
+#+latex: \renewcommand*\arraystretch{1.25}
+#+latex: \AtBeginEnvironment{tabular}{\ttfamily}
+#+latex: \AfterEndEnvironment{tabular}{\vspace{1em}}
+#+latex: \AtEndEnvironment{itemize}{\vspace{1em}}
+#+latex: \DefineVerbatimEnvironment{verbatim}{Verbatim}{xleftmargin=2em}
+#+latex: \AfterEndEnvironment{verbatim}{\vspace{1.2em}}
+
+#+latex: \newpage
+#+latex: \listoffigures
+#+latex: \lstlistoflistings
+#+latex: \newpage

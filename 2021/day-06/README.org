@@ -1,36 +1,8 @@
 #+TITLE:Advent of Code - 2021
 #+SUBTITLE: Day 6 : Lanternfish
 #+AUTHOR: Francesc Rocher
-#+LATEX_CLASS: article
-#+LATEX_CLASS_OPTIONS: [10pt,a4paper,twoside]
-#+LATEX_HEADER: \usepackage[top=3cm, bottom=3cm, inner=3cm, outer=4cm, footskip = 1.5cm]{geometry}
-#+LATEX_HEADER: \usepackage{fancyhdr}
-#+LATEX_HEADER: \usepackage{fancyvrb}
-#+LATEX_HEADER: \usepackage{tgschola}
-#+LATEX_HEADER: \usepackage{tgheros}
-#+LATEX_HEADER: \usepackage[scaled=.8]{beramono}
-#+LATEX_HEADER: \usepackage[T1]{fontenc}
-#+LATEX_HEADER: \usepackage[x11names]{xcolor}
-#+LATEX_HEADER: \usepackage{listings}
-#+LATEX_HEADER: \usepackage{parskip}
-#+LATEX_HEADER: \usepackage{chngcntr}
-#+LATEX_HEADER: \usepackage[font={footnotesize,sf},labelfont=bf,justification=raggedright,singlelinecheck=false]{caption}
-#+LATEX_HEADER: \pagestyle{fancy}
-#+LATEX_HEADER: \pagestyle{etoolbox}
-#+LATEX_HEADER: \hypersetup{colorlinks, linkcolor=black, urlcolor=blue, pdfborder={0 0 0}}
-#+LATEX_HEADER: \renewcommand*\arraystretch{1.25}
-#+LATEX_HEADER: \AtBeginEnvironment{tabular}{\ttfamily}
-#+LATEX_HEADER: \AfterEndEnvironment{tabular}{\vspace{1em}}
-#+LATEX_HEADER: \AtEndEnvironment{itemize}{\vspace{1em}}
-#+LATEX_HEADER: \DefineVerbatimEnvironment{verbatim}{Verbatim}{xleftmargin=2em}
-#+LATEX_HEADER: \AfterEndEnvironment{verbatim}{\vspace{1.2em}}
 
-#+latex: \counterwithin{figure}{section}
-#+latex: \counterwithin{lstlisting}{section}
-#+latex: \newpage
-#+latex: \listoffigures
-#+latex: \lstlistoflistings
-#+latex: \newpage
+#+INCLUDE: "latex_header.org"
 
 * Introduction
 The sea floor is getting steeper. Maybe the sleigh keys got carried this way?
