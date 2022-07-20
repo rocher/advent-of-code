@@ -216,7 +216,7 @@ The result is given as the length of the list
 #+header: :noweb yes :tangle src/day06_p1.adb
 #+header: :var __Current_Path__=(file-name-directory (buffer-file-name (current-buffer)))
 #+attr_latex: :options commentstyle=\bfseries
-#+begin_src ada :exports both :unit day06_p1
+#+begin_src ada :unit day06_p1
   with Ada.Text_IO;                        use Ada.Text_IO;
   with Ada.Containers.Doubly_Linked_Lists; use Ada.Containers;
 
@@ -365,7 +365,7 @@ The result is given as the sum of all lanternfish timers after 256 days
 #+caption: Compilation Unit Of Part 2
 #+header: :noweb yes :tangle src/day06_p2.adb
 #+header: :var __Current_Path__=(file-name-directory (buffer-file-name (current-buffer)))
-#+begin_src ada :exports both :unit day06_p2
+#+begin_src ada :unit day06_p2
   with Ada.Text_IO; use Ada.Text_IO;
 
   procedure Day06_P2 is
@@ -444,9 +444,9 @@ source code blocks shown here:
 
 #+name: day06_z1
 #+caption: Compilation Unit To Produce Population File
-#+header: :noweb yes :tangle src/day06_z1.adb
+#+header: :noweb yes :tangle src/day06_z1.adb :results silent
 #+header: :var __Current_Path__=(file-name-directory (buffer-file-name (current-buffer)))
-#+begin_src ada :exports both :unit day06_z1
+#+begin_src ada :unit day06_z1
   with Ada.Text_IO; use Ada.Text_IO;
 
   procedure Day06_Z1 is
@@ -470,7 +470,6 @@ source code blocks shown here:
   end Day06_Z1;
 #+end_src
 
-#+RESULTS: day06_z1
 
 *** Graphs
 
