@@ -474,26 +474,34 @@ source code blocks shown here:
 *** Graphs
 
 Population after 80 days
-#+begin_src gnuplot :exports both :file population-80.eps :term eps
+#+begin_src gnuplot :results none :file population-80.eps :term eps
   plot "population" every ::0::79:0 title "Lanternfish" with lines lw 5
 #+end_src
-
-#+caption: Population Growth After 80 Days
-#+RESULTS:
-[[file:population-80.eps]]
-
-#+caption: Population Growth After 80 Days
+#+begin_export latex
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.9\linewidth]{population-80.eps}
+    \caption{Population Growth After 80 Days}
+  \end{figure}
+#+end_export
+#+begin_export html
+  <img src="population-80.png">
+#+end_export
 
 Population after 256 days
-#+begin_src gnuplot :exports both :file population-256.eps :term eps
+#+begin_src gnuplot :results none :file population-256.eps :term eps
   plot "population" title "Lanternfish" with lines lw 5
 #+end_src
-
-#+caption: Population Growth After 256 Days
-#+RESULTS:
-[[file:population-256.eps]]
-
-#+html: [[file:population-256.png]]
+#+begin_export latex
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.9\linewidth]{population-256.eps}
+    \caption{Population Growth After 256 Days}
+  \end{figure}
+#+end_export
+#+begin_export html
+  <img src="population-256.png">
+#+end_export
 
 
 #+latex: \newpage
