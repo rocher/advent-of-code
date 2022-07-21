@@ -2,7 +2,7 @@
 --
 --  Source code generated automatically by 'org-babel-tangle' from
 --  file /home/ada/advent-of-code/2021/day-06/src/day06_p1.adb
---  2022-07-20 20:07:43
+--  2022-07-21 18:32:48
 --
 --  DO NOT EDIT!!
 --
@@ -30,16 +30,15 @@ procedure Day06_P1 is
 
 begin
 
+   --  __Read_Timers_From_Input_File__
    Open (Input_File, In_File, "/home/ada/advent-of-code/2021/day-06/" & "input");
-      --  __Read_Timers_From_Input_File__
-      loop
-         Timer_IO.Get (Input_File, Timer_Value);
-         School.Append (Timer_Value);
-         exit when End_Of_File (Input_File);
-         Get (Input_File, Comma_Char);
-      end loop;
+   loop
+      Timer_IO.Get (Input_File, Timer_Value);
+      School.Append (Timer_Value);
+      exit when End_Of_File (Input_File);
+      Get (Input_File, Comma_Char);
+   end loop;
    Close (Input_File);
-
    --  __Brute_Force_Simulation_Of_80_Days__
    Per_Day:
    for Day in 1 .. 80 loop

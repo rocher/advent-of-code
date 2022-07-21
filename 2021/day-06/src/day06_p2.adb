@@ -2,7 +2,7 @@
 --
 --  Source code generated automatically by 'org-babel-tangle' from
 --  file /home/ada/advent-of-code/2021/day-06/src/day06_p2.adb
---  2022-07-20 20:07:43
+--  2022-07-21 18:32:47
 --
 --  DO NOT EDIT!!
 --
@@ -27,16 +27,15 @@ procedure Day06_P2 is
 
 begin
 
+   --  __Read_Input_File_And_Count_Lanternfish__
    Open (Input_File, In_File, "/home/ada/advent-of-code/2021/day-06/" & "input");
-      --  __Read_Input_File_And_Count_Lanternfish__
-      loop
-         Timer_IO.Get (Input_File, Timer_Value);
-         Timer_Count (Timer_Value) := Timer_Count (Timer_Value) + 1;
-         exit when End_Of_File (Input_File);
-         Get (Input_File, Comma_Char);
-      end loop;
+   loop
+      Timer_IO.Get (Input_File, Timer_Value);
+      Timer_Count (Timer_Value) := Timer_Count (Timer_Value) + 1;
+      exit when End_Of_File (Input_File);
+      Get (Input_File, Comma_Char);
+   end loop;
    Close (Input_File);
-
    --  __Simulation_Of_256_Days__
    for Day in 1 .. 256 loop
       --  decrement timers

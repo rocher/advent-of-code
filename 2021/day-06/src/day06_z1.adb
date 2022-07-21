@@ -2,7 +2,7 @@
 --
 --  Source code generated automatically by 'org-babel-tangle' from
 --  file /home/ada/advent-of-code/2021/day-06/src/day06_z1.adb
---  2022-07-20 20:07:43
+--  2022-07-21 18:32:43
 --
 --  DO NOT EDIT!!
 --
@@ -29,40 +29,41 @@ procedure Day06_Z1 is
 
 begin
 
+   --  __Read_Input_File_And_Count_Lanternfish__
    Open (Input_File, In_File, "/home/ada/advent-of-code/2021/day-06/" & "input");
-      --  __Read_Input_File_And_Count_Lanternfish__
-      loop
-         Timer_IO.Get (Input_File, Timer_Value);
-         Timer_Count (Timer_Value) := Timer_Count (Timer_Value) + 1;
-         exit when End_Of_File (Input_File);
-         Get (Input_File, Comma_Char);
-      end loop;
+   loop
+      Timer_IO.Get (Input_File, Timer_Value);
+      Timer_Count (Timer_Value) := Timer_Count (Timer_Value) + 1;
+      exit when End_Of_File (Input_File);
+      Get (Input_File, Comma_Char);
+   end loop;
    Close (Input_File);
+   --  __Simulate_256_Days_And_Write_Population__
 
    Create (Output_File, Out_File,  "/home/ada/advent-of-code/2021/day-06/" & "population");
-      --  __Simulate_256_Days_And_Write_Population__
 
-      --  population of initial state
-      for T in Timer_Type loop
-         Population := Population + Timer_Count (T);
-      end loop;
+   --  population of initial state
+   for T in Timer_Type loop
+      Population := Population + Timer_Count (T);
+   end loop;
+   Put_Line (Output_File, Population'Image);
+
+   for Day in 1 .. 256 loop
+      --  decrement timers
+      Timer_Zero := Timer_Count (0);
+      Timer_Count (0 .. 7) := Timer_Count (1 .. 8);
+
+      --  reset to 6 all timers that reached 0
+      Timer_Count (6) := Timer_Count (6) + Timer_Zero;
+
+      --  add new lanternfish per each timer that reached 0
+      Timer_Count (8) := Timer_Zero;
+
+      --  add newly hatched lanternfish to total population
+      Population := Population + Timer_Zero;
       Put_Line (Output_File, Population'Image);
+   end loop;
 
-      for Day in 1 .. 256 loop
-         --  decrement timers
-         Timer_Zero := Timer_Count (0);
-         Timer_Count (0 .. 7) := Timer_Count (1 .. 8);
-
-         --  reset to 6 all timers that reached 0
-         Timer_Count (6) := Timer_Count (6) + Timer_Zero;
-
-         --  add new lanternfish per each timer that reached 0
-         Timer_Count (8) := Timer_Zero;
-
-         --  add newly hatched lanternfish to total population
-         Population := Population + Timer_Zero;
-         Put_Line (Output_File, Population'Image);
-      end loop;
    Close (Output_File);
 
 end Day06_Z1;
