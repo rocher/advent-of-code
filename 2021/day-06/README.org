@@ -2,7 +2,7 @@
 #+SUBTITLE: Day 6 : Lanternfish
 #+AUTHOR: Francesc Rocher
 
-#+INCLUDE: "latex_header.org"
+#+INCLUDE: "../../common/latex_header.org"
 
 * Introduction
 The sea floor is getting steeper. Maybe the sleigh keys got carried this way?
@@ -520,5 +520,5 @@ Population after 256 days
 # org-latex-listings: t
 # End:
 #
-# ALL: (progn (load-file "./setup.el") (org-latex-export-to-pdf) (org-babel-tangle))
-# PDF: (progn (load-file "./setup.el") (org-latex-export-to-pdf))
+# ALL: (progn (load-file "../../common/setup.el") (org-latex-export-to-pdf) (org-babel-tangle))
+# PDF: (progn (load-file "../../common/setup.el") (org-latex-export-to-pdf))
