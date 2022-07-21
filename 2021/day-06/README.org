@@ -46,7 +46,7 @@ list of the ages of several hundred nearby lanternfish (your puzzle input).
 For example, suppose you were given the following list:
 
 #+begin_example
-    3,4,3,1,2
+3,4,3,1,2
 #+end_example
 
 This list means that the first fish has an internal timer of ~3~, the second
@@ -155,14 +155,17 @@ Variables required:
 First of all, it is necessary to read all lanternfish timers:
 
 #+name: __Read_Timers_From_Input_File__
+#+header: :noweb yes
 #+begin_src ada
   --  __Read_Timers_From_Input_File__
+  Open (Input_File, In_File, "__Current_Path__" & "input");
   loop
      Timer_IO.Get (Input_File, Timer_Value);
      School.Append (Timer_Value);
      exit when End_Of_File (Input_File);
      Get (Input_File, Comma_Char);
   end loop;
+  Close (Input_File);
 #+end_src
 
 Then, simulate the generations of 80 days:
@@ -230,10 +233,7 @@ The result is given as the length of the list
 
   begin
 
-     Open (Input_File, In_File, "__Current_Path__" & "input");
-        <<__Read_Timers_From_Input_File__>>
-     Close (Input_File);
-
+     <<__Read_Timers_From_Input_File__>>
      <<__Brute_Force_Simulation_Of_80_Days__>>
      <<__Write_Population_Size_After_80_Days__>>
 
@@ -244,6 +244,7 @@ The result is given as the length of the list
 
 #+RESULTS: day06_p1
 : Answer: 360761
+
 
 * Simulating 256 days
 Suppose the lanternfish live forever and have unlimited food and space. Would
@@ -315,14 +316,17 @@ In bold, the sequence of a lanternfish with timer ~1~ at the initial state.
 First of all, read timers of initial state
 
 #+name: __Read_Input_File_And_Count_Lanternfish__
+#+header: :noweb yes
 #+begin_src ada
   --  __Read_Input_File_And_Count_Lanternfish__
+  Open (Input_File, In_File, "__Current_Path__" & "input");
   loop
      Timer_IO.Get (Input_File, Timer_Value);
      Timer_Count (Timer_Value) := Timer_Count (Timer_Value) + 1;
      exit when End_Of_File (Input_File);
      Get (Input_File, Comma_Char);
   end loop;
+  Close (Input_File);
 #+end_src
 
 and then simulate 256 days
@@ -377,10 +381,7 @@ The result is given as the sum of all lanternfish timers after 256 days
 
   begin
 
-     Open (Input_File, In_File, "__Current_Path__" & "input");
-        <<__Read_Input_File_And_Count_Lanternfish__>>
-     Close (Input_File);
-
+     <<__Read_Input_File_And_Count_Lanternfish__>>
      <<__Simulation_Of_256_Days__>>
      <<__Write_Population_Size_After_256_Days__>>
 
@@ -411,8 +412,11 @@ The process must compute the population of each day and write it to the output
 file:
 
 #+name: __Simulate_256_Days_And_Write_Population__
+#+header: :noweb yes
 #+begin_src ada
   --  __Simulate_256_Days_And_Write_Population__
+
+  Create (Output_File, Out_File,  "__Current_Path__" & "population");
 
   --  population of initial state
   for T in Timer_Type loop
@@ -435,6 +439,8 @@ file:
      Population := Population + Timer_Zero;
      Put_Line (Output_File, Population'Image);
   end loop;
+
+  Close (Output_File);
 #+end_src
 
 
@@ -459,13 +465,8 @@ source code blocks shown here:
 
   begin
 
-     Open (Input_File, In_File, "__Current_Path__" & "input");
-        <<__Read_Input_File_And_Count_Lanternfish__>>
-     Close (Input_File);
-
-     Create (Output_File, Out_File,  "__Current_Path__" & "population");
-        <<__Simulate_256_Days_And_Write_Population__>>
-     Close (Output_File);
+     <<__Read_Input_File_And_Count_Lanternfish__>>
+     <<__Simulate_256_Days_And_Write_Population__>>
 
   end Day06_Z1;
 #+end_src
