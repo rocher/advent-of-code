@@ -1,0 +1,392 @@
+# ------------------------------------------------------------------------------
+# SPDX-License-Identifier: CC-BY-NC-ND-4.0
+# SPDX-FileCopyrightText: Copyright 2022 Francesc Rocher
+# SPDX-Creator: Francesc Rocher (francesc.rocher@gmail.com)
+# Ref: https://creativecommons.org/licenses/by-nc-nd/4.0/deed.en
+# ------------------------------------------------------------------------------
+
+#+title:CATHODE-RAY TUBE
+#+subtitle: Advent of Code 2022 / Day 10
+
+* Table Of Contents :TOC_2_gh:
+- [[#introduction][Introduction]]
+- [[#signal-strength][Signal Strength]]
+  - [[#cpu-model][CPU model]]
+  - [[#cycle-points][Cycle points]]
+  - [[#executing-instructions][Executing instructions]]
+  - [[#computing-signal-strength][Computing signal strength]]
+  - [[#compilation-unit-of-part-1][Compilation unit of part 1]]
+- [[#message-in-the-crt][Message in the CRT]]
+  - [[#crt-model][CRT model]]
+  - [[#connecting-the-crt-to-the-cpu][Connecting the CRT to the CPU]]
+  - [[#compilation-unit-of-part-2][Compilation unit of part 2]]
+- [[#references][References]]
+- [[#change-log][Change Log]]
+
+* Introduction
+
+Please carefully read [[https://adventofcode.com/2022/day/10][Advent of Code 2022 / Day 10]] for all the puzzle details.
+
+Summary:
+  1. A CRT (cathode-ray tube) has a CPU with a single register =X= and two
+     instruction codes.
+  2. The CPU =Cycle= and the register =X= have initial value 1.
+  3. Instruction =noop= takes one cycle to complete and has no effect.
+  4. Instruction =addx V= takes two cycles to complete and, /after/ these two
+     cycles, the value =V= is added to register =X=.
+  5. The signal strength /during/ a cycle is the value of the =Cycle= number
+     multiplied by =X=.
+  6. The =Input= file is a long sequence of instructions. For example:
+     #+begin_example
+     addx -8
+     noop
+     addx 13
+     addx 4
+     noop
+     addx -1
+     addx 5
+     addx -1
+     #+end_example
+
+* Signal Strength
+
+Find the signal strength during the cycles 20, 60, 100, 140, 180 and 220.
+*What is the amount of these six signal strengths?*.
+
+** CPU model
+
+The CPU model is quite simple because it only has two instructions and one
+register =X=. The model must contain also a =Cycle= counter and two registers
+to fetch the instruction =Code= with an optional parameter =Value=. Finally,
+the stream of instruction to be executed is the =Input= file.
+
+#+name: __CPU_Model__
+#+begin_src ada
+  --  __CPU_Model__
+  X     : Integer := 1;
+  Cycle : Positive := 1;
+
+  Code  : String (1 .. 4);
+  Value : Integer;
+
+  Input : File_Type;
+#+end_src
+
+According to the description given, the CPU can be modeled as shown in the
+following figure. The most important detail is that the "addx" operation is
+not effective /during/ the current two cycles that takes the operation, but
+only once the cycles have finished. This CPU feature is highlighted in the
+figure with red arrows.
+
+#+begin_html
+<p align="center">
+<img src="cpu-model.png">
+</p>
+#+end_html
+
+** Cycle points
+
+We are required to compute the sum of the signal strengths for a particular
+set of cycles. The CPU will be executing the instructions given in the
+=Input= file. When the CPU cycle coincides with a required =Cycle_Point=, the
+signal strength of that =Cycle= is computed and accumulated in =Σ_strength=.
+
+#+name: __Cycle_Points_And_Σ_Strength__
+#+begin_src ada
+  --  __Cycle_Points_And_Σ_Strength__
+  Cycle_Point : array (1 .. 6) of Positive := (20, 60, 100, 140, 180, 220);
+
+  P          : Positive := 1; -- index of Cycle_Point
+  Σ_Strength : Integer  := 0;
+#+end_src
+
+The figure above also shows one interesting thing about the cycle points. For
+example, for points =P=2= and =P=3= (=Cycle= 6 and 7 respectively), the value
+of =X= is the same: /no matter if the CPU is performing an "addx" operation/,
+the value of =X= only changes at the of the cycle.
+
+** Executing instructions
+
+The program must have a main loop to read all the instructions of the =Input=
+file. Each line contains an instruction that can be equivalent to one or two
+CPU cycles, depending on the instruction =Code=. That is, each /loop
+iteration/ can be equivalent to one or two CPU cycles. Only when =Code= is
+"addx" the optional =Value= is read and an additional =Cycle= is consumed. At
+the end of the loop, the register =X= will be added the =Value=, or 0 if
+=Code= is "noop":
+
+#+name: __CPU_Instruction_Loop__
+#+header: :noweb yes
+#+begin_src ada
+  --  __CPU_Instruction_Loop__
+  Get (Input, Code);
+
+  if Code = "addx" then
+     Cycle := @ + 1;
+     Get (Input, Value);
+  else
+     Value := 0;
+  end if;
+
+  <<__Check_Cycle_Point__>>
+
+  Cycle := @ + 1;
+  X     := X + Value;
+#+end_src
+
+** Computing signal strength
+
+Before loop ends and =X= changes, it is necessary to
+=<<__Check_Cycle_Point__>>= to make sure that the signal strength is computed
+at required =Cycle_Point= and accumulated in =Σ_strength=:
+
+#+name: __Check_Cycle_Point__
+#+begin_src ada
+  --  __Check_Cycle_Point__
+  if Cycle_Point (P) <= Cycle then  -- (1)
+      Σ_Strength := @ + (X * Cycle_Point (P));
+
+      P := P + 1;
+      if P > Cycle_Point'Last then
+        -- signal strength computed at all cycle points
+        -- no need to continue the program execution
+        exit Execution;
+      end if;
+  end if;
+#+end_src
+
+  (1) :: The =__Check_Cycle_Point__= is executed /during/ the =Cycle= and
+  before =X= changes. In the figure, at the end of loop 4:
+    * there are two =Cycle_Point= to be checked that would use the same value of =X=.
+    * =__Check_Cycle_Point__= should apply to both =Cycle_Point=.
+  The example illustrates why the comparison used is =Cycle_Point
+  (P)<=Cycle=.
+
+** Compilation unit of part 1
+
+#+name: day10_p1
+#+header: :noweb yes :tangle src/day10_p1.adb :switches -gnatW8
+#+header: :var __Current_Path__=(file-name-directory (buffer-file-name (current-buffer)))
+#+begin_src ada :unit day10_p1 :exports both :results value org
+  pragma Ada_2022;
+
+  with Ada.Text_IO;         use Ada.Text_IO;
+  with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+
+  procedure Day10_P1 is
+     <<__CPU_Model__>>
+     <<__Cycle_Points_And_Σ_Strength__>>
+
+  begin
+      Open (Input, In_File, "__Current_Path__" & "input.txt");
+
+      Execution:
+      loop
+          <<__CPU_Instruction_Loop__>>
+          exit when End_Of_File (Input);
+      end loop Execution;
+
+      Close (Input);
+
+      Put_Line ("Answer:" & Σ_Strength'Image);
+  end Day10_P1;
+#+end_src
+
+See tangled file in [[./src/day10_p1.adb]]
+
+*** Evaluation
+
+#+RESULTS: day10_p1
+#+begin_src org
+Answer: 10760
+#+end_src
+
+* Message in the CRT
+
+New considerations to take into account for a cathode-ray tube:
+
+  1. The =X= register controls the horizontal position of a =Sprite=.
+  2. The =Sprite= is 3 pixels wide.
+  3. The register =X= controls the position of the middle of the =Sprite=.
+  4. The =CRT= is 40 pixels wide, numbered from 0 to 39, and has 6 rows.
+  5. The CPU and the =CRT= share the clock circuit.
+  6. The =CRT= draws one pixel during each =Cycle=.
+  7. The pixel position of the =CRT= increases at each =Cycle=.
+  8. If some of the pixels of the =Sprite= overlaps the current =CRT= pixel,
+     then the =CRT= produces a lit pixel ('#'); otherwise lives the pixel
+     dark.
+
+Render the image given by the program in the =Input= file. *What eight
+capital letters appear on your CRT?*.
+
+** CRT model
+
+A basic =CRT= model contains simply an array of pixels and the position of
+the current pixel.
+
+#+name: __CRT_Model__
+#+begin_src ada
+  --  __CRT_Model__
+  subtype Row_Range is Integer range 1 .. 6;
+  subtype Col_Range is Integer range 0 .. 39;
+
+  CRT : array (Row_Range, Col_Range) of Wide_Character;
+
+  -- current pixel coordinates
+  CRT_Row : Row_Range := 1;
+  CRT_Col : Col_Range := 0;
+#+end_src
+
+*** Pixel management
+
+Each =Cycle= the current pixel advances one position, changing to the next
+row when necessary:
+
+#+name: __Pixel_Dynamics__
+#+begin_src ada
+  --  __Pixel_Dynamics__
+  procedure Next_Pixel is
+  begin
+     if CRT_Col < Col_Range'Last then
+        CRT_Col := @ + 1;
+     else
+        CRT_Col := 0;
+        if CRT_Row < Row_Range'Last then
+           CRT_Row := @ + 1;
+        end if;
+     end if;
+  end Next_Pixel;
+#+end_src
+
+The current =CRT= pixel status (lit or dark) depends on the position of the
+=Sprite=:
+
+#+name: __Pixel_Drawing__
+#+begin_src ada
+  --  __Pixel_Drawing__
+  procedure Draw_Pixel (Sprite : Integer) is
+  begin
+     if CRT_Col in Sprite - 1 .. Sprite + 1 then
+        CRT (CRT_Row, CRT_Col) := '█';
+     else
+        CRT (CRT_Row, CRT_Col) := ' ';
+     end if;
+  end Draw_Pixel;
+#+end_src
+
+*** CRT output
+
+Obviously, we need to visualize what's on the screen:
+
+#+name: __CRT_Output__
+#+begin_src ada
+  --  __CRT_Output__
+  procedure Draw_CRT is
+  begin
+     for Row in Row_Range loop
+        for Col in Col_Range loop
+             Ada.Wide_Text_IO.Put (CRT (Row, Col));
+        end loop;
+        if Row < Row_Range'Last then
+           New_Line;
+        end if;
+     end loop;
+  end Draw_CRT;
+#+end_src
+
+** Connecting the CRT to the CPU
+
+Last thing we need to do is to connect the =CRT= to the =CPU=. This means
+that we need to synchronize both devices in the main =CPU= loop. The =CRT=
+draws a pixel /during/ the =Cycle= duration (a loop iteration can be
+equivalent to one or two CPU cycles):
+
+#+name: __Main_CPU_Loop__
+#+begin_src ada
+  --  __Main_CPU_Loop__
+  Draw_Pixel (X);
+  Next_Pixel;
+
+  Get (Input, Code);
+  Cycle := @ + 1; -- next Cycle
+
+  if Code = "addx" then
+     Draw_Pixel (X);
+     Next_Pixel;
+
+     Get (Input, Value);
+     Cycle := @ + 1; -- next Cycle
+     X     := X + Value;
+  end if;
+#+end_src
+
+** Compilation unit of part 2
+
+#+name: day10_p2
+#+header: :noweb yes :tangle src/day10_p2.adb :switches -gnatW8
+#+header: :var __Current_Path__=(file-name-directory (buffer-file-name (current-buffer)))
+#+begin_src ada :unit day10_p2 :exports both :results value org
+  pragma Ada_2022;
+
+  with Ada.Text_IO;         use Ada.Text_IO;
+  with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+  with Ada.Wide_Text_IO;
+
+  procedure Day10_P2 is
+     <<__CPU_Model__>>
+     <<__CRT_Model__>>
+
+    <<__Pixel_Dynamics__>>
+    <<__Pixel_Drawing__>>
+    <<__CRT_Output__>>
+
+  begin
+      Open (Input, In_File, "__Current_Path__" & "input.txt");
+
+      -- start Cycle 1
+      loop
+          <<__Main_CPU_Loop__>>
+          exit when End_Of_File (Input);
+      end loop;
+
+      Close (Input);
+
+      Put_Line ("Answer:");
+      Draw_CRT;
+  end Day10_P2;
+#+end_src
+
+See tangled file in [[./src/day10_p2.adb]]
+
+*** Evaluation
+
+#+RESULTS: day10_p2
+#+begin_src org
+Answer:
+████ ███   ██  ███  █  █ ████  ██  █  █ 
+█    █  █ █  █ █  █ █  █ █    █  █ █  █ 
+███  █  █ █    █  █ ████ ███  █    ████ 
+█    ███  █ ██ ███  █  █ █    █ ██ █  █ 
+█    █    █  █ █    █  █ █    █  █ █  █ 
+█    █     ███ █    █  █ █     ███ █  █ 
+#+end_src
+
+* References
+
+  * tangled source code files
+    + [[./src/day10_p1.adb]]
+    + [[./src/day10_p2.adb]]
+  * input file: [[input.txt]]
+  * developed with [[https://github.com/rocher/ob-ada-spark][Ada/SPARK support for Emacs org-babel]]
+
+* Change Log
+
+| Date             | Rev. | Comment         |
+|------------------+------+-----------------|
+| <2022-12-10 Sat> |  1.0 | Initial version |
+
+#+begin_html
+<br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a><br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+#+end_html
+
+# (progn (load-file "../../common/setup.el") (org-babel-tangle))
