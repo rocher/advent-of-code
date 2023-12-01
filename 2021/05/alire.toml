@@ -1,0 +1,9 @@
+authors = ["Francesc Rocher"]
+name = "aoc202105"
+version = "202105.0"
+description = "Advent of Code - 2021 day 05"
+
+executables = ["day05_p1", "day05_p2"]
+
+[build-switches."*"]
+ada_version = ["-gnat2022", "-gnatX"]

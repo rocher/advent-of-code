@@ -1,0 +1,13 @@
+#+author: Francesc Rocher
+#+options: toc:nil
+#+options: ^:nil
+
+#+macro: label @@latex:\label{$1}@@@@html:<a name="$1"></a>@@
+#+macro: ref @@latex:\ref{$1}@@@@html:<a href="#$1">$1</a>@@
+#+macro: eqref @@latex:\eqref{$1}@@@@html:<a href="#$1">$1</a>@@
+
+#+latex_compiler: pdflatex
+#+latex_class: article
+#+latex_class_options: [11pt,a4paper,twoside]
+#+latex_header: \input{../common/header.tex}
+#+latex: \input{../common/setup.tex}

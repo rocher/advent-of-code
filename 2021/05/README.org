@@ -1,0 +1,438 @@
+# ------------------------------------------------------------------------------
+# SPDX-License-Identifier: CC-BY-NC-ND-4.0
+# SPDX-FileCopyrightText: Copyright 2021 Francesc Rocher
+# SPDX-Creator: Francesc Rocher (francesc.rocher@gmail.com)
+# Ref: https://creativecommons.org/licenses/by-nc-nd/4.0/deed.en
+# ------------------------------------------------------------------------------
+
+#+title:Hydrothermal Venture
+
+#+INCLUDE: ../common/header.org
+#+latex: \AOC{b}{2021}{05}{You come across a field of hydrothermal vents on the ocean floor!}
+
+* Introduction
+<<sec:202105:intro>>
+
+Please read [[https://adventofcode/2021/day/5][Advent of Code 2021 / Day 5]] carefully for all the puzzle details.
+
+** Context
+<<sse:202105:context>>
+
+The puzzle story introduces the following concepts and elements:
+
+  1. There are thermal vents in the ocean floor that produce opaque clouds.
+  2. Thermal vents tend to form in lines.
+  3. Puzzle input contains start and end points, $(x_0, y_0)$ and $(x_1,
+     y_1)$, of each thermal vent.
+  4. Thermal vents can be drawn in a diagram where the top-left corner is the
+     coordinate $(0,0)$, horizontal axis is $X$ and vertical axis is $Y$.
+
+Example of the input file and the associated diagram:
+#+begin_example
+Input                  Diagram
+----------             ----------
+0,9 -> 5,9             .......1..
+8,0 -> 0,8             ..1....1..
+9,4 -> 3,4             ..1....1..
+2,2 -> 2,1             .......1..
+7,0 -> 7,4             .112111211
+6,4 -> 2,0             ..........
+0,9 -> 2,9             ..........
+3,4 -> 1,4             ..........
+0,0 -> 8,8             ..........
+5,5 -> 8,2             222111....
+#+end_example
+
+* Avoid Opaque Clouds
+<<sec:202105:opaque-clouds>>
+
+For now, consider only those thermal vents that are straight lines, either
+horizontal or vertical. That is, where
+#+begin_latex
+\begin{equation}
+    \label{eq:202105:1}
+    x_0 = x_1 \;\;\;\textrm{or}\;\;\; y_0 = y_1
+\end{equation}
+#+end_latex
+
+Considering only horizontal and vertical lines, *at how many points at least
+two lines overlap?*
+
+** Geometry definitions
+<<sse:202105:geometry>>
+
+Drawing two-dimensional lines requires a coordinate system composed by points
+and segments. In this case, the definition of the =Coordinate_Range= is
+limited to the interval $[0,999]$. =Point_Type= and =Segments_Type= are
+defined in this system, as well as the two-dimensional surface
+=Ocean_Floor_Type=:
+
+#+name: __Geometry_Definitions__
+#+begin_src ada
+  --  __Geometry_Definitions__
+  subtype Coordinate_Range is Natural range 0 .. 999;
+
+  type Point_Type is record
+     X : Coordinate_Range;
+     Y : Coordinate_Range;
+  end record;
+
+  type Segment_Type is record
+     Start_Point : Point_Type;
+     End_Point   : Point_Type;
+  end record;
+
+  type Ocean_Floor_Type is
+    array (Coordinate_Range, Coordinate_Range) of Natural;
+  #+end_src
+
+** Counting points
+<<sse:202105:counting>>
+
+To count how many points where at least two lines overlap, we need the
+=Ocean_Floor= to draw the lines in it and =Σ_Overlap= to count such
+points.
+
+#+name: __Ocean_Floor_And_Overlap_Sum__
+#+begin_src ada
+  --  __Ocean_Floor_And_Overlap_Sum__
+  Ocean_Floor : Ocean_Floor_Type := (others => (others => 0));
+  Σ_Overlap   : Natural          := 0;
+#+end_src
+
+** Straight lines
+<<sse:202105:straight>>
+
+For now we have only to consider straight lines, those that satisfy equation
+{{{eqref(eq:202105:1)}}} of section [[sse:202105:context]].
+
+#+name: __Straight_Lines_Definition__
+#+begin_src ada
+  --  __Straight_Lines_Definition__
+  function Is_Straight (S : Segment_Type) return Boolean is
+    ((S.Start_Point.X = S.End_Point.X) or else (S.Start_Point.Y = S.End_Point.Y));
+#+end_src
+
+** Drawing Segments
+<<sse:202105:drawing>>
+
+The procedure to draw a =Vent= in the =Ocean_Floor= consist in:
+
+  + start at =Point= indicated by =Vent.Start_Point=
+  + /draw the point/, which mean to increment by one the =Ocean_Floor= at
+    =Point= coordinates
+  + increment =Point= coordinates =X= and =Y= by =Δx= and =Δy=,
+    respectively
+  + finish when =Point= reaches =Vent.End_Point=
+
+Δ values depend on the =Vent.Start_Point= and =Vent.End_Point=. Both deltas
+can have values =-1=, =0= or =1=. Starting at =Vent.Start_Point= and applying
+their respective increment, it is guaranteed that the =Vent.End_Point= is
+eventually reached.
+
+Also, once the =Ocean_Floor= is incremented by =1= at =Point= coordinates,
+when the resulting value is =2= the =Σ_Overlap= will be incremented.
+Consecutive increments at the same point must not be counted because only
+points where /at least two lines overlap/ must be counted.
+
+#+name: __Drawing_Segments_Definition__
+#+begin_src ada
+  --  __Drawing_Segments_Definition__
+  procedure Draw_Segment (Vent : Segment_Type) is
+     Point : Point_Type := Vent.Start_Point;
+
+     -- compute deltas
+     Δx : Integer :=
+       (if Vent.Start_Point.X = Vent.End_Point.X then 0
+        elsif Vent.Start_Point.X < Vent.End_Point.X then 1 else -1);
+
+     Δy : Integer :=
+       (if Vent.Start_Point.Y = Vent.End_Point.Y then 0
+        elsif Vent.Start_Point.Y < Vent.End_Point.Y then 1 else -1);
+  begin
+     loop
+        Ocean_Floor (Point.X, Point.Y) := @ + 1;
+
+        if Ocean_Floor (Point.X, Point.Y) = 2 then
+           Σ_Overlap := @ + 1;
+        end if;
+
+        exit when Point = Vent.End_Point;
+
+        Point := (X => @.X + Δx, Y => @.Y + Δy);
+     end loop;
+  end Draw_Segment;
+#+end_src
+
+** Reading and drawing hydrothermal vents
+<<sse:202105:reading>>
+
+Some variables are needed to read the vent segments from the input file:
+
+#+name: __Variables_To_Read_The_Input_File__
+#+begin_src ada
+  --  __Variables_To_Read_The_Input_File__
+  Input : File_Type;
+  Vent  : Segment_Type;
+  Char  : Character;
+  Sep   : String (1 .. 4); -- separator ' -> '
+#+end_src
+
+Reading a vent segment is quite straightforward:
+
+#+name: __Read_Vent_Segment_From_Input_File__
+#+begin_src ada
+  --  __Read_Vent_Segment_From_Input_File__
+  Get (Input, Vent.Start_Point.X); Get (Input, Char); -- skip ','
+  Get (Input, Vent.Start_Point.Y);
+
+  Get (Input, Sep); -- skip ' -> '
+
+  Get (Input, Vent.End_Point.X); Get (Input, Char); -- skip ','
+  Get (Input, Vent.End_Point.Y);
+#+end_src
+
+This will be iterated for all the vent segments in the file.
+
+For now, we only focus on straight vents. Because no more information is
+required, these vent segments can be drawn just after they have been read:
+
+#+name: __Draw_Some_Vents__
+#+begin_src ada
+  --  __Draw_Some_Vents__
+  if Is_Straight (Vent) then
+     Draw_Segment (Vent);
+  end if;
+#+end_src
+
+** Compilation Unit
+<<sse:202105:part1>>
+
+#+name: day05_p1
+#+header: :noweb yes :tangle src/day05_p1.adb :switches -gnatW8
+#+header: :var __Current_Path__=(file-name-directory (buffer-file-name (current-buffer)))
+#+header: :var __Output_Name__="output_p1.txt"
+#+begin_src ada :exports both :unit day05_p1 :version 2022
+  with Ada.Strings;         use Ada.Strings;
+  with Ada.Text_IO;         use Ada.Text_IO;
+  with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+
+    procedure Day05_P1 is
+      <<__Geometry_Definitions__>>
+      <<__Ocean_Floor_And_Overlap_Sum__>>
+      <<__Straight_Lines_Definition__>>
+      <<__Drawing_Segments_Definition__>>
+    begin
+      declare
+        <<__Variables_To_Read_The_Input_File__>>
+      begin
+        Open (Input, In_File, "__Current_Path__" & "input.txt");
+        loop
+          <<__Read_Vent_Segment_From_Input_File__>>
+          <<__Draw_Some_Vents__>>
+
+          exit when End_Of_File (Input);
+        end loop;
+        Close (Input);
+        <<__Export_Data_For_Plotting__>>
+      end;
+
+      Put_Line ("Answer:" & Σ_Overlap'Image);
+    end Day05_P1;
+#+end_src
+
+*** Evaluation
+
+#+RESULTS: day05_p1
+: Answer: 6841
+
+* Avoid More Clouds
+<<sec:202105:avoid-more-clouds>>
+
+Unfortunately, considering only horizontal and vertical lines doesn't give
+you the full picture; you need to also consider *diagonal lines*.
+
+Because of the limits of the hydrothermal vent mapping system, the lines in
+your list will only ever be horizontal, vertical, or a diagonal line at
+exactly 45 degrees. In other words:
+
+  + An entry like =1,1 -> 3,3= covers points =1,1=, =2,2=, and =3,3=.
+  + An entry like =9,7 -> 7,9= covers points =9,7=, =8,8=, and =7,9=.
+
+Considering all lines from the above example would now produce the following
+diagram:
+
+#+begin_example
+1.1....11.
+.111...2..
+..2.1.111.
+...1.2.2..
+.112313211
+...1.2....
+..1...1...
+.1.....1..
+1.......1.
+222111....
+#+end_example
+
+You still need to determine *the number of points where at least two lines
+overlap*. In the above example, this is still anywhere in the diagram with a
+=2= or larger - now a total of =12= points.
+
+Consider all of the lines. *At how many points do at least two lines overlap?*
+
+** Now drawing at 45 degrees
+<<sse:202105:drawing-at-45>>
+
+*** New considerations
+<<sss:202105:new-considerations>>
+
+We need a function to detect vent segments at 45 degrees. A vent $V$, with
+starting point $(x_0, y_0)$ and end point $(x_1, y_1)$, is a diagonal vent if
+
+#+begin_latex
+\begin{equation}
+    \left|x_0 - x_1\right| = \left|y_0 - y_1\right|
+\end{equation}
+#+end_latex
+
+The function =Is_Diagonal= implements this checking:
+
+#+name: __Diagonal_Lines_Definition__
+#+begin_src ada
+    --  __Diagonal_Lines_Definition__
+    function Is_Diagonal (Vent : Segment_Type) return Boolean is
+      (abs(Integer(Vent.Start_Point.X - Vent.End_Point.X)) =
+         abs(Integer(Vent.Start_Point.Y - Vent.End_Point.Y)));
+#+end_src
+
+And drawing more vents:
+
+#+name: __Draw_More_Vents__
+#+begin_src ada
+  --  __Draw_More_Vents__
+  if Is_Straight (Vent) or else Is_Diagonal (Vent) then
+     Draw_Segment (Vent);
+  end if;
+#+end_src
+
+*** Compilation unit
+<<sss:202105:part2>>
+
+#+name: day05_p2
+#+header: :noweb yes :tangle src/day05_p2.adb :switches -gnatW8
+#+header: :var __Current_Path__=(file-name-directory (buffer-file-name (current-buffer)))
+#+header: :var __Output_Name__="output_p2.txt"
+#+begin_src ada :exports both :unit day05_p2 :version 2022
+  -- Advent of Code 2021 - Day 5
+  with Ada.Strings;         use Ada.Strings;
+  with Ada.Text_IO;         use Ada.Text_IO;
+  with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+
+  procedure Day05_P2 is
+    <<__Geometry_Definitions__>>
+    <<__Ocean_Floor_And_Overlap_Sum__>>
+    <<__Straight_Lines_Definition__>>
+    <<__Diagonal_Lines_Definition__>>
+    <<__Drawing_Segments_Definition__>>
+  begin
+    declare
+      <<__Variables_To_Read_The_Input_File__>>
+    begin
+      Open (Input, In_File, "__Current_Path__" & "input.txt");
+      loop
+        <<__Read_Vent_Segment_From_Input_File__>>
+        <<__Draw_More_Vents__>>
+
+        exit when End_Of_File (Input);
+      end loop;
+      Close (Input);
+    end;
+    <<__Export_Data_For_Plotting__>>
+
+    Put_Line ("Answer:" & Σ_Overlap'Image);
+  end Day05_P2;
+#+end_src
+
+*** Evaluation
+
+#+RESULTS: day05_p2
+: Answer: 19258
+
+* Graphics
+
+** Generating plots
+
+*** Writing drawn thermal vents
+
+Once the thermal vents have been drawn in the ocean floor, a file can be
+written to lately create the graph:
+
+#+name: __Export_Data_For_Plotting__
+#+begin_src ada
+  --  __Export_Data_For_Plotting__
+  declare
+     Output : File_Type;
+  begin
+     Create (Output, Name => "__Current_Path__" & "__Output_Name__");
+     for Row in Ocean_Floor'Range (1) loop
+        for Col in Ocean_Floor'Range (2) loop
+           if Ocean_Floor (Row, Col) > 0 then
+              Put_Line (Output, Row'Image & Col'Image &
+                          Ocean_Floor (Row, Col)'Image);
+           end if;
+        end loop;
+     end loop;
+     Close (Output);
+  end;
+#+end_src
+
+The Graph:
+
+#+header: :results none
+#+name: GNUplot
+#+begin_src gnuplot
+  #  __GNUplot_For_Results__
+  set jitter vertical spread 0.25
+  set term png size 1024, 1024
+  set output "output_p1.png"
+  plot "output_p1.txt" with points pointtype 0 title ""
+  set output "output_p2.png"
+  plot "output_p2.txt" with points pointtype 0 title ""
+#+end_src
+
+#+begin_latex
+\begin{figure}
+  \centering
+    \begin{subfigure}{0.49\textwidth}
+      \centering
+      \includegraphics[width = \textwidth]{output_p1.png}
+      \caption{Horizontal and vertical thermal vents}
+      \label{fig:left}
+    \end{subfigure}
+    \begin{subfigure}{0.49\textwidth}
+      \centering
+      \includegraphics[width = \textwidth]{output_p2.png}
+      \caption{Horizontal, vertical and diagonal thermal vents}
+      \label{fig:right}
+    \end{subfigure}
+  \caption{Thermal vents}
+  \label{fig:combined}
+\end{figure}
+#+end_latex
+
+* References
+  * Repository [[https://github.com/rocher/adventofcode/2022/day/5][rocher/adventofcode]] contains
+    + original source file [[https://github.com/rocher/adventofcode/2022/day/5/README.org][README.org]] to generate:
+      - documentation file: [[https://github.com/rocher/adventofcode/2022/day/5/README.pdf][README.pdf]] (this file)
+      - tangled source code files [[https://github.com/rocher/adventofcode/2022/05/src/day05_p1.adb][day05_p1.adb]] and [[https://github.com/rocher/adventofcode/2022/05/src/day05_p2.adb][day05_p2.adb]]
+    + gpr project file: [[https://github.com/rocher/adventofcode/2022/05/day05.gpr][day05.gpr]]
+    + input file: [[https://github.com/rocher/adventofcode/2022/day/5/input.txt][input.txt]]
+  * Developed with [[https://github.com/rocher/ob-ada-spark][Ada/SPARK support for Emacs org-babel]]
+  * Images generated with [[https://stablediffusion.fr/][Stable Diffusion]] with entries from the text
+
+Clone the referred repository and evaluate =README.org= file or compile
+source code with =gprbuild=.
+
+# ALL: (progn (load-file "../common/setup.el") (org-latex-export-to-pdf) (org-babel-tangle))
+# PDF: (progn (load-file "../common/setup.el") (org-latex-export-to-pdf))
