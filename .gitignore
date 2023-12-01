@@ -1,0 +1,12 @@
+/**/alire/
+/**/auto/
+/**/bin/
+/**/config/
+/**/obj/
+/**/.vscode/
+
+*.lof
+*.lol
+*.tex
+
+.pdf-view-restore
