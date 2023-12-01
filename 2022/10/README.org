@@ -80,7 +80,7 @@ figure with red arrows.
 
 #+begin_html
 <p align="center">
-<img src="cpu-model.png">
+<img src="cpu-model.excalidraw.svg" width="85%">
 </p>
 #+end_html
 
