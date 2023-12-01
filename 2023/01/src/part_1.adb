@@ -35,5 +35,5 @@ begin
    end loop;
    Input.Close;
 
-   Ada.Text_IO.Put_Line ("Answer:" & Answer'Image);
+   Put_Line ("Answer:" & Answer'Image);
 end Part_1;
