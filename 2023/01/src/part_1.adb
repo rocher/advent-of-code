@@ -31,7 +31,7 @@ begin
          Get_Digits (Line, First, Last);
          Answer := @ + (First * 10 + Last);
       end;
-      exit when End_Of_File (Input);
+      exit when Input.End_Of_File;
    end loop;
    Input.Close;
 
