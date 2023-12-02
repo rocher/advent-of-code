@@ -2,6 +2,7 @@
 [![Static Badge](https://img.shields.io/badge/Posted_To-Forum_Ada_Lang-red?style=for-the-badge&labelColor=black&color=darkcyan)](https://forum.ada-lang.io/t/charity-advent-of-ada-spark-2023-submissions/562)
 
 [![Static Badge](https://img.shields.io/badge/AoC_2023-Day_1-blue?labelColor=black)](https://adventofcode.com/2023/day/1)
+[![Static Badge](https://img.shields.io/badge/Ada-2022-blue?labelColor=black)](https://ada-lang.io/docs/arm)
 [![Static Badge](https://img.shields.io/badge/Build_with-Alire-blue?labelColor=black)](https://alire.ada.dev/)
 ![Maintained?](https://img.shields.io/badge/Maintained%3F-yes-red.svg?labelColor=black&color=33aa33)
 ![Issues](https://img.shields.io/github/issues/rocher/advent-of-code.svg?labelColor=black&color=grey)
@@ -16,7 +17,7 @@
 > take a look. The Elves have even given you a map; on it, they've used stars
 > to mark the top fifty locations that are likely to be having problems.*
 
-### Part 1 — [![Static Badge](https://img.shields.io/badge/View-Part_1-blue?labelColor=black)](src/part_1.adb) —
+### Part 1 — [![Static Badge](https://img.shields.io/badge/part__1.adb-blue?labelColor=black)](src/part_1.adb)
 
 #### Process file lines
 Input file must be read every day, and every day the format is different.
