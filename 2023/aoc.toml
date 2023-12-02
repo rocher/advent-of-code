@@ -1,0 +1,7 @@
+Author = "Francesc Rocher"
+Email = "francesc.rocher@gmail.com"
+Address = "{{Author}} <{{Email}}>"
+Year = "2023"
+Day = "2"
+ZDay = "{{Day/pl02}}"
+License = "MIT"
