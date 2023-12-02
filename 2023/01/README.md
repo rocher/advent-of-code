@@ -16,7 +16,7 @@
 > take a look. The Elves have even given you a map; on it, they've used stars
 > to mark the top fifty locations that are likely to be having problems.*
 
-### Part 1 [![Static Badge](https://img.shields.io/badge/View-Part_1-blue?labelColor=black)](src/part_1.adb)
+### Part 1 — [![Static Badge](https://img.shields.io/badge/View-Part_1-blue?labelColor=black)](src/part_1.adb) —
 
 #### Process file lines
 Input file must be read every day, and every day the format is different.
@@ -35,7 +35,7 @@ end loop;
 Input.Close;
 ```
 
-### [Part 2](src/part_2.adb)
+### Part 2
 
 #### Convert strings to numbers
 Part 2 requires to  convert strings `one`, `two`, .. `nine` to the respective
