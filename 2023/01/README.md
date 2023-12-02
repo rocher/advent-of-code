@@ -1,5 +1,5 @@
 ![Static Badge](https://img.shields.io/badge/:badgeContent)
-[![Static Badge](https://img.shields.io/badge/AoC%202023?color=blue)](https://adventofcode.com/2023/day/2)
+[![Static Badge](https://img.shields.io/badge/AoC_2023-Day_2-blue?color=blue)](https://adventofcode.com/2023/day/2)
 
 
 [![License](https://img.shields.io/github/license/rocher/advent-of-code.svg?color=blue)](https://github.com/rocher/advent-of-code/blob/main/LICENSE)
