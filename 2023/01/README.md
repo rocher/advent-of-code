@@ -17,7 +17,7 @@
 > take a look. The Elves have even given you a map; on it, they've used stars
 > to mark the top fifty locations that are likely to be having problems.*
 
-### Part 1 [![Static Badge](https://img.shields.io/badge/part__1.adb)](src/part_1.adb)
+### Part 1 [![Static Badge](https://img.shields.io/badge/part__1.adb-blue?label=read&labelColor=black)](src/part_1.adb)
 
 #### Process file lines
 Input file must be read every day, and every day the format is different.
