@@ -18,7 +18,7 @@
 > to mark the top fifty locations that are likely to be having problems.*
 
 ### Part 1
-[![Static Badge](https://img.shields.io/badge/part__1.adb-blue?label=read&labelColor=black)](src/part_1.adb)
+[![Static Badge](https://img.shields.io/badge/part__1.adb-blue)](src/part_1.adb)
 
 #### Process file lines
 Input file must be read every day, and every day the format is different.
