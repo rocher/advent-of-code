@@ -1,0 +1,10 @@
+authors = ["Francesc Rocher"]
+name = "aoc_2023_02"
+version = "202302.0"
+description = "Advent of Code - 2023 day 2"
+licenses = "MIT"
+
+executables = ["part_1", "part_2"]
+
+[build-switches."*"]
+ada_version = ["-gnat2022", "-gnatX"]
