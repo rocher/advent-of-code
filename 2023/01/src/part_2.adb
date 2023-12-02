@@ -3,7 +3,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 procedure Part_2 is
    Input    : File_Type;
    Answer   : Natural         := 0;
-   Filename : constant String := "input";
+   Filename : constant String := "input.txt";
 
    procedure Get_Digits (Text : String; First, Last : out Natural) is
       Is_First : Boolean := True;

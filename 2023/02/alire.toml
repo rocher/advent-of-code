@@ -1,7 +1,7 @@
 authors = ["Francesc Rocher"]
 name = "aoc_2023_02"
-version = "202302.0"
-description = "Advent of Code - 2023 day 2"
+version = "2023.02"
+description = "Advent of Code 2023 - Day 2"
 licenses = "MIT"
 
 executables = ["part_1", "part_2"]

@@ -1,7 +1,7 @@
 authors = ["{{Author}}"]
 name = "aoc_{{Year}}_{{ZDay}}"
-version = "{{Year}}{{ZDay}}.0"
-description = "Advent of Code - {{Year}} day {{Day}}"
+version = "{{Year}}.{{ZDay}}"
+description = "Advent of Code {{Year}} - Day {{Day}}"
 licenses = "{{License}}"
 
 executables = ["part_1", "part_2"]
