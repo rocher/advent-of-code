@@ -1,3 +1,11 @@
+-------------------------------------------------------------------------------
+--
+--  AOC202302 - Advent of Code 2023 - Day 1 - Part 2
+--  Copyright (c) 2023 Francesc Rocher <francesc.rocher@gmail.com>
+--  SPDX-License-Identifier: MIT
+--
+-------------------------------------------------------------------------------
+
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Part_2 is

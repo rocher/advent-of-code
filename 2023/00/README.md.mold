@@ -1,0 +1,40 @@
+[![Static Badge](https://img.shields.io/badge/Advent_of_Ada-Coding_for_a_cause-red?style=for-the-badge&labelColor=black&color=darkviolet)](https://blog.adacore.com/announcing-advent-of-ada-{{Year}}-coding-for-a-cause)
+[![Static Badge](https://img.shields.io/badge/Posted_To-Forum_Ada_Lang-red?style=for-the-badge&labelColor=black&color=darkcyan)](https://forum.ada-lang.io/t/charity-advent-of-ada-spark-{{Year}}-submissions)
+
+[![Static Badge](https://img.shields.io/badge/AoC_{{Year}}-Day_{{Day}}-blue?labelColor=black)](https://adventofcode.com/{{Year}}/day/{{Day}})
+[![Static Badge](https://img.shields.io/badge/Ada-2022-blue?labelColor=black)](https://ada-lang.io/docs/arm)
+[![Static Badge](https://img.shields.io/badge/Build_with-Alire-blue?labelColor=black)](https://alire.ada.dev/)
+![Maintained?](https://img.shields.io/badge/Maintained%3F-yes-red.svg?labelColor=black&color=33aa33)
+![Issues](https://img.shields.io/github/issues/rocher/advent-of-code.svg?labelColor=black&color=grey)
+[![License](https://img.shields.io/github/license/rocher/advent-of-code.svg?labelColor=black&color=blue)](https://github.com/rocher/advent-of-code/blob/main/LICENSE)
+
+##
+# Advent of Code {{Year}} - Day {{Day}}
+
+### *TITLE*
+
+> *BRIEF DESCRIPTION*
+
+### Part 1
+[![Static Badge](https://img.shields.io/badge/part__1.adb-blue?label=read&labelColor=black)](src/part_1.adb)
+
+#### *TITLE*
+*TIP*
+
+```ada
+*EXAMPLE_OR_EXCERPT*
+```
+
+### Part 2
+[![Static Badge](https://img.shields.io/badge/part__2.adb-blue?label=read&labelColor=black)](src/part_2.adb)
+
+#### *TITLE*
+*TIP*
+
+```ada
+*EXAMPLE_OR_EXCERPT*
+```
+
+##
+### License
+{{License}} (c) {{Year}} {{Author}}

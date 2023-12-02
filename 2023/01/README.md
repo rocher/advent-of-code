@@ -1,5 +1,5 @@
 [![Static Badge](https://img.shields.io/badge/Advent_of_Ada-Coding_for_a_cause-red?style=for-the-badge&labelColor=black&color=darkviolet)](https://blog.adacore.com/announcing-advent-of-ada-2023-coding-for-a-cause)
-[![Static Badge](https://img.shields.io/badge/Posted_To-Forum_Ada_Lang-red?style=for-the-badge&labelColor=black&color=darkcyan)](https://forum.ada-lang.io/t/charity-advent-of-ada-spark-2023-submissions/562)
+[![Static Badge](https://img.shields.io/badge/Posted_To-Forum_Ada_Lang-red?style=for-the-badge&labelColor=black&color=darkcyan)](https://forum.ada-lang.io/t/charity-advent-of-ada-spark-2023-submissions)
 
 [![Static Badge](https://img.shields.io/badge/AoC_2023-Day_1-blue?labelColor=black)](https://adventofcode.com/2023/day/1)
 [![Static Badge](https://img.shields.io/badge/Ada-2022-blue?labelColor=black)](https://ada-lang.io/docs/arm)

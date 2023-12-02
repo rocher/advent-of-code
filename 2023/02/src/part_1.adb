@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 --
---  AOC202302 - Advent of Code - 2023 day 2
+--  AOC202302 - Advent of Code 2023 - Day 2 - Part 1
 --  Copyright (c) 2023 Francesc Rocher <francesc.rocher@gmail.com>
 --  SPDX-License-Identifier: MIT
 --
