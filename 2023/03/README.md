@@ -34,7 +34,7 @@ Extracting the part number of an engine component that is located at position
 $(x,y)$ requires to examine whether there is a digit in each of the eight
 adjacent positions or not. If so, then complete the part number with the
 adjacent digits. The eight adjacent positions are located at $(x+\Delta x,
-y+\Delta y)$ for $\forall\Delta x, \Delta y\in \left{-1, 0, 1\right}$, with
+y+\Delta y)$ for $\forall\Delta x, \Delta y\in \{-1, 0, 1\}$, with
 $\Delta x\not=0$ and $\Delta y\not=0$.
 
 This pattern of examining a 2D array must always take care of the array
