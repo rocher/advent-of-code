@@ -1,0 +1,80 @@
+\pgfplotsset{label style={font=\sffamily}, legend style={font=\sansmath\sffamily}, tick label style={font=\footnotesize\sansmath\sffamily}}
+\usepgfplotslibrary{colorbrewer}
+
+\captionsetup[lstlisting]{justification=raggedright,singlelinecheck=false}
+\counterwithin{figure}{section}
+\counterwithin{lstlisting}{section}
+\renewcommand*\arraystretch{1.25}
+\AtBeginEnvironment{tabular}{\ttfamily}
+\AfterEndEnvironment{tabular}{\vspace{1em}}
+\AtEndEnvironment{itemize}{\vspace{1em}}
+\DefineVerbatimEnvironment{verbatim}{Verbatim}{xleftmargin=1cm}
+\AfterEndEnvironment{verbatim}{\vspace{1.2em}}
+\BeforeBeginEnvironment{lstlisting}{\vspace{0.5em}}
+
+% new section definition
+\let\stdsection\section
+\renewcommand\section{\ifnum\value{section}>0 \clearpage \else\fi\stdsection}
+
+% conditional inclusion of list of figures, tables and listings
+\newcommand\conditionalLoF{%
+  \iftotalfigures\listoffigures\fi}
+\newcommand\conditionalLoT{%
+  \iftotaltables\listoftables\fi}
+\newcommand\conditionalLoL{%
+  \iftotallstlistings\lstlistoflistings\fi}
+
+% Title
+\newcommand{\AOC}[4]{
+  \hypersetup{% additional hypersetup in file header.tex
+    pdftitle={\@title},
+    pdfauthor={\@author},
+    pdfkeywords={Ada, SPARK, Advent of Code},%
+    pdfstartview={},%
+    linktocpage%
+  }
+
+  \thispagestyle{empty}
+  \tikz[remember picture,overlay] \node[inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{day_#3.png}};
+
+  \ifthenelse{\equal{#1}{t}}{\vspace{-0.5cm}}{\vspace{17cm}}
+  \noindent\makebox[\pagewidth][l]{%
+    \hspace{-\dimexpr\oddsidemargin+1.035in}%
+    \fcolorbox{white}{white}{%
+      \parbox{\dimexpr\paperwidth-2\fboxsep}{
+        \vspace{1.0cm}
+ %       \hspace{1cm}{\LARGE {\ttfamily Advent of Code #2 / Day \number#3 }}\newline\par
+        \hspace{1cm}{\Huge\@title}\newline\par
+        \hspace{1cm}{\large {\sffamily\@author}}\newline\par\ %
+      }}}
+
+  \clearpage
+  \thispagestyle{empty}
+  {\Large \@title}\vspace{2mm}\newline
+  \href{https://adventofcode.com/#2/day/\number#3}{\large{\ttfamily Advent of Code #2 / \ttfamily Day \number#3 }}\newline\newline\par
+  \doclicenseThis\newline\par
+  Copyright \copyright\  #2, \@author.\newline\par
+
+  \vspace{13cm}
+  \hfill\begin{minipage}{10cm}
+    {\small \em Advent of Code is an Advent calendar of small programming
+      puzzles for a variety of skill sets and skill levels that can be solved in
+      any programming language you like.}
+  \end{minipage}
+
+  \clearpage
+  \thispagestyle{plain}
+  \tableofcontents
+  \clearpage
+  \thispagestyle{plain}
+  \conditionalLoF
+  \conditionalLoT
+  \conditionalLoL
+
+  \clearpage
+  \thispagestyle{plain}
+  \hfill\begin{minipage}{6.5cm}
+    {\small{\em #4}\par
+    \hfill{\ttfamily AOC #2/#3}}
+  \end{minipage}\newline\par\vspace{1cm}
+}

@@ -1,0 +1,68 @@
+\usepackage[T1]{fontenc}
+\usepackage{inputenc}
+\usepackage[top=4cm, bottom=4cm, inner=3cm, outer=3.5cm, footskip = 1.5cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{fancyvrb}
+\usepackage{tgschola}
+\usepackage{tgheros}
+\usepackage[scaled=.8]{beramono}
+\usepackage{sansmath}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage[x11names]{xcolor}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{parskip}
+\usepackage{chngcntr}
+\usepackage{graphicx}
+\usepackage{scalerel}
+\usepackage{subcaption}
+\usepackage[font={footnotesize,sf},labelfont=bf]{caption}
+\usepackage[figure,table,lstlisting]{totalcount}
+\usepackage[type={CC},modifier={by-nc-nd},version={4.0}]{doclicense}
+\usepackage{xifthen}
+\usepackage{amsmath}
+
+\pagestyle{fancy}
+
+% additional hypersetup in file setup.tex
+\hypersetup{colorlinks, linkcolor=black, urlcolor=blue, pdfborder={0 0 0}}
+
+\DeclareUnicodeCharacter{0394}{\ensuremath{\Delta}}
+\DeclareUnicodeCharacter{03A0}{\ensuremath{\Pi}}
+\DeclareUnicodeCharacter{03A3}{\ensuremath{\Sigma}}
+\DeclareUnicodeCharacter{03B1}{\ensuremath{\alpha}}
+\DeclareUnicodeCharacter{03B2}{\ensuremath{\beta}}
+\DeclareUnicodeCharacter{03B3}{\ensuremath{\gamma}}
+\DeclareUnicodeCharacter{03B4}{\ensuremath{\delta}}
+\DeclareUnicodeCharacter{03B5}{\ensuremath{\varepsilon}}
+\DeclareUnicodeCharacter{03B8}{\ensuremath{\theta}}
+\DeclareUnicodeCharacter{03BB}{\ensuremath{\lambda}}
+\DeclareUnicodeCharacter{03BC}{\ensuremath{\mu}}
+\DeclareUnicodeCharacter{03C0}{\ensuremath{\pi}}
+\DeclareUnicodeCharacter{03C1}{\ensuremath{\rho}}
+\DeclareUnicodeCharacter{03C3}{\ensuremath{\sigma}}
+
+%\newcommand{\emoji}[1]{\raisebox{-0.25em}{\scaleto{\includegraphics{#1}}{1.0em}}}
+\newcommand{\emoji}[1]{\scalerel*{\includegraphics{#1}}{X}}
+
+% unicode emoji pdf files obtained with
+%    rsvg-convert -f pdf -o unicode-emoji/u1f9fb.pdf ~/noto-emoji-svg/svg/u1f9fb.svg
+% update org-latex-listings-options in setup.el when adding new \emoji<something>
+
+% LaTeX commands:
+%\newcommand{\emoji}{\emoji{../common/unicode-emoji/u.pdf}}
+\newcommand{\emojirollofpaper}{\emoji{../common/unicode-emoji/u1f9fb.pdf}}
+\newcommand{\emojiscissors}{\emoji{../common/unicode-emoji/u2702.pdf}}
+\newcommand{\emojiconfoundedface}{\emoji{../common/unicode-emoji/u1f616.pdf}}
+\newcommand{\emojihandshake}{\emoji{../common/unicode-emoji/u1f91d.pdf}}
+\newcommand{\emojitrophy}{\emoji{../common/unicode-emoji/u1f3c6.pdf}}
+\newcommand{\emojirock}{\emoji{../common/unicode-emoji/u1faa8.pdf}}
+
+% unicode characters
+\DeclareUnicodeCharacter{1FAA8}{\emojirock}             % 🪨
+\DeclareUnicodeCharacter{1F9FB}{\emojirollofpaper}      % 🧻
+\DeclareUnicodeCharacter{2700}{\emojiscissors}          % Emacs: ✀=2702, emoji: ✂=2700
+\DeclareUnicodeCharacter{1F616}{\emojiconfoundedface}   % 😖
+\DeclareUnicodeCharacter{1F91D}{\emojihandshake}        % 🤝
+\DeclareUnicodeCharacter{1F3C6}{\emojitrophy}           % 🏆
