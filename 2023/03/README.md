@@ -13,10 +13,10 @@
 
 ### Gear Rations
 
-> The engineer explains that an engine part seems to be missing from the
+> *The engineer explains that an engine part seems to be missing from the
 > engine, but nobody can figure out which one. If you can add up all the part
 > numbers in the engine schematic, it should be easy to work out which part is
-> missing.
+> missing.*
 
 ### Part 1
 [![Static Badge](https://img.shields.io/badge/read-part__1.adb-blue)](src/part_1.adb)
