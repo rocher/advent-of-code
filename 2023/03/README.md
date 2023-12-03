@@ -4,9 +4,9 @@
 [![Static Badge](https://img.shields.io/badge/AoC_2023-Day_3-blue)](https://adventofcode.com/2023/day/3)
 [![Static Badge](https://img.shields.io/badge/Ada-2022-blue)](https://ada-lang.io/docs/arm)
 [![Static Badge](https://img.shields.io/badge/Build_with-Alire-blue)](https://alire.ada.dev/)
-![Maintained?](https://img.shields.io/badge/Maintained%3F-yes-red.svg?color=33aa33)
-![Issues](https://img.shields.io/github/issues/rocher/advent-of-code.svg?color=grey)
-[![License](https://img.shields.io/github/license/rocher/advent-of-code.svg?color=blue)](https://github.com/rocher/advent-of-code/blob/main/LICENSE)
+![Maintained?](https://img.shields.io/badge/Maintained%3F-yes-33aa33)
+![Issues](https://img.shields.io/github/issues/rocher/advent-of-code.svg?label=Issues&color=grey)
+[![License](https://img.shields.io/github/license/rocher/advent-of-code.svg?label=License&color=blue)](https://github.com/rocher/advent-of-code/blob/main/LICENSE)
 
 ##
 # Advent of Code 2023 - Day 3
