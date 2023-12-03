@@ -50,9 +50,9 @@ positions will always exists, independently on where is it located:
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="array-edges-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="array-edges-light.png">
-    <img src="array-edges-dark.png" width="75%">
+    <source media="(prefers-color-scheme: dark)" srcset="img/array-edges-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="img/array-edges-light.png">
+    <img src="img/array-edges-dark.png" width="75%">
   </picture>
 </p>
 
@@ -75,9 +75,9 @@ one direction, but it must added only once.
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="multiple-pn-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="multiple-pn-light.png">
-    <img src="multiple-pn-dark.png" width="30%">
+    <source media="(prefers-color-scheme: dark)" srcset="img/multiple-pn-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="img/multiple-pn-light.png">
+    <img src="img/multiple-pn-dark.png" width="30%">
   </picture>
 </p>
 
