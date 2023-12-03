@@ -84,10 +84,11 @@ one direction
 In the example, PN 23 is found only once when looking at position $(x-1,
 y+1)$, but PN 42 is found when looking at the three indicated directions.
 
-Solution: replace digits by dot characters `'.'` as soon as a new PN is
-detected.
+Solution: replace digits by dot characters `'.'` as soon as digit of a PN is
+detected. This operation is called *Part Number Extraction*. Quite drastic,
+right? But, yeah!, with no requirements everything is valid ;)
 
-#### Putting all together
+#### Putting it all together
 
 The function that detects and returns the sum of all part numbers for a given
 position is [Σ_Part_Numbers](src/part_1.adb#L24C21-L24C21).
