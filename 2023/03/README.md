@@ -86,7 +86,7 @@ y+1)$, but PN 42 is found when looking at the three indicated directions.
 
 **Solution**: replace digits by dot characters `'.'` as soon as digit of a PN is
 detected. This operation is called *Part Number Extraction*. Quite drastic,
-right? But, yeah!, with no requirements everything is valid ;)
+right? But .. yeah!, with no requirements everything is valid :sunglasses:.
 
 #### Putting it all together
 
