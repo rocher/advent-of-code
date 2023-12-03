@@ -71,7 +71,7 @@ positions will always exists, independently on where is it located:
 
 Last thing to take into account is the *possible repetition* of part numbers.
 This happens when a part number is located so that it is found in more than
-one direction
+one direction, but it must added only once.
 
 <p align="center">
   <picture>
@@ -86,7 +86,7 @@ y+1)$, but PN 42 is found when looking at the three indicated directions.
 
 **Solution**: replace digits by dot characters `'.'` as soon as digit of a PN is
 detected. This operation is called *Part Number Extraction*. Quite drastic,
-right? But .. yeah!, with no requirements everything is valid :sunglasses:.
+right? But .. yeah!, with no requirements everything is valid :sunglasses:
 
 #### Putting it all together
 
@@ -96,12 +96,21 @@ position is [Σ_Part_Numbers](src/part_1.adb#L24C1-L53C23).
 ### Part 2
 [![Static Badge](https://img.shields.io/badge/part__2.adb-blue?label=read&labelColor=black)](src/part_2.adb)
 
-#### *TITLE*
-*TIP*
+#### Gear ratios
+
+This part is 99% identical to the 1st part. Only differences are
+
+  1. look at components market with `'*'`
+  2. keep found PN's in an array:
 
 ```ada
-*EXAMPLE_OR_EXCERPT*
+   Gear_PN : array (1 .. 2) of Natural := [0, 0];
+   P_i     : Natural                   := 1;
 ```
+
+  3. `P_i` is the PN index (or counter)
+  4. if `P_i = 3`, then return 0
+  5. otherwise return the value of `Gear_PN (1) * Gear_PN (2)`.
 
 ##
 ### License
