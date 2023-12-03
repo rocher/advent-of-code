@@ -67,8 +67,30 @@ positions will always exists, independently on where is it located:
    Schematic : Schematic_Type;
 ```
 
+#### Avoid repetitions
+
 Last thing to take into account is the *possible repetition* of part numbers.
-This happens when a part number is located so that it is found in more than one
+This happens when a part number is located so that it is found in more than
+one direction
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="multiple-pn-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="mulitple-pn-light.png">
+    <img src="mulitple-pn-dark.png" width="30%">
+  </picture>
+</p>
+
+In the example, PN 23 is found only once when looking at position $(x-1,
+y+1)$, but PN 42 is found when looking at the three indicated directions.
+
+Solution: replace digits by dot characters `'.'` as soon as a new PN is
+detected.
+
+#### Putting all together
+
+The function that detects and returns the sum of all part numbers for a given
+position is [Σ_Part_Numbers](src/part_1.adb#L24C21-L24C21).
 
 ### Part 2
 [![Static Badge](https://img.shields.io/badge/part__2.adb-blue?label=read&labelColor=black)](src/part_2.adb)
