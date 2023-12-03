@@ -76,8 +76,8 @@ one direction
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="multiple-pn-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="mulitple-pn-light.png">
-    <img src="mulitple-pn-dark.png" width="30%">
+    <source media="(prefers-color-scheme: light)" srcset="multiple-pn-light.png">
+    <img src="multiple-pn-dark.png" width="30%">
   </picture>
 </p>
 
