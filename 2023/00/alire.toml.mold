@@ -7,4 +7,4 @@ licenses = "{{License}}"
 executables = ["part_1", "part_2"]
 
 [build-switches."*"]
-ada_version = ["-gnat2022", "-gnatX"]
+ada_version = ["-gnat2022", "-gnatX", "-gnatW8"]
