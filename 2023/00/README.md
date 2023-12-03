@@ -15,16 +15,36 @@
 
 > *This is a template directory to generate all AoC 2023 days with [mold](https://rocher.github.io/mold).*
 
+This is the `README.md` file generated form its template counterpart
+`README.md.mold`.
+
 ### Part 1
 [![Static Badge](https://img.shields.io/badge/read-part__1.adb-blue)](src/part_1.adb.mold)
 
 #### Tips
 
-Brief explanation of the algorithm, data structures or some parts of the code.
+For the corresponding day, brief explanation of the algorithm, data structures
+or some parts of the code.
 
 ```ada
    Hello_World : constant String := "Hello, world!";
 ```
+
+#### Diagrams
+
+In case a diagram is be added, the following schema is used to adapt to light
+and dark themes in github:
+
+```html
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="img/IMAGE_NAME-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="img/IMAGE_NAME-light.png">
+    <img src="img/IMAGE_NAME-dark.png" width="75%">
+  </picture>
+</p>
+```
+
 
 ### Part 2
 [![Static Badge](https://img.shields.io/badge/read-part__2.adb-blue)](src/part_2.adb.mold)
