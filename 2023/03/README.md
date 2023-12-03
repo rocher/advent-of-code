@@ -52,7 +52,7 @@ positions will always exists, independently on where is it located:
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="array-edges-dark.png">
     <source media="(prefers-color-scheme: light)" srcset="array-edges-light.png">
-    <img src="array-edges-dark.png" width="85%">
+    <img src="array-edges-dark.png" width="75%">
   </picture>
 </p>
 
