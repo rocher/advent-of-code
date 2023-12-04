@@ -25,7 +25,7 @@ begin
          Winning_Numbers : constant String (1 .. 30) := Line (10 .. 39);
          Matches         : Natural                   := 0;
       begin
-         Copies (0) := @ + 1;  --  instances = current card + copies won
+         Copies (0) := @ + 1;  --  instances = copies won + current card
          Answer     := @ + Copies (0);
 
          for I in 1 .. 10 loop
