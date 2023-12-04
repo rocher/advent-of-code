@@ -11,7 +11,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 procedure Part_2 is
    Input    : File_Type;
    Answer   : Natural         := 0;
-   Filename : constant String := "input";
+   Filename : constant String := "input.txt";
 
 begin
    Input.Open (In_File, Filename);
@@ -25,5 +25,5 @@ begin
    end loop;
    Input.Close;
 
-   Put_Line ("Answer:" & Answer'Image);
+   Put_Line (f"Answer: {Anwer}");
 end Part_2;

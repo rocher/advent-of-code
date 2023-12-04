@@ -25,5 +25,5 @@ begin
    end loop;
    Input.Close;
 
-   Put_Line ("Answer:" & Answer'Image);
+   Put_Line (f"Answer: {Answer}");
 end Part_1;
