@@ -15,7 +15,6 @@ procedure Part_2 is
    Filename : constant String := "input.txt";
 
    Copies : array (0 .. 10) of Natural := [0 .. 10 => 0];
-
 begin
    Input.Open (In_File, Filename);
    loop
@@ -28,6 +27,7 @@ begin
          Copies (0) := @ + 1;  --  instances = copies won + current card
          Answer     := @ + Copies (0);
 
+         --  count matching numbers
          for I in 1 .. 10 loop
             J : constant Natural := ((I - 1) * 3) + 1;
             if Index (Card_Numbers, Winning_Numbers (J .. J + 2)) > 0 then
@@ -35,17 +35,19 @@ begin
             end if;
          end loop;
 
+         --  win scratchcards below the winning card
          if Matches > 0 then
             for I in 1 .. Matches loop
                Copies (I) := @ + Copies (0);
             end loop;
          end if;
-
-         --  preparing for next card
-         Copies (0 .. 9) := Copies (1 .. 10);
-         Copies (10)     := 0;
       end;
+
       exit when Input.End_Of_File;
+
+      --  prepare for next card
+      Copies (0 .. 9) := Copies (1 .. 10);
+      Copies (10)     := 0;
    end loop;
    Input.Close;
 

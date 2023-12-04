@@ -23,6 +23,7 @@ begin
          Winning_Numbers : constant String (1 .. 30) := Line (10 .. 39);
          Matches         : Natural                   := 0;
       begin
+         --  count matching numbers
          for I in 1 .. 10 loop
             J : constant Natural := ((I - 1) * 3) + 1;
             if Index (Card_Numbers, Winning_Numbers (J .. J + 2)) > 0 then
@@ -30,10 +31,12 @@ begin
             end if;
          end loop;
 
+         --  double points according to matching numbers
          if Matches > 0 then
             Answer := @ + 2**(Matches - 1);
          end if;
       end;
+
       exit when Input.End_Of_File;
    end loop;
    Input.Close;
