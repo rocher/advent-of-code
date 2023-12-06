@@ -51,14 +51,46 @@ $$ \frac{df}{dt} = \frac{(T-t)\cdot t}{dt} = -2t+T = 0 \implies t = T/2 $$
 
 To win a race, it is necessary to go further than the record distance $D$ for
 that race. The number of ways to do it is the length of the interval, centered
-at $T/2$, for which $f(t)>D$.
+at $T/2$, for which $f(t)\gt D$.
+
+That's a good point to start an iterative algorithm: $t=T/2$. For the next
+iterations, decrease $t$ by one, $t'=t-1$ and, if $f(t')\gt D$, then this is
+another way to win the race. But count it twice! because the symmetry of the
+function, $f(t+1)$ is also another way to win the race. Exit when $f(t')\lt D$.
+
+Graphically:
+
+<p align="center">
+   <picture>
+     <source media="(prefers-color-scheme: dark)" srcset="img/descent-dark.png">
+     <source media="(prefers-color-scheme: light)" srcset="img/descent-light.png">
+     <img src="img/descent-dark.png" width="75%">
+   </picture>
+</p>
+
+The only thing is to count the first point twice or not. If $T$ is even, count
+it only once; otherwise count it twice:
+
+```ada
+   for Race of Races loop
+      Count      : Natural := (if Race.Time mod 2 = 0 then 1 else 2);
+      Press_Time : Natural := (Race.Time / 2) - 1;
+      loop
+         Count      := @ + 2;
+         Press_Time := @ - 1;
+         exit when (Race.Time - Press_Time) * Press_Time < Race.Distance;
+      end loop;
+      Answer := @ * Count;
+   end loop;
+```
 
 ### Part 2
 [![Static Badge](https://img.shields.io/badge/read-part__2.adb-blue)](src/part_2.adb)
 
 #### Use `bc`
 
-Lazy to implement the second part, just use `bc` (*basic calculator*) with the
+Lazy to implement the second part? Tired to read text files to manipulate
+`Strings` in weird ways? Then simply use `bc` (*basic calculator*) with the
 numbers given.
 
 How?
@@ -71,7 +103,7 @@ Solving $f(t)-D=0$,
 
 $$ -t^2-Tt-D = 0 \implies t = \frac{T\pm\sqrt{T^2-4D}}{-2} $$
 
-will give the value of $t'$ for which $f(t')<D$. Note that using the positive
+will give the value of $t'$ for which $f(t')\lt D$. Note that using the positive
 value of the square root, $t'$ is in the right side of $T/2$.
 
 The length of the interval $[T/2, t']$ is:
