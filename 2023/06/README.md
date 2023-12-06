@@ -37,7 +37,7 @@ during $T-t$ milliseconds in a race that lasts $T$ milliseconds:
    <picture>
      <source media="(prefers-color-scheme: dark)" srcset="img/function-dark.png">
      <source media="(prefers-color-scheme: light)" srcset="img/function-light.png">
-     <img src="img/function-dark.png" width="75%">
+     <img src="img/function-dark.png" width="60%">
    </picture>
 </p>
 
@@ -64,7 +64,7 @@ Graphically:
    <picture>
      <source media="(prefers-color-scheme: dark)" srcset="img/descent-dark.png">
      <source media="(prefers-color-scheme: light)" srcset="img/descent-light.png">
-     <img src="img/descent-dark.png" width="75%">
+     <img src="img/descent-dark.png" width="60%">
    </picture>
 </p>
 
@@ -106,7 +106,7 @@ $$ -t^2-Tt-D = 0 \implies t = \frac{T\pm\sqrt{T^2-4D}}{-2} $$
 will give the value of $t'$ for which $f(t')\lt D$. Note that using the positive
 value of the square root, $t'$ is in the right side of $T/2$.
 
-The length of the interval $[T/2, t']$ is:
+The length of the interval $\left[T/2, t'\right]$ is:
 
 $$ t'-\frac{T}{2} = \left( \frac{T+\sqrt{T^2-4D}}{2} - \frac{T}{2} \right) $$
 
