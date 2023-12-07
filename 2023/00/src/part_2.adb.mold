@@ -25,5 +25,5 @@ begin
    end loop;
    Input.Close;
 
-   Put_Line (f"Answer: {Anwer}");
+   Put_Line (f"Answer: {Answer}");
 end Part_2;
