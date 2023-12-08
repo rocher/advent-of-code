@@ -106,12 +106,17 @@ Counting paths is like part 1, but applied to a vector of starting nodes:
 
 #### Package Euler Tools
 
-As the author of the package `euler_tools`, I implemented in that package the
-function `Least_Common_Multiple`. Thus, the answer is simply:
+As the author of the package [Euler
+Tools](https://github.com/rocher/euler_tools), I implemented in that package
+the function `Least_Common_Multiple`. Thus, the answer is simply:
 
 ```ada
    Answer := ETools.Least_Common_Multiple (Nodes_Steps);
 ```
+
+Note: The main motivation of the Euler Tools package is to have a number of
+resources to solve problems from the [Project Euler](https://projecteuler.net)
+... but this is Advent of Code ... but who cares!
 
 ##
 ### License
