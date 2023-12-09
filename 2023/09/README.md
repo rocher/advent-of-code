@@ -102,11 +102,11 @@ Finally, compute the extrapolate value, which must be added to the final
 
 ```ada
       -- << Compute_Extrapolation >>
-        for I in reverse History.First_Index .. History.Last_Index - 1 loop
-           History (I).Append
-             (History (I + 1).Last_Element + History (I).Last_Element);
-        end loop;
-        Answer := @ + History (History.First_Index).Last_Element;
+      for I in reverse History.First_Index .. History.Last_Index - 1 loop
+         History (I).Append
+           (History (I + 1).Last_Element + History (I).Last_Element);
+      end loop;
+      Answer := @ + History (History.First_Index).Last_Element;
 ```
 
 ### Part 2
@@ -119,11 +119,11 @@ extrapolate value:
 
 ```ada
       -- << Compute_Extrapolation >>
-        for I in reverse History.First_Index .. History.Last_Index - 1 loop
-           History (I).Prepend
-             (History (I).First_Element - History (I + 1).First_Element);
-        end loop;
-        Answer := @ + History (History.First_Index).First_Element;
+      for I in reverse History.First_Index .. History.Last_Index - 1 loop
+         History (I).Prepend
+           (History (I).First_Element - History (I + 1).First_Element);
+      end loop;
+      Answer := @ + History (History.First_Index).First_Element;
 ```
 
 ##
