@@ -13,11 +13,11 @@
 
 ### Historian Hysteria
 
-> Maybe the lists are only off by a small amount! To find out, pair up the
+> *Maybe the lists are only off by a small amount! To find out, pair up the
 > numbers and measure how far apart they are. Pair up the smallest number in
 > the left list with the smallest number in the right list, then the
 > second-smallest left number with the second-smallest right number, and so
-> on.
+> on.*
 
 ### Part 1
 [![Static Badge](https://img.shields.io/badge/read-part__1.adb-blue)](src/part_1.adb)
