@@ -25,7 +25,7 @@
 #### Pair sorted lists
 
 The main idea is to sort both lists, `Left_List` and `Right_List`, and
-compute the absolute value of the difference.
+compute the absolute value of the difference of each pair of elements.
 
 ```ada
 declare
@@ -46,8 +46,9 @@ end;
 
 #### Count element appearances
 
-Traverse `Left_List` skipping repeated elements, and count how many times
-appears each element in `Rigt_List`.
+Sort both `Left_List` and `Right_List`, and then traverse `Left_List`
+(skipping repeated elements) to count how many times appears each element in
+`Rigt_List`.
 
 ```ada
 declare
