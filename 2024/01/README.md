@@ -11,30 +11,78 @@
 ##
 # Advent of Code 2024 - Day 1
 
-### TITLE
+### Historian Hysteria
 
-> *BRIEF DESCRIPTION*
+> *BRIEF DESCRIPTION*Maybe the lists are only off by a small amount! To find
+>  out, pair up the numbers and measure how far apart they are. Pair up the
+>  smallest number in the left list with the smallest number in the right
+>  list, then the second-smallest left number with the second-smallest right
+>  number, and so on.
 
 ### Part 1
 [![Static Badge](https://img.shields.io/badge/read-part__1.adb-blue)](src/part_1.adb)
 
-#### TITLE
+#### Pair sorted lists
 
-TIP
+The main idea is to sort both lists, `Left_List` and `Right_List`, and
+compute the absolute value of the difference.
 
 ```ada
-   EXAMPLE_OR_EXCERPT
+declare
+   Left  : Number_Lists.Cursor := Left_List.First;
+   Right : Number_Lists.Cursor := Right_List.First;
+begin
+   loop
+      Answer := @ + abs (Left.Element - Right.Element);
+      Left := Left.Next;
+      Right := Right.Next;
+      exit when not Left.Has_Element;
+   end loop;
+end;
 ```
 
 ### Part 2
 [![Static Badge](https://img.shields.io/badge/read-part__2.adb-blue)](src/part_2.adb)
 
-#### TITLE
+#### Count element appearances
 
-TIP
+Traverse `Left_List` skipping repeated elements, and count how many times
+appears each element in `Rigt_List`.
 
 ```ada
-   EXAMPLE_OR_EXCERPT
+declare
+   Left  : Number_Lists.Cursor := Left_List.First;
+   Right : Number_Lists.Cursor := Number_Lists.No_Element;
+   Times : Natural := 0;
+begin
+   loop
+      --  Count how many times Left.Element appears in Right_List
+      Times := 0;
+      Right := Right_List.Find (Left.Element);
+      if Right /= Number_Lists.No_Element then
+         loop
+            Times := @ + 1;
+            Right := Right.Next;
+            exit when Right.Element /= Left.Element;
+         end loop;
+      end if;
+      Answer := @ + (Left.Element * Times);
+
+      --  Skip repeated numbers in Left_List
+      declare
+         Current_Element : constant Natural := Left.Element;
+      begin
+         loop
+            Left := Left.Next;
+            exit when
+              Left = Number_Lists.No_Element
+              or else Left.Element /= Current_Element;
+         end loop;
+      end;
+
+      exit when not Left.Has_Element;
+   end loop;
+end;
 ```
 
 ##
