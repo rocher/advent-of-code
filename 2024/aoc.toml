@@ -1,0 +1,10 @@
+mold-replacement-in-filenames = "true"
+mold-overwrite-destination-files = "true"
+
+Author = "Francesc Rocher"
+Email = "francesc.rocher@gmail.com"
+Address = "{{Author}} <{{Email}}>"
+Year = "2024"
+Day = "1"
+ZDay = "{{Day/pl02}}"
+License = "MIT"
