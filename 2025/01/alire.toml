@@ -1,0 +1,10 @@
+authors = ["Francesc Rocher"]
+name = "aoc_2025_01"
+version = "2025.01"
+description = "Advent of Code 2025 - Day 1"
+licenses = "MIT"
+
+executables = ["part_1", "part_2"]
+
+[build-switches."*"]
+ada_version = ["-gnat2022", "-gnatX0", "-gnatW8"]

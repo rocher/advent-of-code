@@ -8,3 +8,7 @@ executables = ["part_1", "part_2"]
 
 [build-switches."*"]
 ada_version = ["-gnat2022", "-gnatX0", "-gnatW8"]
+
+[[depends-on]]
+gnatprove = "^14.1.1"
+

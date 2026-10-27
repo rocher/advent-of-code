@@ -1,4 +1,6 @@
 with "config/aoc_2024_01_config.gpr";
+with "sparklib";
+
 project Aoc_2024_01 is
 
    for Source_Dirs use ("src/", "config/");
